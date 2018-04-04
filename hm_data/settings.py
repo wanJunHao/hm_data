@@ -55,7 +55,7 @@ ROOT_URLCONF = 'hm_data.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['appfornt'],
+        'DIRS': ['appfornt/dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,5 +120,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "appfornt/static"),
+    os.path.join(BASE_DIR, "appfornt/dist/static"),
 ]
