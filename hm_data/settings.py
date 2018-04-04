@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'hm_data.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'uinfo',
+        'USER': 'root',
+        'PASSWORD': '123.com',
+        'HOST': '192.168.3.177',
+        'PORT': '3306',
     }
 }
 

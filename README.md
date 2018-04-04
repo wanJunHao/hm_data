@@ -2,10 +2,10 @@
 华美数据平台
 
 step0. download python3 and pip3. maybe you should run this:
-sudo apt install python3 python3-pip
+sudo apt install python3 python3-pip libmysqlclient-dev
 
 step1. download django. as follows:
-pip3 install django djangorestframework
+sudo pip3 install django djangorestframework mysqlclient
 
 step2. initialized django's database. as follows:
 python3 manage.py migrate
