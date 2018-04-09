@@ -40,6 +40,29 @@
 		            </tr>
 				</tbody>
 			</table>
+			<!-- 住院表格 -->
+			<table id="tableHospitalPanel" class="display" style="width:100%;text-align:center;display:none;">
+				<thead>
+		            <tr>
+		                <th>状态</th>
+		                <th>环节信息</th>
+		                <th>ID</th>
+		                <th>姓名</th>
+		                <th>地址</th>
+		                <th>联系电话</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr v-for="item in items1">
+		            	<td>{{item.state}}</td>
+		            	<td>{{item.info}}</td>
+		            	<td>{{item.id}}</td>
+		            	<td>{{item.name}}</td>
+		            	<td>{{item.addr}}</td>
+		            	<td>{{item.tel}}</td>
+		            </tr>
+				</tbody>
+			</table>
 		</div>
 		<!-- 地图 -->
 		<div class="mapShow" style="display:none;">
@@ -105,7 +128,13 @@
 
 <script>
 	$(document).ready(function() {
-    	$('#tableOutpatientPanel').DataTable();
+    	// $('#tableOutpatientPanel').DataTable({
+    	// 	 "bPaginate": false, //翻页功能
+     //         "bLengthChange":false, //改变每页显示数据数量
+     //         "bFilter": false, //过滤功能
+     //         "bInfo":false,//页脚信息
+    	// });
+    	// $('#tableHospitalPanel').DataTable();
 	});
 	export default {
 	 	name: 'outpatient',
@@ -132,6 +161,20 @@
 	 				{"state":'绿色',"info":"取药","id":'10',"name":"莉莉","tel":"12312","addr":"陕西省"},
 	 				{"state":'绿色',"info":"就诊","id":'11',"name":"花花","tel":"12312","addr":"陕西省"},
 	 				{"state":'绿色',"info":"取药","id":'12',"name":"艾尔","tel":"12312","addr":"陕西省"}				
+	 			],
+	 			items1:[
+	 				{"state":'黄色',"info":"住院","id":'1',"name":"战三","tel":"12312","addr":"陕西省"},
+	 				{"state":'黄色',"info":"等待","id":'2',"name":"李四","tel":"12312","addr":"山东省临清市"},
+	 				{"state":'黄色',"info":"就诊","id":'3',"name":"旺旺","tel":"12312","addr":"陕西省西安市"},
+	 				{"state":'黄色',"info":"取药","id":'4',"name":"莉莉","tel":"12312","addr":"陕西省"},
+	 				{"state":'黄色',"info":"就诊","id":'5',"name":"花花","tel":"12312","addr":"陕西省"},
+	 				{"state":'黄色',"info":"取药","id":'6',"name":"艾尔","tel":"12312","addr":"陕西省"},
+	 				{"state":'黄色',"info":"住院","id":'7',"name":"战三","tel":"12312","addr":"陕西省"},
+	 				{"state":'黄色',"info":"等待","id":'8',"name":"李四","tel":"12312","addr":"山东省临清市"},
+	 				{"state":'黄色',"info":"就诊","id":'9',"name":"旺旺","tel":"12312","addr":"陕西省西安市"},
+	 				{"state":'黄色',"info":"取药","id":'10',"name":"莉莉","tel":"12312","addr":"陕西省"},
+	 				{"state":'黄色',"info":"就诊","id":'11',"name":"花花","tel":"12312","addr":"陕西省"},
+	 				{"state":'黄色',"info":"取药","id":'12',"name":"艾尔","tel":"12312","addr":"陕西省"}				
 	 			]
 	 		}
 	 	},

@@ -8,7 +8,7 @@
     <div id="main">
       <!-- 左侧导航 -->
       <div class="leftNav">
-         <div href="" v-for="(item,index) in items" :class="{'show':item.active}" @click="makeActive(item,index)">{{item.name}}</div>
+         <div v-for="(item,index) in items"  :class="{'show':item.active}" @click="makeActive(item,index)">{{item.name}}</div>
       </div>
     </div>
     <router-view/>  
@@ -35,6 +35,25 @@ export default {
           this.items[i].active = false;
         }
         this.items[index].active = true;
+        if(this.active == '门诊'){
+            $("#tableOutpatientPanel").show();
+            $("#tableHospitalPanel").hide();
+            $('#tableOutpatientPanel').DataTable({
+                "bPaginate": false, //翻页功能
+                "bLengthChange":false, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bInfo":false,//页脚信息
+            });
+        }else  if(this.active == '住院'){
+            $("#tableOutpatientPanel").hide();
+            $("#tableHospitalPanel").show();
+            $("#tableHospitalPanel").DataTable({
+                "bPaginate": false, //翻页功能
+                "bLengthChange":false, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "bInfo":false,//页脚信息
+            });
+        }
       }
   }
 }
