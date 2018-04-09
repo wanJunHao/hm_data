@@ -1,0 +1,4 @@
+挂号: Registered
+收费: charge
+环节: link
+病历号: card_no
