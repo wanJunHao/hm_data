@@ -5,7 +5,7 @@ step0. download python3 and pip3. maybe you should run this:
 sudo apt install python3 python3-pip libmysqlclient-dev
 
 step1. download django. as follows:
-sudo pip3 install django djangorestframework mysqlclient
+sudo pip3 install django djangorestframework mysqlclient django-cors-headers
 
 step2. initialized django's database. as follows:
 python3 manage.py migrate
