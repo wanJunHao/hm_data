@@ -1,0 +1,42 @@
+body{font-size:13px;}
+.content{margin-left:60px;position: relative;}
+.header{width:100%;height:35px;background-color:#F2F2F2;overflow: hidden;}
+.detailData div{display: inline-block;line-height:35px;float:left;}
+.detailData div span{margin-left:15px;}
+.btnInfo{height:35px;position: absolute;right:20px;cursor:pointer;}
+.tableBtn{float:left;padding:2px 6px;margin-top:6px;background:#e3e3e3;}
+.activeBtn{background: #0B9BFB;color:white;}
+.settingBtn,.computedBtn{background:#0B9BFB;margin-left:10px;color:white;}
+.tableShow{width:95%;height:520px;position: absolute;top:90px;left:40px;}
+.settingPanel{width:800px;height:450px;background:#f2f2f2;position: absolute;top:90px;left:155px;}
+#warningPanelSetting{width:350px;background:white;border-radius:5px;font-size:12px;position:absolute;box-shadow:0px 3px 5px 0px rgba(0,49,98,0.08);left:100px;top:100px;}
+#warningPanelSetting .topline{background: linear-gradient(to right,#0d53a4,#00bdc9);height: 5px;border-top-left-radius: 5px;border-top-right-radius: 5px;}
+#warningPanelSetting .common-head{height: 45px;line-height: 45px;position: relative;font-size: 14px;}
+#warningPanelSetting .common-head .close{position: absolute;right: 10px;height: 100%;width: 45px;top: 0;text-align: right;cursor: pointer;}
+#warningPanelSetting .common-head .logo{margin-left: 10px;font-size:14px;}
+#warningPanelSetting .common-filter-footer{height: 50px;position: absolute;bottom: 0;width: 100%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;}
+#warningPanelSetting .common-filter-footer a{width: 70px;height: 30px;position: absolute;border-radius: 2px;line-height: 30px;text-align: center;box-sizing: border-box;}
+#warningPanelSetting .common-filter-footer .cancleBtn{top: 10px;right: 110px;border: 1px solid #0d53a4;color: #0d53a4;}
+#warningPanelSetting .common-filter-footer .confirmBtn{background: #0D53A4;color: white;right: 20px;top: 10px;border: 1px solid #0D53A4;}
+#warningPanelSetting .warning-body{padding-top:10px;border-top: 1px solid #DEDEDE;color:#808080;}
+#warningPanelSetting .warning-body .warning-name-input-div{margin-left: 10px;margin-top: 5px;}
+#warningPanelSetting .warning-body .warning-name-input-div input{height: 21px;border: 1px solid #dedede;text-indent: 5px;width: 270px;border-radius: 2px;margin-left:5px;border:0;}
+#warningPanelSetting .warning-body .warning-setting{padding-top:5px;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area{height:110px;margin-top: 10px;margin-bottom: 10px;overflow-y: auto;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table{text-align: center;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .title{background: #f5f5f5;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table tr td.add{cursor: pointer;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table tr td{border-right:1px solid #e3e3e3;border-bottom:1px solid #e3e3e3;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table tr td:nth-child(1){width:120px;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table tr td:nth-child(2){width:50px;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table tr td:nth-child(3){width:90px;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table tr td:nth-child(4){width:70px;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table tr td:nth-child(5){width:20px;border-right: none;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table tr:nth-child(1) td{border-bottom: none;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table tbody tr:nth-child(1) td{border-bottom:1px solid #e3e3e3;}
+#warningPanelSetting .warning-body .warning-setting .warning-setting-area table tr td{height:28px;}
+.listenInput {background: #f5f5f5;}
+.settingPanelBtn{position: absolute;bottom:10px;right:20px;}
+.settingPanelBtn a{width: 70px;height: 30px;position: absolute;border-radius: 2px;line-height: 30px;text-align: center;-webkit-box-sizing: border-box;box-sizing: border-box;}
+.settingPanelBtn .cancleBtn{right: 110px;bottom:5px;border: 1px solid #0d53a4;color: #0d53a4;}
+.settingPanelBtn .confirmBtn{background: #0D53A4;color: white; right: 20px;bottom:5px;border: 1px solid #0D53A4;}
