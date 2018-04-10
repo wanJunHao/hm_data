@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <div id="topInfo">
         <p>华美医院</p>
-        <img src="/static/images/yujing-icon-03.png" alt="" class="yj-icon">
+        <img src="/static/images/yujing_icon_03.png" alt="" class="yj-icon">
     </div>
     <!-- 左侧导航 -->
     <div class="leftNav">
@@ -45,6 +45,9 @@ export default {
             $("#outpatientDetail").hide();
         }
       }
+  },
+  mounted(){
+    
   }
 }
 </script>
