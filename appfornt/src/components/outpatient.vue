@@ -106,82 +106,21 @@
 		</div>
 		<!-- 地图 -->
 		<div class="mapShow" style="display:none;">
+		
 			This is mapArea.
 		</div>
 		<!-- 流程设置弹框 -->
-		<div class="settingPanel" style="display:none;">
-			<!-- 设置内容弹框 -->
-			<div id="warningPanelSetting" style="display:block;">
-				<div class="topline"></div>
-				<div class="common-head">
-					<span class="logo">预警条件设置</span>
-					<div class="close" @click="closeSetBtn">
-						<img src="/static/images/close.png" alt="" title="关闭" />
-					</div>
-				</div>
-				<div class="warning-body">
-					<div class="warning-name-input-div">
-						<span class="logo">监测名称:</span>
-						<input type="text" class="listenInput">
-					</div>
-					<div class="warning-setting">
-						<div class="warning-setting-area">
-							<table cellspacing="0" cellpadding="0">
-								<tr class="title">
-									<td>当前表标题</td>
-									<td>关系</td>
-									<td>时间设定</td>
-									<td>预警颜色</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td></td>
-									<td>
-										>
-										<img src='/static/images/more.png' alt='' class='moreCompare' @click='showCompare'>
-									</td>
-									<td>
-										1h15min
-										<img src='/static/images/more.png' alt='' class='moreWaitTime' @click='showWait'>
-									</td>
-									<td>
-										<svg style="width:20px;height:20px;">
-											<circle cx="10" cy="12" r="7" stroke-width="2" fill="red" />
-										</svg>
-									</td>
-									<td></td>
-								</tr>
-							</table>
-							<div id="compareSelects" style="display: none;">
-								<div>></div>
-								<div><</div>
-							</div>
-							<div id="waitSelects" style="display: none;">
-								<div>1h</div>
-								<div>2h</div>
-								<div>3h</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="empty" style="height:50px;background: transparent;"></div>
-				<div class="common-filter-footer">
-					<a href="javascript:void(0)" class="cancleBtn" @click="cancleSetBtn">取消</a>
-					<a href="javascript:void(0)" class="confirmBtn" @click="confirmSetBtn">确定</a>
-				</div>
-			</div>
-			<!-- 按钮 -->
-			<div class="settingPanelBtn">
-				<a href="javascript:void(0)" class="cancleBtn" @click="canclePanelBtn">取消</a>
-				<a href="javascript:void(0)" class="saveBtn" @click="savePanelBtn">保存</a>
-			</div>
-		</div>
+		<warningProcess v-bind:warning-show="waringShow"></warningProcess>
 	</div>
 </template>
 
 <script>
+import warningProcess from "@/components/warningProcess"
 	export default {
 	 	name: 'outpatient',
+	 	components:{
+      		warningProcess
+  		},
 	 	data(){
 	 		return{
 	 			details:[
@@ -229,7 +168,7 @@
 	 				{"state":'黄色',"info":"出院","id":'11',"name":"花花","tel":"12312","addr":"陕西省"},
 	 				{"state":'黄色',"info":"手术","id":'12',"name":"艾尔","tel":"12312","addr":"陕西省"}				
 	 			],
-
+	 			waringShow:true,
 	 		}
 	 	},
 	 	created:function(){
@@ -262,27 +201,7 @@
 	 			$(".mapBtn").siblings().removeClass('activeBtn');
 	 		},
 	 		setting:function(){
-	 			$(".settingPanel").show();
-	 			$(".common-head .close").unbind("click");
-	 			$(".common-head .close").bind("click",function(){
-	 				$("#warningPanelSetting").hide();
-	 			})
-	 			$(".common-filter-footer .cancleBtn").unbind("click");
-	 			$(".common-filter-footer .cancleBtn").bind("click",function(){
-	 				$("#warningPanelSetting").hide();
-	 			})
-	 			$(".common-filter-footer .confirmBtn").unbind("click");
-	 			$(".common-filter-footer .confirmBtn").bind("click",function(){
-	 				$("#warningPanelSetting").hide();
-	 			})
-	 			$(".settingPanelBtn .cancleBtn").unbind("click");
-	 			$(".settingPanelBtn .cancleBtn").bind("click",function(){
-	 				$(".settingPanel").hide();
-	 			})
-	 			$(".settingPanelBtn .saveBtn").unbind("click");
-	 			$(".settingPanelBtn .saveBtn").bind("click",function(){
-	 				$(".settingPanel").hide();
-	 			})
+	 			this.waringShow = ! this.waringShow;
 	 		},
 	 		   //给定datatables 所有字段column
 		      dataTablesColumn:function(column){
@@ -332,45 +251,7 @@
 		    		})
 	 			})
 	 		},
-	 		closeSetBtn:function(){
-	 			$("#warningPanelSetting").hide();
-	 		},
-	 		cancleSetBtn:function(){
-	 			$("#warningPanelSetting").hide();
-	 		},
-	 		confirmSetBtn:function(){
-	 			$("#warningPanelSetting").hide();
-	 		},
-	 		canclePanelBtn:function(){
-	 			$(".settingPanel").hide();
-	 		},	
-	 		savePanelBtn:function(){
-	 			$(".settingPanel").hide();
-	 		},
-	 		showCompare:function(){
-	 			$("#compareSelects").show();
-	 			$("#compareSelects div").unbind("mouseenter");
-				$("#compareSelects div").bind("mouseenter",function(){
-					$(this).css("background","#DDDDDD");
-					$(this).siblings().css("background","");
-				})
-				$("#compareSelects").unbind("mouseleave");
-				$("#compareSelects").bind("mouseleave",function(){
-					$(this).hide();
-				})
-	 		},
-	 		showWait:function(){
-	 			$("#waitSelects").show();
-	 			$("#waitSelects div").unbind("mouseenter");
-				$("#waitSelects div").bind("mouseenter",function(){
-					$(this).css("background","#DDDDDD");
-					$(this).siblings().css("background","");
-				})
-				$("#waitSelects").unbind("mouseleave");
-				$("#waitSelects").bind("mouseleave",function(){
-					$(this).hide();
-				})	
-	 		}
+
 
 	 	}
 	 	

@@ -9,7 +9,7 @@
     <div class="leftNav">
          <div v-for="(item,index) in items"  :class="{'show':item.active}" @click="makeActive(item,index)">{{item.name}}</div>
     </div>
-    <router-view/>  
+    <router-view/>
   </div>
 </template>
 
@@ -47,9 +47,7 @@ export default {
 
       }
   },
-  mounted(){
-    
-  }
+
 }
 </script>
 
