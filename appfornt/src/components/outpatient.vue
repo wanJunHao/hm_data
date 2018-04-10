@@ -115,7 +115,7 @@
 				<div class="topline"></div>
 				<div class="common-head">
 					<span class="logo">预警条件设置</span>
-					<div class="close">
+					<div class="close" @click="closeSetBtn">
 						<img src="/static/images/close.png" alt="" title="关闭" />
 					</div>
 				</div>
@@ -134,15 +134,15 @@
 									<td>预警颜色</td>
 									<td></td>
 								</tr>
-								<tr class='table-con'>
+								<tr>
 									<td></td>
 									<td>
 										>
-										<img src='/static/images/more.png' alt='' class='moreCompare'>
+										<img src='/static/images/more.png' alt='' class='moreCompare' @click='showCompare'>
 									</td>
 									<td>
 										1h15min
-										<img src='/static/images/more.png' alt='' class='moreWaitTime'>
+										<img src='/static/images/more.png' alt='' class='moreWaitTime' @click='showWait'>
 									</td>
 									<td>
 										<svg style="width:20px;height:20px;">
@@ -157,24 +157,23 @@
 								<div><</div>
 							</div>
 							<div id="waitSelects" style="display: none;">
-								<div class="" id="">2h</div>
-								<div class="" id="">1h</div>
-								<div class="" id="">2h30min</div>
-								<div class="" id="">3h</div>
+								<div>1h</div>
+								<div>2h</div>
+								<div>3h</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="empty" style="height:50px;background: transparent;"></div>
 				<div class="common-filter-footer">
-					<a href="javascript:void(0)" class="cancleBtn">取消</a>
-					<a href="javascript:void(0)" class="confirmBtn">确定</a>
+					<a href="javascript:void(0)" class="cancleBtn" @click="cancleSetBtn">取消</a>
+					<a href="javascript:void(0)" class="confirmBtn" @click="confirmSetBtn">确定</a>
 				</div>
 			</div>
 			<!-- 按钮 -->
 			<div class="settingPanelBtn">
-				<a href="javascript:void(0)" class="cancleBtn">取消</a>
-				<a href="javascript:void(0)" class="saveBtn">保存</a>
+				<a href="javascript:void(0)" class="cancleBtn" @click="canclePanelBtn">取消</a>
+				<a href="javascript:void(0)" class="saveBtn" @click="savePanelBtn">保存</a>
 			</div>
 		</div>
 	</div>
@@ -239,12 +238,7 @@
 		mounted(){
 			// 门诊表格
 			this.outpatientTable();
-    		// $("#tableHospitalPanel").DataTable({
-      //           "bPaginate": false, //翻页功能
-      //           "bLengthChange":false, //改变每页显示数据数量
-      //           "bFilter": false, //过滤功能
-      //           "bInfo":false,//页脚信息
-      //       });
+
 		},
 	 	methods:{
 	 		getData:function(){
@@ -338,6 +332,45 @@
 		    		})
 	 			})
 	 		},
+	 		closeSetBtn:function(){
+	 			$("#warningPanelSetting").hide();
+	 		},
+	 		cancleSetBtn:function(){
+	 			$("#warningPanelSetting").hide();
+	 		},
+	 		confirmSetBtn:function(){
+	 			$("#warningPanelSetting").hide();
+	 		},
+	 		canclePanelBtn:function(){
+	 			$(".settingPanel").hide();
+	 		},	
+	 		savePanelBtn:function(){
+	 			$(".settingPanel").hide();
+	 		},
+	 		showCompare:function(){
+	 			$("#compareSelects").show();
+	 			$("#compareSelects div").unbind("mouseenter");
+				$("#compareSelects div").bind("mouseenter",function(){
+					$(this).css("background","#DDDDDD");
+					$(this).siblings().css("background","");
+				})
+				$("#compareSelects").unbind("mouseleave");
+				$("#compareSelects").bind("mouseleave",function(){
+					$(this).hide();
+				})
+	 		},
+	 		showWait:function(){
+	 			$("#waitSelects").show();
+	 			$("#waitSelects div").unbind("mouseenter");
+				$("#waitSelects div").bind("mouseenter",function(){
+					$(this).css("background","#DDDDDD");
+					$(this).siblings().css("background","");
+				})
+				$("#waitSelects").unbind("mouseleave");
+				$("#waitSelects").bind("mouseleave",function(){
+					$(this).hide();
+				})	
+	 		}
 
 	 	}
 	 	
