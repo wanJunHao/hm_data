@@ -1,3 +1,27 @@
+body,html{-webkit-user-select:none;}
+::-webkit-scrollbar{width: 8px;height:8px;padding: 0px}
+::-webkit-scrollbar-button{display: block;width: 0px;height: 0px;}
+::-webkit-scrollbar-thumb{background: #e2e2e2;border-radius: 1px;}
+::-webkit-scrollbar-track{background: #f4f4f4;border-radius: 1px;}
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #b4b4b4; opacity:1;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #b4b4b4;opacity:1;
+}
+
+input:-ms-input-placeholder{
+    color: #b4b4b4;opacity:1;
+}
+
+input::-webkit-input-placeholder{
+    color: #b4b4b4;opacity:1;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -46,3 +70,4 @@
   right:20px;
   border:1px solid;
 }
+table td,table th{text-align: center;}

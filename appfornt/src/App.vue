@@ -44,7 +44,7 @@ export default {
             $("#HospitalDetail").show();
             $("#outpatientDetail").hide();
         }
-      }
+      },
   }
 }
 </script>
