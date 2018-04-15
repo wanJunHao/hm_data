@@ -16,3 +16,5 @@ new Vue({
   components: { outpatient },
   template: '<outpatient/>'
 })
+
+

@@ -1,20 +1,22 @@
 <template>
-	<div class="warningProcess-content" v-if="warningProcessStatus()" v-show="warningShow">
-		<div class="settingPanel">
-		<!-- 流程设置 -->
-		<div v-for="(item,index) in ceshi" :dataindex="index" :style="{top:top * index + 'px'}" class="awarning-process-wrap">
-			<template v-for="(items,indexs) in item">
-				<div class="awarning-process-item" :dataindex="indexs" v-if="!(index > 0 && indexs == 0)" :style="{left:left*indexs + 'px'}">
-					<p>{{ items }}</p>
+	<div class='waringProcess-only-wrap'>
+		<div class="warningProcess-content"  v-show="warningShow" id="warningProcess-contenta">
+		<div class="settingPanel-content">
+			<div class="settingPanel" id="settingPanel">
+
+				<!-- 流程设置 -->
+				<div v-for="(item,index) in ceshi" :dataindex="index" :style="ceshia(index)" class="awarning-process-wrap clear">
+					<template v-for="(items,indexs) in item">
+						<div class="awarning-process-item" :dataindex="indexs" v-if="!(index > 0 && indexs == 0)" :commonData="items"
+						:id="'jsplumb'+index+indexs">
+							<p>{{ items }}</p>
+						</div>
+					</template>
 				</div>
-			</template>
-		</div>
-
-
-
+			</div>
 		</div>
 		<!-- 设置内容弹框 -->
-		<div id="warningPanelSetting" style="display:none;">
+		<div id="warningPanelSetting" v-if="warningPopUp">
 			<div class="topline"></div>
 			<div class="common-head">
 				<span class="logo">预警条件设置</span>
@@ -78,6 +80,7 @@
 			<a href="javascript:void(0)" class="cancleBtn" @click="canclePanelBtn">取消</a>
 			<a href="javascript:void(0)" class="saveBtn" @click="savePanelBtn">保存</a>
 		</div>
+	</div>
 	</div>
 
 </template>
