@@ -1,6 +1,6 @@
 <template>
 	<div class="content">
-		<!-- 右边头部 -->
+		<!-- 右边内容区头部 -->
 		<div class="header">
 			<!-- 头部门诊显示数据 -->
 			<div class="detailData" id="outpatientDetail">
@@ -171,8 +171,11 @@ import warningProcess from "@/components/warningProcess"
 	 			waringShow:true,
 	 		}
 	 	},
-	 	created:function(){
-			// this.getData();
+	 	created(){
+			// this.$http.get("http://jsonplaceholder.typicode.com/users").then((data)=>{
+			// 	console.log(data);
+			// 	this.items1 = data.data;
+			// })
 		},
 		mounted(){
 			// 门诊表格
@@ -180,14 +183,6 @@ import warningProcess from "@/components/warningProcess"
 
 		},
 	 	methods:{
-	 		getData:function(){
-	 			// var url="";
-     //            this.$http.get(url).then(function(res){
-     //                this.items = res.data;
-     //            },function(response){
-     //                console.log(response);
-     //            })
-	 		},
 	 		changeTable:function(){
 	 			$(".tableShow").show();	
 	 			$(".mapShow").hide();
