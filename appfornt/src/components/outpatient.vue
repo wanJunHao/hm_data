@@ -110,7 +110,7 @@
 			This is mapArea.
 		</div>
 		<!-- 流程设置弹框 -->
-		<warningProcess v-bind:warning-show="waringShow"></warningProcess>
+		<warningProcess v-bind:warning-show="waringShow" v-on:listenToChildEvent="changeWaringStatus"></warningProcess>
 	</div>
 </template>
 
@@ -168,7 +168,7 @@ import warningProcess from "@/components/warningProcess"
 	 				{"state":'黄色',"info":"出院","id":'11',"name":"花花","tel":"12312","addr":"陕西省"},
 	 				{"state":'黄色',"info":"手术","id":'12',"name":"艾尔","tel":"12312","addr":"陕西省"}				
 	 			],
-	 			waringShow:true,
+	 			waringShow:false,
 	 		}
 	 	},
 	 	created(){
@@ -183,6 +183,9 @@ import warningProcess from "@/components/warningProcess"
 
 		},
 	 	methods:{
+	 		changeWaringStatus:function(data){
+	 			this.waringShow = data;
+	 		},
 	 		changeTable:function(){
 	 			$(".tableShow").show();	
 	 			$(".mapShow").hide();

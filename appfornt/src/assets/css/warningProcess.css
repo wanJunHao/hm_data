@@ -1,10 +1,12 @@
+.warningProcess-content .settingPanel-content{width: 80%;height: 80%;position: absolute;top: 0;right: 0;bottom: 0;left: 0;margin: auto;overflow-x:auto}
+.warningProcess-content .settingPanel-content .settingPanel{height: 100%;position: relative;}
 .warningProcess-content .settingPanel .awarning-process-wrap{position: absolute;}
-.warningProcess-content .settingPanel .awarning-process-item{width:125px;height: 25px;box-sizing:border-box;border:1px solid #5ba7ff;font-size:12px;line-height: 25px;position: absolute;}
+.warningProcess-content .settingPanel .awarning-process-item{width:125px;height: 25px;box-sizing:border-box;border:1px solid #5ba7ff;font-size:12px;line-height: 25px;float: left;margin-right: 70px}
 .warningProcess-content .settingPanel .awarning-process-item p{padding-left:5px;}
-.warningProcess-content .settingPanel .awarningconnectionImg{width: 16px;height: 10px;}
+.awarningconnectionImg{width: 16px;height: 10px;cursor:pointer;}
 /*----------*/
 .warningProcess-content{width:90%;height:80%;background:#f2f2f2;position: absolute;top:0px;right: 0px;bottom: 0px;left: 0px;margin: auto}
-#warningPanelSetting{width:350px;background:white;border-radius:5px;font-size:12px;position:absolute;box-shadow:0px 3px 5px 0px rgba(0,49,98,0.08);left:100px;top:100px;}
+#warningPanelSetting{width:350px;background:white;border-radius:5px;font-size:12px;position:absolute;box-shadow:0px 3px 5px 0px rgba(0,49,98,0.08);top: 0px;right: 0px;bottom: 0px;left: 0px;margin: auto;height: 270px;}
 #warningPanelSetting .topline{background: linear-gradient(to right,#0d53a4,#00bdc9);height: 5px;border-top-left-radius: 5px;border-top-right-radius: 5px;}
 #warningPanelSetting .common-head{height: 45px;line-height: 45px;position: relative;font-size: 14px;}
 #warningPanelSetting .common-head .close{position: absolute;right: 10px;height: 100%;width: 45px;top: 0;text-align: right;cursor: pointer;}
