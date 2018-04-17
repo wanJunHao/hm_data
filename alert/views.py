@@ -37,6 +37,8 @@ def getInfo(request):
     '''
     if request.method == "GET":
         today = datetime.datetime.now().strftime('%Y-%m-%d')
+
+        # 已经挂号, 等待就诊的当天数据
         regConn = getConn(tableType="registered")
         regC = regConn.cursor()
         regSql = '''
@@ -45,6 +47,7 @@ def getInfo(request):
         regC.execute(regSql)
         regData = regC.fetchall()
 
+        # 已经就诊, 等待缴费的当天数据
         chargeConn = getConn(tableType="charge")
         chargeC = chargeConn.cursor()
         chargeSql = '''
@@ -52,5 +55,7 @@ def getInfo(request):
         '''.format(today)
         chargeC.execute(chargeSql)
         chargeData = chargeC.fetchall()
+
+        # 已经缴费, 等待检查或取药或检验的当天数据
 
         return JsonResponse(regData)
