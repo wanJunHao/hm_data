@@ -1,4 +1,5 @@
-.warningProcess-content .settingPanel-content{width: 80%;height: 80%;position: absolute;top: 0;right: 0;bottom: 0;left: 0;margin: auto;overflow-x:auto}
+.warningProcess-content{position: relative;z-index: 4}
+.warningProcess-content .settingPanel-content{width: 80%;height: 80%;position: absolute;top: 0;right: 0;bottom: 0;left: 0;margin: auto;overflow-x:auto;}
 .warningProcess-content .settingPanel-content .settingPanel{height: 100%;position: relative;}
 .warningProcess-content .settingPanel .awarning-process-wrap{position: absolute;}
 .warningProcess-content .settingPanel .awarning-process-item{width:125px;height: 25px;box-sizing:border-box;border:1px solid #5ba7ff;font-size:12px;line-height: 25px;float: left;margin-right: 70px}
