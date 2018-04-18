@@ -22,7 +22,7 @@
 		<!-- 表格 -->
 		<div class="tableShow" v-show="outpatienttMapTable">
 			<!-- 门诊表格 -->
-			<div class="outpatientTable-content">
+			<div class="outpatientTable-content" :dataTableName='outpatienttable'>
 				
 			</div>
 

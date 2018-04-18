@@ -8,6 +8,7 @@ body{font-size:13px;}
 .activeBtn{background: #0B9BFB;color:white;}
 .settingBtn,.computedBtn{background:#0B9BFB;margin-left:10px;color:white;}
 .tableShow{width:95%;height:520px;position: absolute;top:85px;left:60px;}
+.tableShow .outpatientTable-content{padding: 20px;}
 #compareSelects{width: 49px;overflow-y: auto;text-align: center;position: absolute;left: 117px;top: 158px;background: white;border:1px solid #e3e3e3;}
 #compareSelects div{height:20px;line-height:20px;}
 #waitSelects{width: 90px;z-index:20;overflow-y: auto;text-align: center;position: absolute;left: 167px;top: 158px;background: white;border:1px solid #e3e3e3;}

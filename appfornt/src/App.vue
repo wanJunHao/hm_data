@@ -10,7 +10,7 @@
          <div v-for="(item,index) in items"  :class="{'show':item.active}" @click="makeActive(item,index)">{{item.name}}</div>
     </div>
 
-    <router-view/>
+    <router-view :outpatienttable="tableShowName"></router-view>
   </div>
 </template>
 
@@ -21,30 +21,21 @@ export default {
      return {
         active:'门诊',
         items:[
-          {name:'门诊',active:true},
-          {name:'住院',active:false},
-          {name:'科室',active:false}
-        ]
+          {name:'门诊',active:true,transChange:"outpatient"},
+          {name:'住院',active:false,transChange:"inhostal"},
+        ],
+        tableShowName:"outpatient"
      }
   },
   methods:{
       makeActive:function(item,index){
-        this.active = item.name;
+        if(this.tableShowName == item.transChange) return;
+        this.active = item.transChange;
         for(var i=0;i<this.items.length;i++){
           this.items[i].active = false;
         }
         this.items[index].active = true;
-        if(this.active == '门诊'){
-            $("#tableOutpatientPanel").show();
-            $("#outpatientDetail").show();
-            $("#tableHospitalPanel").hide();
-            $("#HospitalDetail").hide();
-        }else  if(this.active == '住院'){
-            $("#tableOutpatientPanel").hide();
-            $("#tableHospitalPanel").show();
-            $("#HospitalDetail").show();
-            $("#outpatientDetail").hide();
-        }
+        this.tableShowName = this.active;
 
       }
   },

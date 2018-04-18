@@ -8,6 +8,19 @@ import outpatienttMap from "@/components/outpatienttMap"
       		warningProcess,
       		outpatienttMap
   		},
+  		props:{
+  			outpatienttable:{
+  				type:String,
+  				default:"outpatient"
+  			}
+  		},
+  		watch:{
+  			outpatienttable:function(){
+  				this.$nextTick(function(){
+  					console.log(this.outpatienttable)
+  				})
+  			}
+  		},
 	 	data(){
 	 		return{
 	 			details:[
@@ -29,11 +42,14 @@ import outpatienttMap from "@/components/outpatienttMap"
 
 	 			waringShow:false,
 	 			outpatienttMapShow:false,
-	 			outpatienttMapTable:false,
+	 			outpatienttMapTable:true,
 	 			markShow:false,
+	 			tableOrMap:"table",
+
 	 		}
 	 	},
 	 	created(){
+
 			// this.$http.get("http://jsonplaceholder.typicode.com/users").then((data)=>{
 			// 	console.log(data);
 			// 	this.items1 = data.data;
@@ -42,7 +58,6 @@ import outpatienttMap from "@/components/outpatienttMap"
 		mounted(){
 			// 门诊表格
 			this.outpatientTable();
-
 		},
 	 	methods:{
 	 		changeWaringStatus:function(data){
@@ -53,18 +68,19 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		changeTable:function(){
 	 			this.outpatienttMapTable = true;
 	 			this.outpatienttMapShow = false;
-	 			this.waringShow = false;
+	 			this.tableOrMap = "table";
 	 			$(".showBtn").addClass("activeBtn");
 	 			$(".showBtn").siblings().removeClass('activeBtn');
 	 		},
 	 		changeMap:function(){
 	 			this.outpatienttMapShow = true;
 	 			this.outpatienttMapTable = false;
-	 			this.waringShow = false;
+	 			this.tableOrMap = "map";
 	 			$(".mapBtn").addClass("activeBtn");
 	 			$(".mapBtn").siblings().removeClass('activeBtn');
 	 		},
 	 		warningSetting:function(){
+	 			if(this.outpatienttMapShow) return;
 	 			this.waringShow = ! this.waringShow;
 	 			this.markShow = true;
 	 		},
@@ -87,7 +103,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 			this.$http.get("http://127.0.0.1:8887/alert/").then(function(response){
 	 				var data = response.data;
 		 			var tempTableDate = tempThat.dataTablesColumn(data["detail"][0]);
-		 			$(".tableShow .outpatientTable-content").html('<table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="tableOutpatientPanel"></table>');
+		 			$(".tableShow .outpatientTable-content").html('<table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="tableOutpatientPanel"></table>')
 		 			$('#tableOutpatientPanel').DataTable({
 					language:{
 				        "sProcessing": "处理中...",
@@ -107,6 +123,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		    		 	"bPaginate": true, //翻页功能
 		             	"bLengthChange":true, //改变每页显示数据数量
 		             	"bFilter": true, //过滤功能
+		             	"searching":false,//搜索
 		             	"bInfo":true,//页脚信息
 		             	"paging":false,
 		             	"select":true,
