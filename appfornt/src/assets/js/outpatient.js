@@ -63,7 +63,6 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		changeWaringStatus:function(data){
 	 			this.waringShow = data;
 	 			this.markShow = data;
-
 	 		},
 	 		changeTable:function(){
 	 			this.outpatienttMapTable = true;

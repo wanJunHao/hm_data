@@ -1,7 +1,7 @@
 <template>
 	<div class="content">
-    <!-- 遮罩 -->
-    <div class="markShow" v-show="markShow"></div>
+    	<!-- 遮罩 -->
+    	<div class="markShow" v-show="markShow"></div>
 		<!-- 右边内容区头部 -->
 		<div class="header">
 			<!-- 头部门诊显示数据 -->

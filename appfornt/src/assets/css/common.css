@@ -49,11 +49,17 @@ html,body,#app{
 .leftNav{
     float: left;
     width: 60px;
-    /*height:600px;*/
     background: #F2F2F2;
     min-height: 100%;
     position: relative;
 }
+/*.leftNav{
+  float:left;
+  width:60px;
+  background: #1e242b;
+  min-height: 100%;
+  position: relative;
+}*/
 .leftNav div{
     width: 100%;
     height: 60px;

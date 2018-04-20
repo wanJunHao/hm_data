@@ -3,7 +3,6 @@
 		<div class="warningProcess-content"  v-show="warningShow" id="warningProcess-contenta">
 		<div class="settingPanel-content">
 			<div class="settingPanel" id="settingPanel">
-
 				<!-- 流程设置 -->
 				<div v-for="(item,index) in ceshi" :dataindex="index" :style="ceshia(index)" class="awarning-process-wrap clear">
 					<template v-for="(items,indexs) in item">
