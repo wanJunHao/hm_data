@@ -1,7 +1,7 @@
 <template>
 	<div class="content">
-    <!-- 遮罩 -->
-    <div class="markShow" v-show="markShow"></div>
+    	<!-- 遮罩 -->
+    	<div class="markShow" v-show="markShow"></div>
 		<!-- 右边内容区头部 -->
 		<div class="header">
 			<!-- 头部门诊显示数据 -->
@@ -13,14 +13,16 @@
 
 			<!-- 头部右侧按钮 -->
 			<div class="btnInfo">
-				<div class="tableBtn activeBtn showBtn" @click='changeTable'>表格</div>
+				<div class="tableBtn activeBtn showBtn" @click='changeTable'>图表</div>
 				<div class="tableBtn mapBtn" @click='changeMap'>地图</div>
 				<div class="tableBtn settingBtn" @click='warningSetting'>流程设置</div>
-				<div class="tableBtn computedBtn">同环比</div>
+				<!-- <div class="tableBtn computedBtn">同环比</div> -->
 			</div>
 		</div>
 		<!-- 表格 -->
 		<div class="tableShow" v-show="outpatienttMapTable">
+			<!-- 当前日期 -->
+			<div class="tableTop">{{date}}</div>
 			<!-- 门诊表格 -->
 			<div class="outpatientTable-content" :dataTableName='outpatienttable'>
 				

@@ -1,15 +1,17 @@
 body{font-size:13px;}
-.content{margin-left:60px;height:100%}
-.header{width:100%;height:35px;background-color:#F2F2F2;overflow: hidden;}
-.detailData div{display: inline-block;line-height:35px;float:left;}
-.detailData div span{margin-left:15px;}
-.btnInfo{height:35px;position: absolute;right:20px;cursor:pointer;}
-.tableBtn{float:left;padding:2px 6px;margin-top:6px;background:#e3e3e3;}
+.content{margin-left:60px;height:100%;background: #F3F5F9;}
+.header{width:100%;height:50px;background-color:#fff;overflow: hidden;}
+.detailData div:nth-child(1){margin-left: 20px;}
+.detailData div{display: inline-block;line-height:50px;float:left;margin-left: 45px;}
+.detailData div span{margin-left:15px;font-size: 13px;}
+.btnInfo{height:35px;position: absolute;right:20px;cursor:pointer;margin-top: 8px;font-size:11px;}
+.tableBtn{float:left;padding:3px 6px;margin-top:6px;/*background:#e3e3e3;*/border-radius: 2px;}
 .activeBtn{background: #0B9BFB;color:white;}
 .settingBtn,.computedBtn{background:#0B9BFB;margin-left:10px;color:white;}
 .tableShow{overflow-x: auto;overflow-y: hidden}
 .tableShow,.mapShow{width:95%;height:85%;position: absolute;top:85px;left:60px;}
 .tableShow .outpatientTable-content{padding: 20px;min-width: 1000px;}
+
 #compareSelects{width: 49px;overflow-y: auto;text-align: center;position: absolute;left: 117px;top: 158px;background: white;border:1px solid #e3e3e3;}
 #compareSelects div{height:20px;line-height:20px;}
 #waitSelects{width: 90px;z-index:20;overflow-y: auto;text-align: center;position: absolute;left: 167px;top: 158px;background: white;border:1px solid #e3e3e3;}
@@ -19,7 +21,13 @@ body{font-size:13px;}
 /* #app .content .tableShow .outpatientTable-content .dataTables_scrollHead{left: 1px;} */
 #app .content .tableShow .outpatientTable-content .dataTables_scroll{overflow-x: auto;}
 #app .content .tableShow .outpatientTable-content #tableOutpatientPanel_length,#app .content .tableShow .outpatientTable-content .dataTables_paginate{display: none}
-.a{width: 120px;height:15px;background: #fbd799;border-radius:30px;}
-.b{width: 60px;height:15px;background: #92da91;border-radius:30px;}
-.c{width: 30px;height:15px;background: #fa9a9b;border-radius:30px;}
-.d{width: 120px;height:15px;background: #9ee9fe;border-radius:30px;}
+.a{width: 100%;height:15px;background: #FFC156;border-radius:30px;}
+.b{width: 50%;height:15px;background: #38C634;border-radius:30px;}
+.c{width: 20%;height:15px;background: #F53E3E;border-radius:30px;}
+.d{width: 100%;height:15px;background: #5BA7FF;border-radius:30px;}
+.showBtn,.mapBtn{border:1px solid #0B9BFB;padding:2px 3px;padding-top:3px;}
+.showBtn{border-top-right-radius: 0;border-bottom-right-radius: 0;}
+.mapBtn{border-top-left-radius: 0;border-bottom-left-radius: 0;}
+.tableTop{border-bottom: 2px solid #0B9BFB;height:50px;background: #fff;margin-top: 20px;margin-left: 20px;font-size: 14px;line-height: 50px;font-weight:bold;padding-left: 11px;}
+.outpatientTable-content{margin-top: -27px;}
+

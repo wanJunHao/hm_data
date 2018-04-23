@@ -46,13 +46,19 @@ html,body,#app{
   margin-left: 10px;
   line-height: 50px;
 }
-.leftNav{
+/*.leftNav{
     float: left;
     width: 60px;
-    /*height:600px;*/
     background: #F2F2F2;
     min-height: 100%;
     position: relative;
+}*/
+.leftNav{
+  float:left;
+  width:60px;
+  background: #1e242b;
+  min-height: 100%;
+  position: relative;
 }
 .leftNav div{
     width: 100%;
@@ -62,16 +68,44 @@ html,body,#app{
     text-align: center;
     line-height: 60px;
 }
+.outBtn{
+  margin-top: 37px;
+}
+.hosBtn{
+  margin-top:10px;
+}
+.yjBtn{
+  left:0;
+  top:635px;
+  /*bottom:52px;*/
+}
 .show{
   background-color:#E3E3E3;
 }
-.yj-icon{
+/*.yj-icon{
   width:16px;
   height:16px;
   position: absolute;
   top:15px;
   right:20px;
-  /*border:1px solid;*/
+}*/
+.detail{
+  width:16px;
+  height:16px;
+  position: absolute;
+  top:19px;
+  right:60px;
+}
+.user{
+  width:24px;
+  height:24px;
+  position: absolute;
+  top:15px;
+  right:20px;
+}
+.logo{
+  margin-left: 15px;
+  margin-top: 12px;
 }
 table td,table th{text-align: center;}
 
