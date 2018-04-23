@@ -17,8 +17,9 @@ import outpatienttMap from "@/components/outpatienttMap"
   		watch:{
   			outpatienttable:function(){
   				this.$nextTick(function(){
+  					
   					if($('#tableOutpatientPanel').DataTable() != undefined){
-  						$('#tableOutpatientPanel').DataTable().clear;
+  						$('#tableOutpatientPanel').DataTable().clear();
   						$('#tableOutpatientPanel').DataTable().destroy();
 
   					}
@@ -53,7 +54,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 			tableOrMap:"table",
 	 			testData : {
 		            "outpatient": [
-		                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"a","ssss":""},
+		                {"link": "等待就诊奥术大师大所大所多", "state": 80, "name": "李白啊啊啊啊啊啊啊啊啊啊啊啊", "address": "临清1区发送到发送到发斯蒂芬", "card_no": "3194193t1", "tel": "13738776521","color":"a","ssss":""},
 		                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"b","ssss":""},
 		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"c","ssss":""},
 		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"d","ssss":""},
@@ -166,13 +167,17 @@ import outpatienttMap from "@/components/outpatienttMap"
 				        "sInfoThousands": ",",
 					},
 						"aaSorting":[1,"desc"],
-		    		 	"bPaginate": true, //翻页功能
+		    		 	"bPaginate": false, //翻页功能
 		             	"bLengthChange":true, //改变每页显示数据数量
+		             	 "processing": true,
 		             	"bFilter": true, //过滤功能
 		             	"searching":false,//搜索
 		             	"bInfo":true,//页脚信息
-		             	"paging":false,
+		             	"paging":true,
 		             	"select":true,
+		             	"scroller":{
+		             		loadingIndicator: true
+		             	},
 		             	"scrollX":tempThat.datatableScroll(),
 		             	"scrollY":data[detail].length > 15 ? $("#app .content .tableShow").height() - 100 + 'px':false,
 		             	"data":data[detail],

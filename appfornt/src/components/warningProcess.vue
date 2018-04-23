@@ -1,14 +1,17 @@
 <template>
 	<div class='waringProcess-only-wrap'>
 		<div class="warningProcess-content"  v-show="warningShow" id="warningProcess-contenta">
+		<!-- title -->
+		<div class="wariningProcess-title">
+			<p>门诊流程</p>
+		</div>
 		<div class="settingPanel-content">
 			<div class="settingPanel" id="settingPanel">
-
 				<!-- 流程设置 -->
-				<div v-for="(item,index) in ceshi" :dataindex="index" :style="ceshia(index)" class="awarning-process-wrap clear">
+				<div v-for="(item,index) in ceshi" :dataindex="index" :style="itemStyle(index)" class="awarning-process-wrap clear">
 					<template v-for="(items,indexs) in item">
 						<div class="awarning-process-item" :dataindex="indexs" v-if="!(index > 0 && indexs == 0)" :commonData="items"
-						:id="'jsplumb'+index+indexs">
+						:id="'jsplumb'+index+indexs" :style="itemsStyle(index,indexs)">
 							<p>{{ items }}</p>
 						</div>
 					</template>
