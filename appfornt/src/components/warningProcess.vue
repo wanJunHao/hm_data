@@ -1,6 +1,7 @@
 <template>
 	<div class='waringProcess-only-wrap'>
 		<div class="warningProcess-content"  v-show="warningShow" id="warningProcess-contenta">
+		<h3 class="outProcess">门诊流程</h3>
 		<div class="settingPanel-content">
 			<div class="settingPanel" id="settingPanel">
 				<!-- 流程设置 -->
@@ -23,7 +24,7 @@
 					<img src="/static/images/close.png" alt="" title="关闭" />
 				</div>
 			</div>
-			<div class="warning-body">
+			<!-- <div class="warning-body">
 				<div class="warning-name-input-div">
 					<span class="logo">监测名称:</span>
 					<input type="text" class="listenInput">
@@ -33,7 +34,7 @@
 						<table cellspacing="0" cellpadding="0">
 							<tr class="title">
 								<td>当前表标题</td>
-								<td>关系</td>
+								<td></td>
 								<td>时间设定</td>
 								<td>预警颜色</td>
 								<td></td>
@@ -50,7 +51,7 @@
 								</td>
 								<td>
 									<svg style="width:20px;height:20px;">
-										<circle cx="10" cy="12" r="7" stroke-width="2" fill="red" />
+										<rect rx="4" ry="4" width="15" height="15" fill="#FA3843" y="5" x="5"></rect>
 									</svg>
 								</td>
 								<td></td>
@@ -67,7 +68,63 @@
 						</div>
 					</div>
 				</div>
+			</div> -->
+			<div class="warning-body">
+			<div class="warning-name-input-div">
+				<span class="logo">监测名称:</span>
+				<input type="text" class="listenInput">
 			</div>
+			<div class="warning-setting">
+				<div class="warning-setting-area">
+					<table cellspacing="0" cellpadding="0">
+					<thead>
+						<tr class="title">
+							<td>当前表标题</td>
+							<td>关系</td>
+							<td>时间设定</td>
+							<td>预警颜色</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-on:mouseenter="enter" v-on:mouseleave="leave" class="tableCon">
+							<td class="tdOne"></td>
+							<td>
+								>
+								<img src='/static/images/more.png' alt='' class='moreCompare' @click='showCompare'>
+							</td>
+							<td>
+								1h15min
+								<img src='/static/images/more.png' alt='' class='moreWaitTime' @click='showWait'>
+							</td>
+							<td>
+								<svg style="width:20px;height:20px;">
+									<rect rx="4" ry="4" width="15" height="15" fill="#FA3843" y="5" x="5"></rect>
+								</svg>
+							</td>
+							<td @click="deleteRow"></td>
+						</tr>
+						<tr>
+							<td class="add" @click="addRow">添加新的预警条件</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+					</table>
+					<div id="compareSelects" style="display: none;">
+						<div class="" id="">></div>
+						<div class="" id=""><</div>
+					</div>
+					<div id="waitSelects" style="display: none;">
+						<div class="" id="">2h</div>
+						<div class="" id="">1h</div>
+						<div class="" id="">3h</div>
+					</div>
+				</div>
+			</div>
+		</div>
 			<div class="empty" style="height:50px;background: transparent;"></div>
 			<div class="common-filter-footer">
 				<a href="javascript:void(0)" class="cancleBtn" @click="cancleSetBtn">取消</a>

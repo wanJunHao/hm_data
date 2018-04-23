@@ -30,22 +30,24 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 	data(){
 	 		return{
 	 			details:[
-	 				{name:"挂号",count:"10"},
-	 				{name:"正在诊断"},
-	 				{name:"初诊完毕"},
-	 				{name:"候检"},
-	 				{name:"就检"},
-	 				{name:"检查完毕"},
+	 				{name:"总挂号数",count:"40"},
+	 				{name:"等待就诊",count:"12"},
+	 				{name:"就诊",count:"5"},
+	 				{name:"初诊完毕",count:"3"},
+	 				{name:"候检",count:"12"},
+	 				{name:"就检",count:"5"},
+	 				{name:"检查完毕",count:"3"}
 	 			],
 	 			details1:[
-	 				{name:"挂号",count:"20"},
-	 				{name:"正在诊断"},
-	 				{name:"初诊完毕"},
-	 				{name:"候检"},
-	 				{name:"就检"},
-	 				{name:"检查完毕"},
+	 				{name:"总挂号数",count:"20"},
+	 				{name:"等待就诊",count:"10"},
+	 				{name:"就诊",count:"1"},
+	 				{name:"初诊完毕",count:"2"},
+	 				{name:"候检",count:"6"},
+	 				{name:"就检",count:"5"},
+	 				{name:"检查完毕",count:"3"}
 	 			],
-
+	 			date:'',
 	 			waringShow:false,
 	 			outpatienttMapShow:false,
 	 			outpatienttMapTable:true,
@@ -92,17 +94,31 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		}
 	 	},
 	 	created(){
-
-			// this.$http.get("http://jsonplaceholder.typicode.com/users").then((data)=>{
-			// 	console.log(data);
-			// 	this.items1 = data.data;
-			// })
+	 		// 获取当前时间
+	 		this.getDate();
 		},
 		mounted(){
 			// 门诊表格
 			this.outpatientTable("outpatient");
 		},
 	 	methods:{
+	 		getDate:function(){
+				var myDate = new Date();
+
+				var year=myDate.getFullYear();
+				var month=myDate.getMonth()+1;
+				var date=myDate.getDate(); 
+
+				var h=myDate.getHours();    
+				var m=myDate.getMinutes();
+				var s=myDate.getSeconds();  
+
+				function checkTime(value){
+					return value < 10 ? '0' + value: value;
+				}
+
+				this.date = year+'/'+checkTime(month)+"/"+checkTime(date)+" "+checkTime(h)+':'+checkTime(m)+":"+checkTime(s);
+	 		},
 	 		changeWaringStatus:function(data){
 	 			this.waringShow = data;
 	 			this.markShow = data;

@@ -67,6 +67,19 @@ export default{
 		}
 	},
 	methods:{
+		addRow:function(){
+			var trDetail = $("<tr class=tableCon v-on:mouseenter=enter v-on:mouseleave=leave><td class=tdOne></td><td>><img src='/static/images/more.png' alt='' class='moreCompare' @click='showCompare'></td><td>1h15min<img src='/static/images/more.png' alt='' class='moreWaitTime' @click='showWait'></td><td><svg style=width:20px;height:20px;><rect rx=4 ry=4 width=15 height=15 fill=#FA3843 y=5 x=5></rect></svg></td><td @click=deleteRow></td></tr>");				
+			$(trDetail).prependTo($("table tbody"));
+		},
+		enter:function(){
+			$("#warningPanelSetting table tbody tr.tableCon").find("td:eq(4)").html($("<img src=/static/images/delete.png>"));
+		},
+		leave:function(){
+			$("#warningPanelSetting table tbody tr").find("td:eq(4)").html("");
+		},
+		deleteRow:function(){
+			$("#warningPanelSetting table tbody tr td:eq(4)").parent("tr").remove();
+		},
 		sendMsgToParent(){
 			this.$emit("listenToChildEvent",false)
 		},
@@ -208,6 +221,10 @@ export default{
 		if(this.warningPopUp){
 			this.$nextTick(function(){
 				this.awarningDarg();
+				console.log(tempElementTarget)
+				if(tempElementTarget.id == 'con_17'){
+					$(".tableCon .tdOne").html('等待就诊');
+				}
 			})
 		}
 	}
