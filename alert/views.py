@@ -54,7 +54,7 @@ def getInfo(request):
     '''
     if request.method == "GET":
         if not DATA:
-            conn = MySQLdb.connect(user="root", password="123.com", host="localhost", port=3306, db="hm", charset="utf8")
+            conn = MySQLdb.connect(user="root", password="123.com", host="192.168.3.109", port=3306, db="hm", charset="utf8")
             c = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
             sql = '''
             SELECT card_no, name, rela_phone, address, idenno FROM register
