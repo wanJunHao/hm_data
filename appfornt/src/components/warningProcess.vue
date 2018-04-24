@@ -8,11 +8,11 @@
 		<div class="settingPanel-content">
 			<div class="settingPanel" id="settingPanel">
 				<!-- 流程设置 -->
-				<div v-for="(item,index) in ceshi" :dataindex="index" :style="itemStyle(index)" class="awarning-process-wrap clear">
+				<div v-for="(item,index) in requestData" :dataindex="index" :style="itemStyle(index)" class="awarning-process-wrap clear">
 					<template v-for="(items,indexs) in item">
 						<div class="awarning-process-item" :dataindex="indexs" v-if="!(index > 0 && indexs == 0)" :commonData="items"
 						:id="'jsplumb'+index+indexs" :style="itemsStyle(index,indexs)">
-							<p>{{ items }}</p>
+							<p>{{ items | dataStrHandle}}</p>
 						</div>
 					</template>
 				</div>
