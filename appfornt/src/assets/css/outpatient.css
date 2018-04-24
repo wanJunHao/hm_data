@@ -18,13 +18,14 @@ body{font-size:13px;}
 #waitSelects div{height:20px;line-height:20px;}
 #app .markShow{width: 100%;height: 100%;background:#000;opacity: 0.3;position: absolute;left: 0;top: 0;z-index: 1}
 #app .content .tableShow .outpatientTable-content .dataTables_scrollBody{overflow-x: hidden !important;overflow-y: auto;}
+#app .content .tableShow .outpatientTable-content .tableDataState{min-width: 80px}
 /* #app .content .tableShow .outpatientTable-content .dataTables_scrollHead{left: 1px;} */
 #app .content .tableShow .outpatientTable-content .dataTables_scroll{overflow-x: auto;}
 #app .content .tableShow .outpatientTable-content #tableOutpatientPanel_length,#app .content .tableShow .outpatientTable-content .dataTables_paginate{display: none}
-.a{width: 100%;height:15px;background: #FFC156;border-radius:30px;}
-.b{width: 50%;height:15px;background: #38C634;border-radius:30px;}
-.c{width: 20%;height:15px;background: #F53E3E;border-radius:30px;}
-.d{width: 100%;height:15px;background: #5BA7FF;border-radius:30px;}
+.yellow{width: 100%;height:15px;background: #FFC156;border-radius:30px;}
+.green{width: 50%;height:15px;background: #38C634;border-radius:30px;}
+.red{width: 20%;height:15px;background: #F53E3E;border-radius:30px;}
+.blue{width: 100%;height:15px;background: #5BA7FF;border-radius:30px;}
 .showBtn,.mapBtn{border:1px solid #0B9BFB;padding:2px 3px;padding-top:3px;}
 .showBtn{border-top-right-radius: 0;border-bottom-right-radius: 0;}
 .mapBtn{border-top-left-radius: 0;border-bottom-left-radius: 0;}

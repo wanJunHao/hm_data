@@ -55,31 +55,6 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 			markShow:false,
 	 			tableOrMap:"table",
 	 			testData : {
-		            "outpatient": [
-		                {"link": "等待就诊奥术大师大所大所多", "state": 80, "name": "李白啊啊啊啊啊啊啊啊啊啊啊啊", "address": "临清1区发送到发送到发斯蒂芬", "card_no": "3194193t1", "tel": "13738776521","color":"a","ssss":""},
-		                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"b","ssss":""},
-		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"c","ssss":""},
-		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"d","ssss":""},
-		                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-
-		            ],
 		            "inhostal":[
 		            	{"link": "1", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"a","ssss":""},
 		                {"link": "2", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"b","ssss":""},
@@ -88,7 +63,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
 		                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
 
-		            ],
+		            ]
 		            
         }
 
@@ -98,8 +73,12 @@ import outpatienttMap from "@/components/outpatienttMap"
 
 		},
 		mounted(){
+			var _this = this;
+			_this.outpatientTable("outpatient");
 			// 门诊表格
-			this.outpatientTable("outpatient");
+			setInterval(function(){
+				_this.outpatientTable("outpatient");
+			},60000);
 			var _this = this;
 			// 获取当前时间
 	 		setInterval(function(){
@@ -156,10 +135,10 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		   //给定datatables 所有字段column
 		      dataTablesColumn:function(column){
 		        var tempTableDate = [];
-		        tempTableDate.push({"title":"状态","data":"color","sClass":"tableDataState","render":function(data, type, full, meta){return "<div class="+data+"></div>"}});
-		        tempTableDate.push({"title":"环节信息","data":"ssss"})
+		        tempTableDate.push({"title":"状态","data":"status","sClass":"tableDataState","render":function(data, type, full, meta){return "<div class="+data+"></div>"}});
+		        tempTableDate.push({"title":"环节信息","data":"link"})
 		        for(let keys in column){
-		        	if(keys == "color" || keys == "ssss"){
+		        	if(keys == "status" || keys == "link"){
 		        		continue;
 		        	}
 		          tempTableDate.push({"title":keys,"data":keys});
@@ -171,15 +150,12 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		outpatientTable:function(detail){
 	 			var tempThat = this;
 	 			this.$http.get("http://127.0.0.1:8887/alert/getInfo").then(function(response){
-	 				console.log(response)
-	 				// var data = response.data;
-	 				var data = tempThat.testData;
-		 			var tempTableDate = tempThat.dataTablesColumn(data[detail][0]);
+	 				var data = response.data.data;
+		 			var tempTableDate = tempThat.dataTablesColumn(data[0]);
 		 			$(".tableShow .outpatientTable-content").html('<table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="tableOutpatientPanel"></table>')
 		 			// console.log($("#tableOutpatientPanel").width(),$(".tableShow").width())
 		 			$('#tableOutpatientPanel').DataTable({
 					language:{
-				        "sProcessing": "处理中...",
 				        "sLengthMenu": "显示 _MENU_ 项结果",
 				        "sZeroRecords": "没有匹配结果",
 				        "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
@@ -192,21 +168,20 @@ import outpatienttMap from "@/components/outpatienttMap"
 				        "sLoadingRecords": "载入中...",
 				        "sInfoThousands": ",",
 					},
-						"aaSorting":[1,"desc"],
+						"aaSorting":[3,"desc"],
 		    		 	"bPaginate": false, //翻页功能
 		             	"bLengthChange":true, //改变每页显示数据数量
-		             	 "processing": true,
 		             	"bFilter": true, //过滤功能
 		             	"searching":false,//搜索
 		             	"bInfo":true,//页脚信息
 		             	"paging":true,
 		             	"select":true,
 		             	"scroller":{
-		             		loadingIndicator: true
+		             		loadingIndicator: false
 		             	},
 		             	"scrollX":tempThat.datatableScroll(),
-		             	"scrollY":data[detail].length > 15 ? $("#app .content .tableShow").height() - 100 + 'px':false,
-		             	"data":data[detail],
+		             	"scrollY":data.length > 15 ? $("#app .content .tableShow").height() - 150 + 'px':false,
+		             	"data":data,
 		             	"columns":tempTableDate,
 
 		    		})
