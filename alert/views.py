@@ -6,6 +6,7 @@ from django.http import HttpResponse, JsonResponse
 import MySQLdb
 import copy
 import os
+import datetime
 import random
 os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'
 
@@ -46,6 +47,12 @@ STATUS = {
 }
 
 DATA = []
+n1 = (int(datetime.datetime.now().strftime('%H')) - 8) * 220 + random.randint(-50, 50)
+n2 = int(n1 / 3) + random.randint(-30, 30)
+n3 = n1 - n2 - random.randint(100, 300)
+n6 = (int(datetime.datetime.now().strftime('%H')) - 8) * 75 + random.randint(-50, 50)
+n4 = int(n6 / 8) + random.randint(-30, 30)
+n5 = int(n6 / 5) + random.randint(-30, 30)
 
 
 @api_view(["GET"])
@@ -53,7 +60,7 @@ def getInfo(request):
     '''
     '''
     if request.method == "GET":
-        global DATA
+        global DATA, n1, n2, n3, n4, n5, n6
         if not DATA:
             conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
             c = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
@@ -82,6 +89,7 @@ def getInfo(request):
                 else:
                     i["time"] = list(randData.values())[0]
                     i["status"] = STATUS[i["link"]]["color"] if i["time"] < STATUS[i["link"]]["times"] else "red"
+                    i["settime"] = STATUS[i["link"]]["times"]
 
         else:
             data = DATA
@@ -110,11 +118,35 @@ def getInfo(request):
                     i["status"] = STATUS[i["link"]]["color"]
                     i["time"] = 0
                 else:
-                    i["time"] += 3
+                    i["time"] += 1
                     i["status"] = STATUS[i["link"]]["color"] if i["time"] < STATUS[i["link"]]["times"] else "red"
+                i["settime"] = STATUS[i["link"]]["times"]
+            n1 += random.randint(0, 5)
+            n2 += random.randint(-2, 2)
+            n3 += random.randint(0, 3)
+            n4 += random.randint(-2, 2)
+            n5 += random.randint(-2, 2)
+            n6 += random.randint(0, 2)
 
         DATA = copy.deepcopy(data)
-        for i in data:
-            if "time" in i.keys():
-                i.pop("time")
-        return JsonResponse({"data": data})
+        context = {
+            "data": data,
+            "map": {
+                "status": "颜色",
+                "link": "环节",
+                "name": "姓名",
+                "card_no": "门诊病历号",
+                "idenno": "身份证号",
+                "address": "家庭住址",
+                "rela_phone": "联系电话"
+            },
+            "count": {
+                "挂号总人数": n1,
+                "正在诊断人数": n2,
+                "初诊完毕人数": n3,
+                "候检人数": n4,
+                "就检人数": n5,
+                "检查完毕人数": n6
+            }
+        }
+        return JsonResponse(context)
