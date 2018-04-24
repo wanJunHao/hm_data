@@ -8,72 +8,148 @@ import outpatienttMap from "@/components/outpatienttMap"
       		warningProcess,
       		outpatienttMap
   		},
+  		props:{
+  			outpatienttable:{
+  				type:String,
+  				default:"outpatient"
+  			}
+  		},
+  		watch:{
+  			outpatienttable:function(){
+  				this.$nextTick(function(){
+  					
+  					if($('#tableOutpatientPanel').DataTable() != undefined){
+  						$('#tableOutpatientPanel').DataTable().clear();
+  						$('#tableOutpatientPanel').DataTable().destroy();
+
+  					}
+
+  					this.outpatientTable(this.outpatienttable);
+  				})
+  			}
+  		},
 	 	data(){
 	 		return{
 	 			details:[
-	 				{name:"挂号",count:"10"},
-	 				{name:"正在诊断"},
-	 				{name:"初诊完毕"},
-	 				{name:"候检"},
-	 				{name:"就检"},
-	 				{name:"检查完毕"},
+	 				{name:"总挂号数",count:"40"},
+	 				{name:"等待就诊",count:"12"},
+	 				{name:"就诊",count:"5"},
+	 				{name:"初诊完毕",count:"3"},
+	 				{name:"候检",count:"12"},
+	 				{name:"就检",count:"5"},
+	 				{name:"检查完毕",count:"3"}
 	 			],
 	 			details1:[
-	 				{name:"挂号",count:"20"},
-	 				{name:"正在诊断"},
-	 				{name:"初诊完毕"},
-	 				{name:"候检"},
-	 				{name:"就检"},
-	 				{name:"检查完毕"},
+	 				{name:"总挂号数",count:"20"},
+	 				{name:"等待就诊",count:"10"},
+	 				{name:"就诊",count:"1"},
+	 				{name:"初诊完毕",count:"2"},
+	 				{name:"候检",count:"6"},
+	 				{name:"就检",count:"5"},
+	 				{name:"检查完毕",count:"3"}
 	 			],
-
+	 			date:'',
 	 			waringShow:false,
 	 			outpatienttMapShow:false,
-	 			outpatienttMapTable:false,
+	 			outpatienttMapTable:true,
 	 			markShow:false,
+	 			tableOrMap:"table",
+	 			testData : {
+		            "outpatient": [
+		                {"link": "等待就诊奥术大师大所大所多", "state": 80, "name": "李白啊啊啊啊啊啊啊啊啊啊啊啊", "address": "临清1区发送到发送到发斯蒂芬", "card_no": "3194193t1", "tel": "13738776521","color":"a","ssss":""},
+		                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"b","ssss":""},
+		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"c","ssss":""},
+		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"d","ssss":""},
+		                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+
+		            ],
+		            "inhostal":[
+		            	{"link": "1", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"a","ssss":""},
+		                {"link": "2", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"b","ssss":""},
+		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"c","ssss":""},
+		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"d","ssss":""},
+		                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+		                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
+
+		            ],
+		            
+        }
+
 	 		}
 	 	},
 	 	created(){
-			// this.$http.get("http://jsonplaceholder.typicode.com/users").then((data)=>{
-			// 	console.log(data);
-			// 	this.items1 = data.data;
-			// })
+	 		// 获取当前时间
+	 		this.getDate();
 		},
 		mounted(){
 			// 门诊表格
-			this.outpatientTable();
-
+			this.outpatientTable("outpatient");
 		},
 	 	methods:{
+	 		getDate:function(){
+				var myDate = new Date();
+
+				var year=myDate.getFullYear();
+				var month=myDate.getMonth()+1;
+				var date=myDate.getDate(); 
+
+				var h=myDate.getHours();    
+				var m=myDate.getMinutes();
+				var s=myDate.getSeconds();  
+
+				function checkTime(value){
+					return value < 10 ? '0' + value: value;
+				}
+
+				this.date = year+'/'+checkTime(month)+"/"+checkTime(date)+" "+checkTime(h)+':'+checkTime(m)+":"+checkTime(s);
+	 		},
 	 		changeWaringStatus:function(data){
 	 			this.waringShow = data;
 	 			this.markShow = data;
-
 	 		},
 	 		changeTable:function(){
 	 			this.outpatienttMapTable = true;
 	 			this.outpatienttMapShow = false;
-	 			this.waringShow = false;
+	 			this.tableOrMap = "table";
 	 			$(".showBtn").addClass("activeBtn");
 	 			$(".showBtn").siblings().removeClass('activeBtn');
 	 		},
 	 		changeMap:function(){
 	 			this.outpatienttMapShow = true;
 	 			this.outpatienttMapTable = false;
-	 			this.waringShow = false;
+	 			this.tableOrMap = "map";
 	 			$(".mapBtn").addClass("activeBtn");
 	 			$(".mapBtn").siblings().removeClass('activeBtn');
 	 		},
 	 		warningSetting:function(){
+	 			if(this.outpatienttMapShow) return;
 	 			this.waringShow = ! this.waringShow;
 	 			this.markShow = true;
 	 		},
 	 		   //给定datatables 所有字段column
 		      dataTablesColumn:function(column){
 		        var tempTableDate = [];
-		        tempTableDate.push({"title":"color","data":"color"})
+		        tempTableDate.push({"title":"状态","data":"color","sClass":"tableDataState","render":function(data, type, full, meta){return "<div class="+data+"></div>"}});
+		        tempTableDate.push({"title":"环节信息","data":"ssss"})
 		        for(let keys in column){
-		        	if(keys == "color"){
+		        	if(keys == "color" || keys == "ssss"){
 		        		continue;
 		        	}
 		          tempTableDate.push({"title":keys,"data":keys});
@@ -82,12 +158,14 @@ import outpatienttMap from "@/components/outpatienttMap"
 		        return tempTableDate;
 		      },
 	 		//门诊表格的加载
-	 		outpatientTable:function(){
+	 		outpatientTable:function(detail){
 	 			var tempThat = this;
-	 			this.$http.get("http://127.0.0.1:8887/alert/").then(function(response){
-	 				var data = response.data;
-		 			var tempTableDate = tempThat.dataTablesColumn(data["detail"][0]);
-		 			$(".tableShow .outpatientTable-content").html('<table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="tableOutpatientPanel"></table>');
+	 			// this.$http.get("http://127.0.0.1:8887/alert/").then(function(response){
+	 				// var data = response.data;
+	 				  var data = tempThat.testData;
+		 			var tempTableDate = tempThat.dataTablesColumn(data[detail][0]);
+		 			$(".tableShow .outpatientTable-content").html('<table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="tableOutpatientPanel"></table>')
+		 			// console.log($("#tableOutpatientPanel").width(),$(".tableShow").width())
 		 			$('#tableOutpatientPanel').DataTable({
 					language:{
 				        "sProcessing": "处理中...",
@@ -104,20 +182,34 @@ import outpatienttMap from "@/components/outpatienttMap"
 				        "sInfoThousands": ",",
 					},
 						"aaSorting":[1,"desc"],
-		    		 	"bPaginate": true, //翻页功能
+		    		 	"bPaginate": false, //翻页功能
 		             	"bLengthChange":true, //改变每页显示数据数量
+		             	 "processing": true,
 		             	"bFilter": true, //过滤功能
+		             	"searching":false,//搜索
 		             	"bInfo":true,//页脚信息
-		             	"paging":false,
+		             	"paging":true,
 		             	"select":true,
-		             	"scrollY":"469px",
-		             	"data":data["detail"],
-		             	"columns":tempTableDate
+		             	"scroller":{
+		             		loadingIndicator: true
+		             	},
+		             	"scrollX":tempThat.datatableScroll(),
+		             	"scrollY":data[detail].length > 15 ? $("#app .content .tableShow").height() - 100 + 'px':false,
+		             	"data":data[detail],
+		             	"columns":tempTableDate,
+
 		    		})
-	 			})
+
+	 			// })
 	 		},
 
-
+	 		datatableScroll:function(){
+	 			this.$nextTick(function(){
+	 				if($(".dataTables_scrollHeadInner").width() > $(".tableShow").width()){
+	 					$(".dataTables_scrollHead,.dataTables_scrollBody").width($(".table-striped").width());
+	 				}
+	 			})
+	 		}
 	 	}
 	 	
 	}
