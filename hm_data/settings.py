@@ -81,7 +81,8 @@ DATABASES = {
         'NAME': 'uinfo',
         'USER': 'root',
         'PASSWORD': '123.com',
-        'HOST': '192.168.1.106',
+        # 'HOST': '172.21.45.53',
+        'HOST': '192.168.1.109',
         'PORT': '3306',
     }
 }
@@ -111,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
