@@ -138,6 +138,9 @@ export default{
 			$("#compareSelects div").bind("mouseenter",function(){
 				$(this).css("background","#DDDDDD");
 				$(this).siblings().css("background","");
+				$(this).click(function(){
+					$(".tableCon td:eq(1) span").html($(this).html());
+				})
 			})
 			$("#compareSelects").unbind("mouseleave");
 			$("#compareSelects").bind("mouseleave",function(){
@@ -150,6 +153,9 @@ export default{
 			$("#waitSelects div").bind("mouseenter",function(){
 				$(this).css("background","#DDDDDD");
 				$(this).siblings().css("background","");
+				$(this).click(function(){
+					$(".tableCon td:eq(2) span").html($(this).html());
+				})
 			})
 			$("#waitSelects").unbind("mouseleave");
 			$("#waitSelects").bind("mouseleave",function(){
