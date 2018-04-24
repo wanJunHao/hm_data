@@ -165,7 +165,7 @@ export default{
 				 	ReattachConnections:false,
 					ConnectionOverlays:[
 						["Custom",{
-							create:function(component){if($(component.source).attr("commondata").split("_yzy_").length > 1 && $(component.source).attr("commondata").split("_yzy_")[0] != "缴费时间"){return $("<img src='/static/images/lianj_03.png' style='display:none'/>")};return $("<img src='/static/images/lianj_03.png'/>")},
+							create:function(component){if($(component.source).attr("commondata").split("_yzy_").length > 1 && $(component.source).attr("commondata").split("_yzy_")[0] != "缴费时间"){return $("<img src='/static/images/lianj_03.png'/>")};return $("<img src='/static/images/lianj_03.png'/>")},
 							loaction:0.5,
 							cssClass:"awarningconnectionImg",
 							id:"connFlag",
@@ -254,9 +254,9 @@ export default{
 		
 			// this.tempLeft += (this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
 		}else{
-			this.tempLeft = this.left + this.requestData[index].length * this.width + (this.requestData[index].length) * this.left;
+			this.tempLeft =this.requestData[index].length * this.width + (this.requestData[index].length) * this.left;
 			this.tempTop = (index+1) * this.top;
-			return {"top":(index+1) * this.top + "px","left":this.left + "px","width":this.requestData[index].length * this.width + (this.requestData[index].length) * this.left + 'px'}
+			return {"top":(index+1) * this.top + "px","left":0 + "px","width":this.requestData[index].length * this.width + (this.requestData[index].length) * this.left + 'px'}
 		}
 	},
 	itemsStyle:function(index,indexs){
