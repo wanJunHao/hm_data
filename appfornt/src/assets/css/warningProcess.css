@@ -37,6 +37,7 @@
 .moreCompare,.moreWaitTime{float:right;margin-right:5px;margin-top:5px;}
 .listenInput {background: #f5f5f5;}
 .settingPanelBtn{position: absolute;bottom:10px;right:20px;}
+.imgHide{display: none}
 
 .settingPanelBtn a{width: 70px;height: 30px;position: absolute;border-radius: 2px;line-height: 30px;text-align: center;-webkit-box-sizing: border-box;box-sizing: border-box;}
 .settingPanelBtn .cancleBtn{right: 110px;bottom:5px;border: 1px solid #0d53a4;color: #0d53a4;}
