@@ -165,13 +165,12 @@ export default{
 				 	ReattachConnections:false,
 					ConnectionOverlays:[
 						["Custom",{
-							create:function(component){if($(component.source).attr("commondata").split("_yzy_").length > 1 && $(component.source).attr("commondata").split("_yzy_")[0] != "缴费时间"){return $("<img src='/static/images/lianj_03.png'/>")};return $("<img src='/static/images/lianj_03.png'/>")},
+							create:function(component){if($(component.source).attr("commondata") != undefined && $(component.source).attr("commondata").split("_yzy_").length > 1 && $(component.source).attr("commondata").split("_yzy_")[0] != "缴费时间" &&  $(component.source).attr("commondata").split("_yzy_")[0] != "住院流程" &&  $(component.source).attr("commondata").split("_yzy_")[0] != "送检" ){return $("<img src='/static/images/lianj_03.png' style='display:none'/>")};return $("<img src='/static/images/lianj_03.png'/>")},
 							loaction:0.5,
 							cssClass:"awarningconnectionImg",
 							id:"connFlag",
 							events:{
 								click:function(jsPlumb){
-
 									// if($(jsPlumb.component.target).hasClass("jtk-overlay")){
 									// 	$(jsPlumb.component.target).trigger("click");
 									// 	return;
@@ -208,10 +207,12 @@ export default{
 				$(ele).find(".awarning-process-item").each(function(indexs,eles){
 					_this._addEndpoints($(eles).attr("id"), ["LeftMiddle","RightMiddle"], ["TopCenter","BottomCenter"]);
 						
-						if(indexs > 0){
+					if(indexs > 0){
+
 						if(_this.requestData[index][indexs].split("_yzy_").length > 1 && indexs+1 < _this.requestData[index].length){
 							_this.instance.connect({uuids: [$(eles).attr("id")+"LeftMiddle", $(ele).find(".awarning-process-item").eq(indexs-1).attr("id")+"LeftMiddle"], editable: true});
 							if(index > 1){
+								if($(eles).attr("id") == "jsplumb23") return;
 								_this.instance.connect({uuids: [$(eles).attr("id")+"RightMiddle", $(ele).find(".awarning-process-item").eq(indexs-1).attr("id")+"RightMiddle"], editable: true});
 							}
 							return;
@@ -222,36 +223,55 @@ export default{
 						_this.instance.connect({uuids: ["jsplumb"+index + (tempIndexs-1) +"RightMiddle", "jsplumb"+index + tempIndexs +"LeftMiddle"], editable: true});
 					}
 				})
-				if(index > 0){
-					var tempParent = _this.arrHandleChart(_this.requestData,_this.requestData[index][0],index).replace("_yzy_","");
-					// _this.instance.connect({uuids: ["jsplumb"+String(tempParent)+"RightMiddle", "jsplumb"+String(index)+"1LeftMiddle"], editable: true});
-				}
-				// _this.instance.connect({uuids: ["jsplumb11LeftMiddle", "jsplumb21LeftMiddle"], editable: true});
-				// 	_this.$nextTick(function(){
-				// 		_this._addEndpoints($(".jtk-overlay").eq(index).attr("id"), ["LeftMiddle"],[]);
-				// 		_this.instance.connect({uuids: ["jsplumb02RightMiddle", "jsPlumb_2_46LeftMiddle"], editable: true});
-				// 		$(".jtk-overlay").eq(index).hide();
-				// 	})
+				// if(index > 0){
+				// 	var tempParent = _this.arrHandleChart(_this.requestData,_this.requestData[index][0],index).replace("_yzy_","");
+				// 	// _this.instance.connect({uuids: ["jsplumb"+String(tempParent)+"RightMiddle", "jsplumb"+String(index)+"1LeftMiddle"], editable: true});
+				// }
+					_this.$nextTick(function(){
+						if(index == 2){
+							$(".jtk-overlay").eq(index).css("top",$(".jtk-overlay").eq(index).position().top)
+							_this._addEndpoints($(".jtk-overlay").eq(index).attr("id"), ["LeftMiddle"],[]);
+							_this.instance.connect({uuids: ["jsplumb02RightMiddle", $(".jtk-overlay").eq(index).attr("id")+"LeftMiddle"], editable: true});
+							$(".jtk-overlay").eq(index).hide();
+						}else if (index == 3){
+							_this.instance.connect({uuids: ["jsplumb23RightMiddle","jsplumb31LeftMiddle"], editable: true});
+						}else if(index == 4){
+							$(".jtk-overlay").eq(index + 1).css("top",$(".jtk-overlay").eq(index + 1).position().top).css("left",$(".jtk-overlay").eq(index + 1).position().left- 8)
+							_this._addEndpoints($(".jtk-overlay").eq(index+1).attr("id"), ["RightMiddle"],[]);
+							_this.instance.connect({uuids: [$(".jtk-overlay").eq(index+1).attr("id")+"RightMiddle","jsplumb41LeftMiddle"], editable: true});
+							_this.instance.connect({uuids: ["jsplumb41TopCenter","jsplumb02TopCenter"], editable: true});
+							$(".jtk-overlay").eq(index+1).hide();
+							$(".awarningconnectionImg:gt(8)").hide();						
+						}
+						$(".awarningconnectionImg").eq(4).hide();
+					})
+
 			});
 			
 			_this.instance.connect({uuids: ["jsplumb11RightMiddle", "jsplumb22LeftMiddle"], editable: true});
-	        $(".jtk-endpoint").not(".jtk-endpoint-connected").remove();
+	        setTimeout(function(){
+	        	$(".jtk-endpoint").not(".jtk-endpoint-connected").remove();
+	        },200);
 	       })
 	},
 	warningProcessStatus:function(){
 		if(this.warningShow){
-			this.requestData = [["分诊时间","挂号时间","就诊时间"],["就诊时间","缴费时间_yzy_sameLeave","住院流程_yzy_sameLeave"],["缴费时间_yzy_sameLeave","检查_yzy_sameLeave","送检_yzy_sameLeave","取药_yzy_sameLeave"]];
+			this.requestData = [["分诊时间","挂号时间","就诊时间"],["就诊时间","缴费时间_yzy_sameLeave","住院流程_yzy_sameLeave"],["缴费时间_yzy_sameLeave","检查_yzy_sameLeave","送检_yzy_sameLeave","取药_yzy_sameLeave"],["取药_yzy_sameLeave","就诊结束"],["检查_yzy_sameLeave","取报告"]];
 			// this.secondArrDataHandle(this.ceshi);
 		}
 		return true;
 	},
 	itemStyle:function(index){
 		if(index > 0){
-			if(index > 1){
+			if(index == 2){
 				return  {"top":this.tempTop - 100 + "px","left":this.tempLeft + 195 +"px","width":this.width + this.left + 'px'}
+			}else if (index == 3){
+				return  {"top":this.tempTop+ 25 + "px","left":this.tempLeft + 385 +"px","width":this.width + this.left + 'px'}
+			}else if(index == 4){
+				return  {"top":this.tempTop - 125 + "px","left":this.tempLeft + 385 +"px","width":this.width + this.left + 'px'}
 			}
 			 return  {"top":this.tempTop+ "px","left":this.tempLeft+"px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left + 'px'}
-		
+	
 			// this.tempLeft += (this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
 		}else{
 			this.tempLeft =this.requestData[index].length * this.width + (this.requestData[index].length) * this.left;
