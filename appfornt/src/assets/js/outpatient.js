@@ -31,22 +31,21 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 	data(){
 	 		return{
 	 			details:[
-	 				{name:"总挂号数",count:"40"},
-	 				{name:"等待就诊",count:"12"},
-	 				{name:"就诊",count:"5"},
-	 				{name:"初诊完毕",count:"3"},
-	 				{name:"候检",count:"12"},
-	 				{name:"就检",count:"5"},
-	 				{name:"检查完毕",count:"3"}
+	 				{name:"总挂号数",count:"0"},
+	 				{name:"就诊",count:"0"},
+	 				{name:"初诊完毕",count:"0"},
+	 				{name:"候检",count:"0"},
+	 				{name:"就检",count:"0"},
+	 				{name:"检查完毕",count:"0"}
 	 			],
 	 			details1:[
-	 				{name:"总挂号数",count:"20"},
-	 				{name:"等待就诊",count:"10"},
-	 				{name:"就诊",count:"1"},
-	 				{name:"初诊完毕",count:"2"},
-	 				{name:"候检",count:"6"},
-	 				{name:"就检",count:"5"},
-	 				{name:"检查完毕",count:"3"}
+	 				{name:"总挂号数",count:"0"},
+	 				{name:"等待就诊",count:"0"},
+	 				{name:"就诊",count:"0"},
+	 				{name:"初诊完毕",count:"0"},
+	 				{name:"候检",count:"0"},
+	 				{name:"就检",count:"0"},
+	 				{name:"检查完毕",count:"0"}
 	 			],
 	 			date:'',
 	 			waringShow:false,
@@ -135,10 +134,10 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		   //给定datatables 所有字段column
 		      dataTablesColumn:function(column){
 		        var tempTableDate = [];
-		        tempTableDate.push({"title":"状态","data":"status","sClass":"tableDataState","render":function(data, type, full, meta){return "<div class="+data+"></div>"}});
+		        tempTableDate.push({"title":"状态","data":"status","sClass":"tableDataState"});
 		        tempTableDate.push({"title":"环节信息","data":"link"})
 		        for(let keys in column){
-		        	if(keys == "status" || keys == "link"){
+		        	if(keys == "status" || keys == "link" || keys == "time" || keys == "settime"){
 		        		continue;
 		        	}
 		          tempTableDate.push({"title":keys,"data":keys});
@@ -183,6 +182,20 @@ import outpatienttMap from "@/components/outpatienttMap"
 		             	"scrollY":data.length > 15 ? $("#app .content .tableShow").height() - 150 + 'px':false,
 		             	"data":data,
 		             	"columns":tempTableDate,
+		             	"columnDefs":[{
+		             		"targets":0,
+		             		render:function(data, type, full, meta){
+		             			if(data == "blue"){
+		             				var tempColorWidth = 100;
+		             			}else{
+		             				var tempColorWidth = full.time/full.settime * 100;
+		             			}
+		             			if(tempColorWidth > 100){
+		             				var tempColorWidth = 100;
+		             			}
+		             			return "<div class="+full.status+" style='width:"+tempColorWidth+"%'><div>";
+		             		}
+		             	}]
 
 		    		})
 
