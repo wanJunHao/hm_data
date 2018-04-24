@@ -11,7 +11,7 @@ export default{
 	},
 	data(){
 		return {
-			ceshi:[],
+			requestData:[],
 
 			left:70,
 
@@ -38,12 +38,20 @@ export default{
 	            connectorStyle:{strokeWidth: 1,stroke: "#5ba7ff",joinstyle: "round",outlineStroke: "white",outlineWidth: 2},
 	            // hoverPaintStyle:{strokeWidth: 3,stroke: "#216477",outlineWidth: 5,},
 	            // connectorHoverStyle:{fill: "#216477",stroke: "#216477"},
-	            maxConnections:2,
+	            maxConnections:3,
 	            dragOptions: {},
 			},
 			jsplumbLocation:[],
 			tempArrCount:null,
 			warningPopUp:false,
+			tempLeft:0,
+			tempTop:0,
+		}
+	},
+	filters:{
+		dataStrHandle:function(value){
+			if(value == "") return;
+			return value.split("_yzy_")[0];
 		}
 	},
 	watch:{
@@ -157,17 +165,17 @@ export default{
 				 	ReattachConnections:false,
 					ConnectionOverlays:[
 						["Custom",{
-							create:function(component){return $("<img src='/static/images/lianj_03.png'/>")},
+							create:function(component){if($(component.source).attr("commondata").split("_yzy_").length > 1 && $(component.source).attr("commondata").split("_yzy_")[0] != "缴费时间"){return $("<img src='/static/images/lianj_03.png' style='display:none'/>")};return $("<img src='/static/images/lianj_03.png'/>")},
 							loaction:0.5,
 							cssClass:"awarningconnectionImg",
 							id:"connFlag",
 							events:{
 								click:function(jsPlumb){
 
-									if($(jsPlumb.component.target).hasClass("jtk-overlay")){
-										$(jsPlumb.component.target).trigger("click");
-										return;
-									}
+									// if($(jsPlumb.component.target).hasClass("jtk-overlay")){
+									// 	$(jsPlumb.component.target).trigger("click");
+									// 	return;
+									// }
 									_this.customClickHandle(jsPlumb);
 								}
 							}
@@ -201,8 +209,11 @@ export default{
 					_this._addEndpoints($(eles).attr("id"), ["LeftMiddle","RightMiddle"], ["TopCenter","BottomCenter"]);
 						
 						if(indexs > 0){
-						if(_this.ceshi[index][indexs].split("_yzy_").length > 1 && indexs+1 < _this.ceshi[index].length){
+						if(_this.requestData[index][indexs].split("_yzy_").length > 1 && indexs+1 < _this.requestData[index].length){
 							_this.instance.connect({uuids: [$(eles).attr("id")+"LeftMiddle", $(ele).find(".awarning-process-item").eq(indexs-1).attr("id")+"LeftMiddle"], editable: true});
+							if(index > 1){
+								_this.instance.connect({uuids: [$(eles).attr("id")+"RightMiddle", $(ele).find(".awarning-process-item").eq(indexs-1).attr("id")+"RightMiddle"], editable: true});
+							}
 							return;
 						}
 
@@ -212,7 +223,7 @@ export default{
 					}
 				})
 				if(index > 0){
-					var tempParent = _this.arrHandleChart(_this.ceshi,_this.ceshi[index][0],index).replace("_yzy_","");
+					var tempParent = _this.arrHandleChart(_this.requestData,_this.requestData[index][0],index).replace("_yzy_","");
 					// _this.instance.connect({uuids: ["jsplumb"+String(tempParent)+"RightMiddle", "jsplumb"+String(index)+"1LeftMiddle"], editable: true});
 				}
 				// _this.instance.connect({uuids: ["jsplumb11LeftMiddle", "jsplumb21LeftMiddle"], editable: true});
@@ -223,27 +234,37 @@ export default{
 				// 	})
 			});
 			
-			// _this.instance.connect({uuids: ["jsplumb02RightMiddle", "jsplumb21LeftMiddle"], editable: true});
+			_this.instance.connect({uuids: ["jsplumb11RightMiddle", "jsplumb22LeftMiddle"], editable: true});
 	        $(".jtk-endpoint").not(".jtk-endpoint-connected").remove();
 	       })
 	},
 	warningProcessStatus:function(){
 		if(this.warningShow){
-			this.ceshi = [["guahao","jiuzhen","jiaofei"],["jiaofei","jiancha_yzy_sameLeave","jianyan_yzy_saveLeave"],["jiaofei","quyao_yzy_sameLeave","zhiliao_yzy_sameLeave"]];
+			this.requestData = [["分诊时间","挂号时间","就诊时间"],["就诊时间","缴费时间_yzy_sameLeave","住院流程_yzy_sameLeave"],["缴费时间_yzy_sameLeave","检查_yzy_sameLeave","送检_yzy_sameLeave","取药_yzy_sameLeave"]];
 			// this.secondArrDataHandle(this.ceshi);
 		}
 		return true;
 	},
 	itemStyle:function(index){
 		if(index > 0){
-				return {"top":(index) * this.top + "px","left":($.inArray(this.ceshi[index][0],this.ceshi[0]) + 1) * this.width + (($.inArray(this.ceshi[index][0],this.ceshi[0])+2) * 70) + "px","width":(this.ceshi[index].length-1) * this.width + (this.ceshi[index].length-1) * this.left + 'px'}
+			if(index > 1){
+				return  {"top":this.tempTop - 100 + "px","left":this.tempLeft + 195 +"px","width":this.width + this.left + 'px'}
+			}
+			 return  {"top":this.tempTop+ "px","left":this.tempLeft+"px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left + 'px'}
+		
+			// this.tempLeft += (this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
 		}else{
-			return {"top":(index+1) * this.top + "px","left":this.left + "px","width":this.ceshi[index].length * this.width + (this.ceshi[index].length) * this.left + 'px'}
+			this.tempLeft = this.left + this.requestData[index].length * this.width + (this.requestData[index].length) * this.left;
+			this.tempTop = (index+1) * this.top;
+			return {"top":(index+1) * this.top + "px","left":this.left + "px","width":this.requestData[index].length * this.width + (this.requestData[index].length) * this.left + 'px'}
 		}
 	},
 	itemsStyle:function(index,indexs){
-		if(index < 1 || this.ceshi[index][indexs].split("_yzy_").length <= 1) return;
-		return {"position":"absolute","top":"-"+(indexs - 1+index) * 50 + "px"}
+		if(index < 1 || this.requestData[index][indexs].split("_yzy_").length <= 1) return;
+		if(this.requestData[index][indexs].split("_yzy_")[1] == "sameLeave"){
+				return {"position":"absolute","top":(indexs - 2.5 +index) * 50 + "px"}
+
+		}
 	},
 	arrHandleChart:function(arr,str,noFor){
 		var _this = this;
@@ -263,7 +284,6 @@ export default{
 		if(this.warningPopUp){
 			this.$nextTick(function(){
 				this.awarningDarg();
-				// console.log(tempElementTarget)
 				if(tempElementTarget.id == 'con_17'){
 					$(".tableCon .tdOne").html('等待就诊');
 				}

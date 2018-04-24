@@ -95,12 +95,16 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		}
 	 	},
 	 	created(){
-	 		// 获取当前时间
-	 		this.getDate();
+
 		},
 		mounted(){
 			// 门诊表格
 			this.outpatientTable("outpatient");
+			var _this = this;
+			// 获取当前时间
+	 		setInterval(function(){
+	 			_this.getDate();
+	 		},1000);
 		},
 	 	methods:{
 	 		getDate:function(){
