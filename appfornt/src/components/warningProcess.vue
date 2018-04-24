@@ -82,8 +82,8 @@
 					<table cellspacing="0" cellpadding="0">
 					<thead>
 						<tr class="title">
-							<td>当前表标题</td>
-							<td>关系</td>
+							<td>当前字段</td>
+							<td></td>
 							<td>时间设定</td>
 							<td>预警颜色</td>
 							<td></td>
@@ -107,7 +107,7 @@
 							</td>
 							<td @click="deleteRow"></td>
 						</tr>
-						<tr>
+						<tr class="addRow">
 							<td class="add" @click="addRow">添加新的预警条件</td>
 							<td></td>
 							<td></td>

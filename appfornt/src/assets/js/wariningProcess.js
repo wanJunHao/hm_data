@@ -70,17 +70,34 @@ export default{
 	},
 	methods:{
 		addRow:function(){
-			var trDetail = $("<tr class=tableCon v-on:mouseenter=enter v-on:mouseleave=leave><td class=tdOne></td><td>><img src='/static/images/more.png' alt='' class='moreCompare' @click='showCompare'></td><td>1h15min<img src='/static/images/more.png' alt='' class='moreWaitTime' @click='showWait'></td><td><svg style=width:20px;height:20px;><rect rx=4 ry=4 width=15 height=15 fill=#FA3843 y=5 x=5></rect></svg></td><td @click=deleteRow></td></tr>");				
-			$(trDetail).prependTo($("table tbody"));
+			var trDetail = $("<tr class='tableCon'><td class=tdOne></td><td>><img src='/static/images/more.png' alt='' class='moreCompare' @click='showCompare'></td><td>1h15min<img src='/static/images/more.png' alt='' class='moreWaitTime' @click='showWait'></td><td><svg style=width:20px;height:20px;><rect rx=4 ry=4 width=15 height=15 fill=#FA3843 y=5 x=5></rect></svg></td><td class=deleteRow></td></tr>");				
+			trDetail.insertBefore($(".addRow"));  
+			$(trDetail).mouseenter(function(){
+				$(this).find("td:eq(4)").html($("<img src=/static/images/delete.png>"));
+			})
+			$(trDetail).mouseleave(function(){
+				$(this).find("td:eq(4)").html("");
+			})
+			$(".deleteRow").click(function(){
+				$(this).parents("tr").remove();
+			})
+			var text = $(".warning-setting table tbody tr:eq(0) .tdOne").html();
+			$(".tdOne").html(text);
 		},
-		enter:function(){
-			$("#warningPanelSetting table tbody tr.tableCon").find("td:eq(4)").html($("<img src=/static/images/delete.png>"));
+		enter:function(event){
+			var tar = event.target;
+			$(tar).find("td:eq(4)").html($("<img src=/static/images/delete.png>"));
+			// $("#warningPanelSetting table tbody tr.tableCon").find("td:eq(4)").html($("<img src=/static/images/delete.png>"));
 		},
-		leave:function(){
-			$("#warningPanelSetting table tbody tr").find("td:eq(4)").html("");
+		leave:function(event){
+			var tar = event.target;
+			$(tar).find("td:eq(4)").html("");
+			// $("#warningPanelSetting table tbody tr").find("td:eq(4)").html("");
 		},
-		deleteRow:function(){
-			$("#warningPanelSetting table tbody tr td:eq(4)").parent("tr").remove();
+		deleteRow:function(event){
+			var tar = event.target;
+			$(tar).parents("tr").remove();
+			// $("#warningPanelSetting table tbody tr td:eq(4)").parent("tr").remove();
 		},
 		sendMsgToParent(){
 			this.$emit("listenToChildEvent",false)
@@ -246,7 +263,7 @@ export default{
 		if(this.warningPopUp){
 			this.$nextTick(function(){
 				this.awarningDarg();
-				console.log(tempElementTarget)
+				// console.log(tempElementTarget)
 				if(tempElementTarget.id == 'con_17'){
 					$(".tableCon .tdOne").html('等待就诊');
 				}

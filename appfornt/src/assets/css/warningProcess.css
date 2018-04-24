@@ -14,7 +14,7 @@
 #warningPanelSetting .common-head .close{position: absolute;right: 10px;height: 100%;width: 45px;top: 10px;text-align: right;cursor: pointer;}
 #warningPanelSetting .common-head .logo{margin-left: 10px;font-size:14px;font-weight: bold;}
 #warningPanelSetting .common-filter-footer{height: 50px;position: absolute;bottom: 0;width: 100%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;}
-#warningPanelSetting .common-filter-footer a{width: 70px;height: 25px;position: absolute;border-radius: 2px;line-height: 30px;text-align: center;box-sizing: border-box;}
+#warningPanelSetting .common-filter-footer a{width: 70px;height: 25px;position: absolute;border-radius: 2px;line-height: 25px;text-align: center;box-sizing: border-box;}
 #warningPanelSetting .common-filter-footer .cancleBtn{top: 10px;right: 110px;border: 1px solid #0d53a4;color: #0d53a4;}
 #warningPanelSetting .common-filter-footer .confirmBtn{background: #0D53A4;color: white;right: 20px;top: 10px;border: 1px solid #0D53A4;}
 #warningPanelSetting .warning-body{padding-top:10px;border-top: 1px solid #DEDEDE;color:#808080;}
@@ -42,7 +42,8 @@
 .settingPanelBtn .cancleBtn{right: 110px;bottom:5px;border: 1px solid #0d53a4;color: #0d53a4;}
 .settingPanelBtn .saveBtn{background: #0D53A4;color: white; right: 20px;bottom:5px;border: 1px solid #0D53A4;}
 .outProcess{font-size:12px;font-weight:bold;margin-left: 20px;margin-top: 20px;}
-#compareSelects{width:51px;left:120px;}
-#waitSelects{width:91px;left:170px;}
+/*#compareSelects{width:51px;left:120px;}
+#waitSelects{width:91px;left:170px;}*/
 .tableCon .tdOne{color:#333;}
+.tableCon td:nth-child(5){cursor: pointer;}
 

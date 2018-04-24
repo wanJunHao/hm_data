@@ -9,7 +9,7 @@ body{font-size:13px;}
 .activeBtn{background: #0B9BFB;color:white;}
 .settingBtn,.computedBtn{background:#0B9BFB;margin-left:10px;color:white;}
 .tableShow{overflow-x: auto;overflow-y: hidden}
-.tableShow,.mapShow{width:95%;height:85%;position: absolute;top:85px;left:60px;}
+.tableShow,.mapShow{width:95%;height:85%;position: absolute;top:100px;left:60px;}
 .tableShow .outpatientTable-content{padding: 20px;min-width: 1000px;}
 
 #compareSelects{width: 49px;overflow-y: auto;text-align: center;position: absolute;left: 117px;top: 158px;background: white;border:1px solid #e3e3e3;}

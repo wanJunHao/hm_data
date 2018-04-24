@@ -57,8 +57,17 @@ export default {
         }
         this.imgs[index].active = true;
         this.tableShowName = this.active;
+      },
+      getPosition:function(){
+        $(".yjBtn").css({
+          left:0,
+          top:$(".leftNav").height() - 100 + 'px'
+        })
       }
   },
+  mounted(){
+    this.getPosition();
+  }
 
 }
 </script>
