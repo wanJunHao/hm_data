@@ -140,13 +140,13 @@ def getInfo(request):
                 "address": "家庭住址",
                 "rela_phone": "联系电话"
             },
-            "count": {
-                "挂号总人数": n1,
-                "正在诊断人数": n2,
-                "初诊完毕人数": n3,
-                "候检人数": n4,
-                "就检人数": n5,
-                "检查完毕人数": n6
-            }
+            "counts": [
+                {"name": "挂号总人数", "count": n1},
+                {"name": "正在诊断人数", "count": n2},
+                {"name": "初诊完毕人数", "count": n3},
+                {"name": "候检人数", "count": n4},
+                {"name": "就检人数", "count": n5},
+                {"name": "检查完毕人数", "count": n6}
+            ]
         }
         return JsonResponse(context)
