@@ -53,8 +53,9 @@ def getInfo(request):
     '''
     '''
     if request.method == "GET":
+        global DATA
         if not DATA:
-            conn = MySQLdb.connect(user="root", password="123.com", host="192.168.3.109", port=3306, db="hm", charset="utf8")
+            conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
             c = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
             sql = '''
             SELECT card_no, name, rela_phone, address, idenno FROM register
@@ -111,7 +112,7 @@ def getInfo(request):
                 else:
                     i["time"] += 3
                     i["status"] = STATUS[i["link"]]["color"] if i["time"] < STATUS[i["link"]]["times"] else "red"
-        global DATA
+
         DATA = copy.deepcopy(data)
         for i in data:
             if "time" in i.keys():

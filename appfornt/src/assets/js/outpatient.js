@@ -123,6 +123,12 @@ import outpatienttMap from "@/components/outpatienttMap"
 				}
 
 				this.date = year+'/'+checkTime(month)+"/"+checkTime(date)+" "+checkTime(h)+':'+checkTime(m)+":"+checkTime(s);
+	 			
+	 			//时钟动态变化
+	 			let _this = this;
+    			setTimeout(() => {
+      				_this.getDate();
+   				}, 1000)
 	 		},
 	 		changeWaringStatus:function(data){
 	 			this.waringShow = data;
@@ -167,7 +173,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 			this.$http.get("http://127.0.0.1:8887/alert/getInfo").then(function(response){
 	 				console.log(response)
 	 				// var data = response.data;
-	 				  var data = tempThat.testData;
+	 				var data = tempThat.testData;
 		 			var tempTableDate = tempThat.dataTablesColumn(data[detail][0]);
 		 			$(".tableShow .outpatientTable-content").html('<table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="tableOutpatientPanel"></table>')
 		 			// console.log($("#tableOutpatientPanel").width(),$(".tableShow").width())
