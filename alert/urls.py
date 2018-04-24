@@ -6,4 +6,5 @@ app_name = 'alert'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^getInfo$', views.getInfo, name='getInfo'),
 ]

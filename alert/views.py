@@ -1,9 +1,13 @@
-import datetime
+# import datetime
 # from django.shortcuts import render
 from rest_framework.decorators import api_view
 from django.http import HttpResponse, JsonResponse
 
-from .connectDb import getConn
+import MySQLdb
+import copy
+import os
+import random
+os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'
 
 # Create your views here.
 
@@ -20,63 +24,28 @@ def index(request):
             "chargeNum": 22,
             "checkNum": 18,
             "detail": [
-                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""},
-                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":""}
+                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521", "color": ""},
+                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521", "color": ""},
             ]
         }
         return JsonResponse(testData)
+
+
+STATUS = {
+    "等待就诊": {"color": "yellow", "times": 30},
+    "正在就诊": {"color": "green", "times": 30},
+    "等待缴费": {"color": "yellow", "times": 30},
+    "等待检查": {"color": "yellow", "times": 30},
+    "等待检验": {"color": "yellow", "times": 30},
+    "正在检查": {"color": "green", "times": 30},
+    "等待检查报告": {"color": "yellow", "times": 30},
+    "等待检验报告": {"color": "yellow", "times": 30},
+    "等待取药": {"color": "yellow", "times": 30},
+    "取药完毕": {"color": "blue", "times": 30},
+
+}
+
+DATA = []
 
 
 @api_view(["GET"])
@@ -84,26 +53,67 @@ def getInfo(request):
     '''
     '''
     if request.method == "GET":
-        today = datetime.datetime.now().strftime('%Y-%m-%d')
+        if not DATA:
+            conn = MySQLdb.connect(user="root", password="123.com", host="localhost", port=3306, db="hm", charset="utf8")
+            c = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+            sql = '''
+            SELECT card_no, name, rela_phone, address, idenno FROM register
+            '''
+            c.execute(sql)
+            data = c.fetchall()
+            for i in data:
+                randList = [
+                    {"等待就诊": random.randint(1, 40)},
+                    {"正在就诊": random.randint(1, 40)},
+                    {"等待缴费": random.randint(5, 40)},
+                    {"等待检查": random.randint(2, 40)},
+                    {"等待检验": random.randint(2, 40)},
+                    {"正在检查": random.randint(1, 40)},
+                    {"等待检查报告": random.randint(3, 60)},
+                    {"等待检验报告": random.randint(3, 60)},
+                    {"等待取药": random.randint(3, 10)},
+                    {"取药完毕": 0}
+                ]
+                randData = random.choice(randList)
+                i["link"] = list(randData.keys())[0]
+                if i["link"] == "取药完毕":
+                    i["status"] = "blue"
+                else:
+                    i["time"] = list(randData.values())[0]
+                    i["status"] = STATUS[i["link"]]["color"] if i["time"] < STATUS[i["link"]]["times"] else "red"
 
-        # 已经挂号, 等待就诊的当天数据
-        regConn = getConn(tableType="registered")
-        regC = regConn.cursor()
-        regSql = '''
-        select CARD_NO, NAME, RELA_PHONE, ADDRESS, IDENNO, REG_DATE from FIN_OPR_REGISTER where REG_DATE = {}
-        '''.format(today)
-        regC.execute(regSql)
-        regData = regC.fetchall()
+        else:
+            data = DATA
+            for i in data:
+                if i["link"] == "取药完毕":
+                    continue
 
-        # 已经就诊, 等待缴费的当天数据
-        chargeConn = getConn(tableType="charge")
-        chargeC = chargeConn.cursor()
-        chargeSql = '''
-        select CARD_NO, 诊断结束时间 from 诊断表 where 诊断结束时间 = {}
-        '''.format(today)
-        chargeC.execute(chargeSql)
-        chargeData = chargeC.fetchall()
-
-        # 已经缴费, 等待检查或取药或检验的当天数据
-
-        return JsonResponse(regData)
+                a = random.randint(1, 15)
+                if a == 3:
+                    if i["link"] == "等待就诊":
+                        i["link"] == "正在就诊"
+                    elif i["link"] == "正在就诊":
+                        i["link"] = "等待缴费"
+                    elif i["link"] == "等待缴费":
+                        i["link"] = random.choice(["等待检查", "等待检验", "等待取药"])
+                    elif i["link"] == "等待检查":
+                        i["link"] = "正在检查"
+                    elif i["link"] == "等待检验":
+                        i["link"] = "等待检验报告"
+                    elif i["link"] == "正在检查":
+                        i["link"] = "等待检查报告"
+                    elif i["link"] == "等待取药":
+                        i["link"] = "取药完毕"
+                    elif i["link"] in ["等待检验报告", "等待检查报告"]:
+                        i["link"] = "正在就诊"
+                    i["status"] = STATUS[i["link"]]["color"]
+                    i["time"] = 0
+                else:
+                    i["time"] += 3
+                    i["status"] = STATUS[i["link"]]["color"] if i["time"] < STATUS[i["link"]]["times"] else "red"
+        global DATA
+        DATA = copy.deepcopy(data)
+        for i in data:
+            if "time" in i.keys():
+                i.pop("time")
+        return JsonResponse({"data": data})
