@@ -164,7 +164,8 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		//门诊表格的加载
 	 		outpatientTable:function(detail){
 	 			var tempThat = this;
-	 			// this.$http.get("http://127.0.0.1:8887/alert/").then(function(response){
+	 			this.$http.get("http://127.0.0.1:8887/alert/getInfo").then(function(response){
+	 				console.log(response)
 	 				// var data = response.data;
 	 				  var data = tempThat.testData;
 		 			var tempTableDate = tempThat.dataTablesColumn(data[detail][0]);
@@ -204,7 +205,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 
 		    		})
 
-	 			// })
+	 			})
 	 		},
 
 	 		datatableScroll:function(){
