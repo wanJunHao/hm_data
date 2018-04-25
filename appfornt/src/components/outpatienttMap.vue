@@ -19,8 +19,8 @@
 				</select>
 				<!-- 日期选择 -->
 				<div class="mapShow-data">
-					<input type="text" id="mapShowData-start" class="mapShowData-change" value="2018/03/22 00:00">
-					<input type="text" id="mapShowData-end" class="mapShowData-change" value="2018/03/25 23:99">
+					<input type="text" id="mapShowData-start" class="mapShowData-change" :value="nowDate + ' 00:00'">
+					<input type="text" id="mapShowData-end" class="mapShowData-change" :value="nowDate + ' 23:59'">
 				</div>
 			</div>
 		</div>
