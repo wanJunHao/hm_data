@@ -93,11 +93,11 @@
 						<tr v-on:mouseenter="enter" v-on:mouseleave="leave" class="tableCon">
 							<td class="tdOne"></td>
 							<td>
-								>
+								<span>></span>
 								<img src='/static/images/more.png' alt='' class='moreCompare' @click='showCompare'>
 							</td>
 							<td>
-								1h15min
+								<span>1h</span>
 								<img src='/static/images/more.png' alt='' class='moreWaitTime' @click='showWait'>
 							</td>
 							<td>
@@ -117,13 +117,13 @@
 					</tbody>
 					</table>
 					<div id="compareSelects" style="display: none;">
-						<div class="" id="">></div>
-						<div class="" id=""><</div>
+						<div class="options" id="">></div>
+						<div class="options" id=""><</div>
 					</div>
 					<div id="waitSelects" style="display: none;">
-						<div class="" id="">2h</div>
-						<div class="" id="">1h</div>
-						<div class="" id="">3h</div>
+						<div class="options" id="">2h</div>
+						<div class="options" id="">1h</div>
+						<div class="options" id="">3h</div>
 					</div>
 				</div>
 			</div>
