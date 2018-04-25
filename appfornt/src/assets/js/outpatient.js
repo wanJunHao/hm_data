@@ -58,7 +58,8 @@ import outpatienttMap from "@/components/outpatienttMap"
 		            ]
 		            
         		},
-        		dataMap:{}
+        		dataMap:{},
+        		tableShowPx:$("body").width() -60,
 
 	 		}
 	 	},
@@ -70,13 +71,14 @@ import outpatienttMap from "@/components/outpatienttMap"
 			_this.outpatientTable("outpatient");
 			// 门诊表格
 			setInterval(function(){
-				_this.outpatientTable("outpatient");
+				_this.outpatientTable(_this.outpatienttable);
 			},60000);
 			var _this = this;
 			// 获取当前时间
 	 		setInterval(function(){
 	 			_this.getDate();
 	 		},1000);
+
 		},
 	 	methods:{
 	 		getDate:function(){
@@ -101,6 +103,9 @@ import outpatienttMap from "@/components/outpatienttMap"
     			setTimeout(() => {
       				_this.getDate();
    				}, 1000)
+	 		},
+	 		bodyWidth:function(){
+	 			return {"width":this.tableShowPx + "px"}
 	 		},
 	 		changeWaringStatus:function(data){
 	 			this.waringShow = data;
@@ -142,7 +147,12 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		//门诊表格的加载
 	 		outpatientTable:function(detail){
 	 			var tempThat = this;
-	 			this.$http.get("http://127.0.0.1:8887/alert/getInfo").then(function(response){
+	 			if(detail == "outpatient"){
+	 				var tempUrl = "http://127.0.0.1:8887/alert/getInfo";
+	 			}else if(detail == "inhostal"){
+	 				var tempUrl = "http://127.0.0.1:8887/alert/getInfo";
+	 			}
+	 			this.$http.get(tempUrl).then(function(response){
 	 				var data = response.data.data;
 	 				tempThat.details = response.data.counts;
 	 				tempThat.dataMap = response.data.map;
