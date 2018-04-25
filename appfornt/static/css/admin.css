@@ -1,4 +1,4 @@
-/*
+
  * Author:sandy
  * Creat Date:2012-09-20
 */
@@ -30,12 +30,12 @@ textarea{resize:none;overflow-x:hidden;overflow-y:auto;width:586px;height:86px;p
 body{font:12px/21px "microsoft yahei";color:#404040;background-position:center 31px;background-repeat:no-repeat;}
 .wrap{width:1000px;overflow:hidden;margin:10px auto 74px;}
 .wrap2{width:600px;overflow:hidden;margin:10px auto}
-.logo,.icon-tel,.icon-uc,.back-up,.creat-i,.pass-i,.refuse-i,.author-tip,.icon-tips,.tip-hill,.icon-add,.icon-del{background:url(/admin/images/2.0/bg.png) no-repeat;}
+/* .logo,.icon-tel,.icon-uc,.back-up,.creat-i,.pass-i,.refuse-i,.author-tip,.icon-tips,.tip-hill,.icon-add,.icon-del{background:url(/admin/images/2.0/bg.png) no-repeat;} */
 .top-wrap{border-bottom:1px solid #f0f0f0;height:31px;line-height:31px;background-color:#f5f5f5;color:#cacaca;}
 .top-nav{width:1030px;margin:0 auto;}
 .top-nav a{color:#6c6c6c;margin:0 15px;}
 .title{height:40px;width:1000px;margin:0 auto 10px;padding-top:10px;line-height:40px;}
-.logo{float:left;width:163px;height:35px;overflow:hidden;line-height:200px;}
+/* .logo{float:left;width:163px;height:35px;overflow:hidden;line-height:200px;} */
 .icon-tel{padding-left:19px;margin-left:8px;background-position:-289px 0;}
 .icon-uc{padding-left:25px;background-position:-283px -29px;}
 .title i{color:#ddd;margin:0 8px;}
@@ -244,4 +244,4 @@ fieldset .doc-dd{width:819px;}
 .prepare_select_list { float:left; margin-left: 10px; border:solid 1px #ccc; padding:0px 5px; height: 30px; line-height: 30px;}
 .pre_unique_1 {border-bottom: solid 2px #F00;}
 .pro-list{cursor: pointer;}
-/******************H5 专题部分样式 结束***********************/
+/******************H5 专题部分样式 结束**********************
