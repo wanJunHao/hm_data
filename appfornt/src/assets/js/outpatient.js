@@ -30,14 +30,7 @@ import outpatienttMap from "@/components/outpatienttMap"
   		},
 	 	data(){
 	 		return{
-	 			details:[
-	 				{name:"总挂号数",count:"0"},
-	 				{name:"就诊",count:"0"},
-	 				{name:"初诊完毕",count:"0"},
-	 				{name:"候检",count:"0"},
-	 				{name:"就检",count:"0"},
-	 				{name:"检查完毕",count:"0"}
-	 			],
+	 			details:[],
 	 			details1:[
 	 				{name:"总挂号数",count:"0"},
 	 				{name:"等待就诊",count:"0"},
@@ -64,7 +57,8 @@ import outpatienttMap from "@/components/outpatienttMap"
 
 		            ]
 		            
-        }
+        		},
+        		dataMap:{}
 
 	 		}
 	 	},
@@ -140,7 +134,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		        	if(keys == "status" || keys == "link" || keys == "time" || keys == "settime"){
 		        		continue;
 		        	}
-		          tempTableDate.push({"title":keys,"data":keys});
+		          tempTableDate.push({"title":this.dataMap[keys],"data":keys});
 		        }
 
 		        return tempTableDate;
@@ -150,6 +144,8 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 			var tempThat = this;
 	 			this.$http.get("http://127.0.0.1:8887/alert/getInfo").then(function(response){
 	 				var data = response.data.data;
+	 				tempThat.details = response.data.counts;
+	 				tempThat.dataMap = response.data.map;
 		 			var tempTableDate = tempThat.dataTablesColumn(data[0]);
 		 			$(".tableShow .outpatientTable-content").html('<table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="tableOutpatientPanel"></table>')
 		 			// console.log($("#tableOutpatientPanel").width(),$(".tableShow").width())
@@ -193,6 +189,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		             			if(tempColorWidth > 100){
 		             				var tempColorWidth = 100;
 		             			}
+		             			
 		             			return "<div class="+full.status+" style='width:"+tempColorWidth+"%'><div>";
 		             		}
 		             	}]

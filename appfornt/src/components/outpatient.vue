@@ -7,7 +7,7 @@
 			<!-- 头部门诊显示数据 -->
 			<div class="detailData" id="outpatientDetail">
 				<div v-for="detail in details">
-					<span>{{detail.name}}{{detail.count}}人</span>
+					<span>{{detail.name}} : {{detail.count}}人</span>
 				</div>
 			</div>
 

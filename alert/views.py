@@ -116,7 +116,7 @@ def getInfo(request):
                     elif i["link"] in ["等待检验报告", "等待检查报告"]:
                         i["link"] = "正在就诊"
                     i["status"] = STATUS[i["link"]]["color"]
-                    i["time"] = 0
+                    i["time"] = 1
                 else:
                     i["time"] += 1
                     i["status"] = STATUS[i["link"]]["color"] if i["time"] < STATUS[i["link"]]["times"] else "red"

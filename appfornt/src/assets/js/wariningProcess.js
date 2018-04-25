@@ -165,7 +165,7 @@ export default{
 				 	ReattachConnections:false,
 					ConnectionOverlays:[
 						["Custom",{
-							create:function(component){if($(component.source).attr("commondata") != undefined && $(component.source).attr("commondata").split("_yzy_").length > 1 && $(component.source).attr("commondata").split("_yzy_")[0] != "缴费时间" &&  $(component.source).attr("commondata").split("_yzy_")[0] != "住院流程" &&  $(component.source).attr("commondata").split("_yzy_")[0] != "送检" ){return $("<img src='/static/images/lianj_03.png' style='display:none'/>")};return $("<img src='/static/images/lianj_03.png'/>")},
+							create:function(component){if($(component.source).attr("commondata") != undefined && $(component.source).attr("commondata").split("_yzy_").length > 1 && $(component.source).attr("commondata").split("_yzy_")[0] != "缴费时间" &&  $(component.source).attr("commondata").split("_yzy_")[0] != "住院流程" &&  $(component.source).attr("commondata").split("_yzy_")[0] != "送检" ){return $("<img src='/static/images/lianj_icon_nor.png' style='display:none'/>")};return $("<img src='/static/images/lianj_icon_nor.png'/>")},
 							loaction:0.5,
 							cssClass:"awarningconnectionImg",
 							id:"connFlag",
