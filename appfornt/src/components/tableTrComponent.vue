@@ -4,17 +4,17 @@
 		<td>
 			<select class="sumChange">
 				<option value=">"> > </option>
-				<option value="<"> < </option>
+<!-- 				<option value="<"> < </option>
 				<option value="<"> >= </option>
-				<option value="<"> <= </option>
+				<option value="<"> <= </option> -->
 			</select>
 		</td>
 		<td>
-			<select class="sumChange">
-				<option value=">30min"> 30min </option>
-				<option value="1h"> 1h </option>
-				<option value="1h30min"> 1h30min </option>
-				<option value="2h"> 2h </option>
+			<select class="sumChange" id="timeChangeSelect">
+				<option value="30"> 30min </option>
+				<option value="60" selected> 60min </option>
+				<option value="90"> 90min </option>
+				<option value="120"> 120min </option>
 			</select>
 		</td>
 		<td>

@@ -148,6 +148,7 @@ def setTime(request):
 
     elif request.method == "POST":
         jsonData = request.data
+        print(jsonData)
         links = jsonData["data"]
         for k, v in links.items():
             STATUS[k]["times"] = v["times"]
