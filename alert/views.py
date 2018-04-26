@@ -1,7 +1,7 @@
 # import datetime
 # from django.shortcuts import render
 from rest_framework.decorators import api_view
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 
 import MySQLdb
 import copy
@@ -13,37 +13,17 @@ os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'
 # Create your views here.
 
 
-@api_view(["POST", "GET"])
-def index(request):
-    '''
-    '''
-    if request.method == "POST":
-        return HttpResponse("xxx")
-    elif request.method == "GET":
-        testData = {
-            "regNum": 15,
-            "chargeNum": 22,
-            "checkNum": 18,
-            "detail": [
-                {"link": "等待就诊", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521", "color": ""},
-                {"link": "等待收费", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521", "color": ""},
-            ]
-        }
-        return JsonResponse(testData)
-
-
 STATUS = {
-    "等待就诊": {"color": "yellow", "times": 30},
-    "正在就诊": {"color": "green", "times": 30},
-    "等待缴费": {"color": "yellow", "times": 30},
-    "等待检查": {"color": "yellow", "times": 30},
-    "等待检验": {"color": "yellow", "times": 30},
-    "正在检查": {"color": "green", "times": 30},
-    "等待检查报告": {"color": "yellow", "times": 30},
-    "等待检验报告": {"color": "yellow", "times": 30},
-    "等待取药": {"color": "yellow", "times": 30},
-    "取药完毕": {"color": "blue", "times": 30},
-
+    "等待就诊": {"color": "yellow", "times": 30, "new": ""},
+    "正在就诊": {"color": "green", "times": 30, "new": ""},
+    "等待缴费": {"color": "yellow", "times": 30, "new": ""},
+    "等待检查": {"color": "yellow", "times": 30, "new": ""},
+    "等待检验": {"color": "yellow", "times": 30, "new": ""},
+    "正在检查": {"color": "green", "times": 30, "new": ""},
+    "等待检查报告": {"color": "yellow", "times": 30, "new": ""},
+    "等待检验报告": {"color": "yellow", "times": 30, "new": ""},
+    "等待取药": {"color": "yellow", "times": 30, "new": ""},
+    "取药完毕": {"color": "blue", "times": 30, "new": ""}
 }
 
 DATA = []
@@ -116,7 +96,7 @@ def getInfo(request):
                     elif i["link"] in ["等待检验报告", "等待检查报告"]:
                         i["link"] = "正在就诊"
                     i["status"] = STATUS[i["link"]]["color"]
-                    i["time"] = 0
+                    i["time"] = 1
                 else:
                     i["time"] += 1
                     i["status"] = STATUS[i["link"]]["color"] if i["time"] < STATUS[i["link"]]["times"] else "red"
@@ -150,3 +130,25 @@ def getInfo(request):
             ]
         }
         return JsonResponse(context)
+
+
+@api_view(["GET", "POST"])
+def setTime(request):
+    '''
+    '''
+    global STATUS
+    if request.method == "GET":
+        jsonData = request.data
+        if jsonData:
+            link = jsonData["link"]
+            data = STATUS[link]
+        else:
+            data = STATUS
+        return JsonResponse({"data": data})
+
+    elif request.method == "POST":
+        jsonData = request.data
+        link = jsonData["data"]["link"]
+        STATUS[link]["times"] = jsonData["data"]["times"]
+        STATUS[link]["new"] = jsonData["data"]["new"]
+        return JsonResponse({"status": "success"})
