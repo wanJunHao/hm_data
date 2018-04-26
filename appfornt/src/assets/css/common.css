@@ -107,5 +107,6 @@ html,body,#app{
   margin-top: 12px;
 }
 table td,table th{text-align: center;}
+.dataTables_wrapper{top: -1px;}
 
 

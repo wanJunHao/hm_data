@@ -200,7 +200,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		             				var tempColorWidth = 100;
 		             			}
 		             			
-		             			return "<div class="+full.status+" style='width:"+tempColorWidth+"%'><div>";
+		             			return "<div class="+full.status+" style='width:"+tempColorWidth+"%' title='设定时间 ："+full.settime+"  当前时间 ："+full.time+"'><div>";
 		             		}
 		             	}]
 
