@@ -1,9 +1,16 @@
+import tableTrAdd from "@/components/tableTrComponent"
 export default{
 	name:"warningProcess",
+ 	components:{
+		tableTrAdd,
+	},
 	props:{
 		warningShow:{
 			type:Boolean,
 			default:false,
+		},
+		outpatienttable:{
+			type:String
 		}
 	},
 	mounted:function(){
@@ -15,7 +22,7 @@ export default{
 
 			left:70,
 
-			top:0,
+			top:100,
 
 			width:125,
 
@@ -34,7 +41,7 @@ export default{
 	                strokeWidth: 1
 	            },
 	            isSource: false,
-	            connector: [ "Flowchart", { stub: [1, 6], gap: 3, cornerRadius: 1, alwaysRespectStubs: true } ],
+	            connector: [ "Flowchart", { stub: [1, 50], gap: 3, cornerRadius: 1, alwaysRespectStubs: true } ],
 	            connectorStyle:{strokeWidth: 1,stroke: "#5ba7ff",joinstyle: "round",outlineStroke: "white",outlineWidth: 2},
 	            // hoverPaintStyle:{strokeWidth: 3,stroke: "#216477",outlineWidth: 5,},
 	            // connectorHoverStyle:{fill: "#216477",stroke: "#216477"},
@@ -46,6 +53,11 @@ export default{
 			warningPopUp:false,
 			tempLeft:0,
 			tempTop:0,
+			processTableShow:["等待就诊","正在就诊","等待缴费","等待取药","等待检查","等待检验","正在检查","等待检验报告","等待检验报告","入院流程","复诊"],
+			customCount:-1,
+			nowFile:null,
+			changeNowFile:null,
+
 		}
 	},
 	filters:{
@@ -69,43 +81,17 @@ export default{
 					this.warningProcessStatus();
 					if(this.instance == null){
 						this.jsPlumbHandle();
-						this.top = $(".warningProcess-content .settingPanel-content").height()/2-20;
 					}
 					
 				}
 			})
-		}
+		},
+
 	},
 	methods:{
 		addRow:function(){
-			var trDetail = $("<tr class='tableCon'><td class=tdOne></td><td>><img src='/static/images/more.png' alt='' class='moreCompare' @click='showCompare'></td><td>1h15min<img src='/static/images/more.png' alt='' class='moreWaitTime' @click='showWait'></td><td><svg style=width:20px;height:20px;><rect rx=4 ry=4 width=15 height=15 fill=#FA3843 y=5 x=5></rect></svg></td><td class=deleteRow></td></tr>");				
-			trDetail.insertBefore($(".addRow"));  
-			$(trDetail).mouseenter(function(){
-				$(this).find("td:eq(4)").html($("<img src=/static/images/delete.png>"));
-			})
-			$(trDetail).mouseleave(function(){
-				$(this).find("td:eq(4)").html("");
-			})
-			$(".deleteRow").click(function(){
-				$(this).parents("tr").remove();
-			})
-			var text = $(".warning-setting table tbody tr:eq(0) .tdOne").html();
-			$(".tdOne").html(text);
-		},
-		enter:function(event){
-			var tar = event.target;
-			$(tar).find("td:eq(4)").html($("<img src=/static/images/delete.png>"));
-			// $("#warningPanelSetting table tbody tr.tableCon").find("td:eq(4)").html($("<img src=/static/images/delete.png>"));
-		},
-		leave:function(event){
-			var tar = event.target;
-			$(tar).find("td:eq(4)").html("");
-			// $("#warningPanelSetting table tbody tr").find("td:eq(4)").html("");
-		},
-		deleteRow:function(event){
-			var tar = event.target;
-			$(tar).parents("tr").remove();
-			// $("#warningPanelSetting table tbody tr td:eq(4)").parent("tr").remove();
+			if($(".tableCon").css("display") == "block") return;
+			$(".tableCon").show();
 		},
 		sendMsgToParent(){
 			this.$emit("listenToChildEvent",false)
@@ -120,10 +106,12 @@ export default{
  			this.warningPopUp = false;
  		},
  		canclePanelBtn:function(){
+ 			if(this.warningPopUp)return;
  			// this.warningShow = false;
  			this.sendMsgToParent();
  		},	
  		savePanelBtn:function(){
+ 			if(this.warningPopUp)return;
  			this.sendMsgToParent();
  		},
  		awarningDarg:function(){
@@ -138,6 +126,9 @@ export default{
 			$("#compareSelects div").bind("mouseenter",function(){
 				$(this).css("background","#DDDDDD");
 				$(this).siblings().css("background","");
+				$(this).click(function(){
+					$(".tableCon td:eq(1) span").html($(this).html());
+				})
 			})
 			$("#compareSelects").unbind("mouseleave");
 			$("#compareSelects").bind("mouseleave",function(){
@@ -150,6 +141,9 @@ export default{
 			$("#waitSelects div").bind("mouseenter",function(){
 				$(this).css("background","#DDDDDD");
 				$(this).siblings().css("background","");
+				$(this).click(function(){
+					$(".tableCon td:eq(2) span").html($(this).html());
+				})
 			})
 			$("#waitSelects").unbind("mouseleave");
 			$("#waitSelects").bind("mouseleave",function(){
@@ -158,6 +152,7 @@ export default{
  		},
  		jsPlumbHandle:function(){
  			var _this = this;
+ 			_this.customCount = -1;
 			jsPlumb.ready(function(){
 			 _this.instance = jsPlumb.getInstance({
 					DragOptions: { cursor: "pointer", zIndex: 2000 },
@@ -165,16 +160,12 @@ export default{
 				 	ReattachConnections:false,
 					ConnectionOverlays:[
 						["Custom",{
-							create:function(component){if($(component.source).attr("commondata") != undefined && $(component.source).attr("commondata").split("_yzy_").length > 1 && $(component.source).attr("commondata").split("_yzy_")[0] != "缴费时间" &&  $(component.source).attr("commondata").split("_yzy_")[0] != "住院流程" &&  $(component.source).attr("commondata").split("_yzy_")[0] != "送检" ){return $("<img src='/static/images/lianj_03.png' style='display:none'/>")};return $("<img src='/static/images/lianj_03.png'/>")},
+							create:function(component){_this.customCount++;;return $("<div><img src='/static/images/lianj_icon_nor.png'/><span>"+_this.processTableShow[_this.customCount]+"</span></div>")},
 							loaction:0.5,
 							cssClass:"awarningconnectionImg",
 							id:"connFlag",
 							events:{
 								click:function(jsPlumb){
-									// if($(jsPlumb.component.target).hasClass("jtk-overlay")){
-									// 	$(jsPlumb.component.target).trigger("click");
-									// 	return;
-									// }
 									_this.customClickHandle(jsPlumb);
 								}
 							}
@@ -199,93 +190,87 @@ export default{
         }
 
 	},
-	//连线
-	awarningTableDrag:function(ele,eleList){
+	outpatientLine:function(ele,eleList){
 		var _this = this;
 		this.instance.batch(function () {
 			$(eleList).each(function(index,ele){
 				$(ele).find(".awarning-process-item").each(function(indexs,eles){
 					_this._addEndpoints($(eles).attr("id"), ["LeftMiddle","RightMiddle"], ["TopCenter","BottomCenter"]);
-						
+					if(index > 0){
+						$(eles).css("marginRight","20px")
+					}
 					if(indexs > 0){
 
 						if(_this.requestData[index][indexs].split("_yzy_").length > 1 && indexs+1 < _this.requestData[index].length){
-							_this.instance.connect({uuids: [$(eles).attr("id")+"LeftMiddle", $(ele).find(".awarning-process-item").eq(indexs-1).attr("id")+"LeftMiddle"], editable: true});
-							if(index > 1){
-								if($(eles).attr("id") == "jsplumb23") return;
-								_this.instance.connect({uuids: [$(eles).attr("id")+"RightMiddle", $(ele).find(".awarning-process-item").eq(indexs-1).attr("id")+"RightMiddle"], editable: true});
-							}
+							
+							_this.instance.connect({uuids: [$(eles).attr("id")+"TopCenter", $(ele).find(".awarning-process-item").eq(indexs-1).attr("id")+"TopCenter"], editable: true});
 							return;
 						}
 
 						 var tempIndexs = $(eles).attr("dataindex");
-				
+						
 						_this.instance.connect({uuids: ["jsplumb"+index + (tempIndexs-1) +"RightMiddle", "jsplumb"+index + tempIndexs +"LeftMiddle"], editable: true});
 					}
 				})
-				// if(index > 0){
-				// 	var tempParent = _this.arrHandleChart(_this.requestData,_this.requestData[index][0],index).replace("_yzy_","");
-				// 	// _this.instance.connect({uuids: ["jsplumb"+String(tempParent)+"RightMiddle", "jsplumb"+String(index)+"1LeftMiddle"], editable: true});
-				// }
+
 					_this.$nextTick(function(){
-						if(index == 2){
-							$(".jtk-overlay").eq(index).css("top",$(".jtk-overlay").eq(index).position().top)
-							_this._addEndpoints($(".jtk-overlay").eq(index).attr("id"), ["LeftMiddle"],[]);
-							_this.instance.connect({uuids: ["jsplumb02RightMiddle", $(".jtk-overlay").eq(index).attr("id")+"LeftMiddle"], editable: true});
-							$(".jtk-overlay").eq(index).hide();
+						if(index == 1){
+							_this.instance.connect({uuids: ["jsplumb03RightMiddle","jsplumb12TopCenter"], editable: true});
+						}else if(index == 2){
+							_this.instance.connect({uuids: ["jsplumb13BottomCenter","jsplumb21TopCenter"], editable: true});
 						}else if (index == 3){
-							_this.instance.connect({uuids: ["jsplumb23RightMiddle","jsplumb31LeftMiddle"], editable: true});
+							_this.instance.connect({uuids: ["jsplumb12BottomCenter","jsplumb31TopCenter"], editable: true});
+							_this.instance.connect({uuids: ["jsplumb21BottomCenter","jsplumb31RightMiddle"], editable: true});
 						}else if(index == 4){
-							$(".jtk-overlay").eq(index + 1).css("top",$(".jtk-overlay").eq(index + 1).position().top).css("left",$(".jtk-overlay").eq(index + 1).position().left- 8)
-							_this._addEndpoints($(".jtk-overlay").eq(index+1).attr("id"), ["RightMiddle"],[]);
-							_this.instance.connect({uuids: [$(".jtk-overlay").eq(index+1).attr("id")+"RightMiddle","jsplumb41LeftMiddle"], editable: true});
-							_this.instance.connect({uuids: ["jsplumb41TopCenter","jsplumb02TopCenter"], editable: true});
-							$(".jtk-overlay").eq(index+1).hide();
-							$(".awarningconnectionImg:gt(8)").hide();						
+							_this.instance.connect({uuids: ["jsplumb41LeftMiddle","jsplumb02TopCenter"], editable: true});
+							_this.instance.connect({uuids: ["jsplumb31LeftMiddle","jsplumb01BottomCenter"], editable: true});
 						}
-						$(".awarningconnectionImg").eq(4).hide();
+						
 					})
 
 			});
 			
-			_this.instance.connect({uuids: ["jsplumb11RightMiddle", "jsplumb22LeftMiddle"], editable: true});
 	        setTimeout(function(){
 	        	$(".jtk-endpoint").not(".jtk-endpoint-connected").remove();
-	        },200);
-	       })
+	        	$(".awarningconnectionImg:last").find("img").hide();
+	        },10);
+	       })		
+	},
+	//连线
+	awarningTableDrag:function(ele,eleList){
+		if(this.outpatienttable == "outpatient"){
+			this.outpatientLine(ele,eleList);
+		}
 	},
 	warningProcessStatus:function(){
 		if(this.warningShow){
-			this.requestData = [["分诊时间","挂号时间","就诊时间"],["就诊时间","缴费时间_yzy_sameLeave","住院流程_yzy_sameLeave"],["缴费时间_yzy_sameLeave","检查_yzy_sameLeave","送检_yzy_sameLeave","取药_yzy_sameLeave"],["取药_yzy_sameLeave","就诊结束"],["检查_yzy_sameLeave","取报告"]];
+			this.requestData = [["分诊时间","挂号时间(开始就诊)","结束就诊时间","缴费时间"],["缴费时间","取药完毕_yzy_sameLeave","检验开始_yzy_sameLeave","检查开始_yzy_sameLeave"],["检查开始_yzy_sameLeave","检查结果"],["检验开始_yzy_sameLeave","取到报告"],["结束就诊时间","办理入院"]];
 			// this.secondArrDataHandle(this.ceshi);
 		}
 		return true;
 	},
 	itemStyle:function(index){
-		if(index > 0){
-			if(index == 2){
-				return  {"top":this.tempTop - 100 + "px","left":this.tempLeft + 195 +"px","width":this.width + this.left + 'px'}
-			}else if (index == 3){
-				return  {"top":this.tempTop+ 25 + "px","left":this.tempLeft + 385 +"px","width":this.width + this.left + 'px'}
-			}else if(index == 4){
-				return  {"top":this.tempTop - 125 + "px","left":this.tempLeft + 385 +"px","width":this.width + this.left + 'px'}
-			}
-			 return  {"top":this.tempTop+ "px","left":this.tempLeft+"px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left + 'px'}
-	
-			// this.tempLeft += (this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
-		}else{
-			this.tempLeft =this.requestData[index].length * this.width + (this.requestData[index].length) * this.left;
-			this.tempTop = (index+1) * this.top;
-			return {"top":(index+1) * this.top + "px","left":0 + "px","width":this.requestData[index].length * this.width + (this.requestData[index].length) * this.left + 'px'}
+		if(this.outpatienttable == "outpatient"){
+			if(index > 0){
+				if(index == 2){
+					return  {"top":this.tempTop + 220 + "px","left":this.tempLeft + 290 +"px","width":this.width  + 'px'}
+				}else if (index == 3){
+					return  {"top":this.tempTop+ 300 + "px","left":this.tempLeft + 145 +"px","width":this.width  + 'px'}
+				}else if(index == 4){
+					return  {"top":this.tempTop -90 + "px","left":this.tempLeft  +"px","width":this.width  + 'px'}
+				}
+				 return  {"top":this.tempTop+ 120+ "px","left":this.tempLeft+"px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length - 3.1) * this.left + 'px'}
+		
+				// this.tempLeft += (this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
+			}else{
+				this.tempLeft =(this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
+				this.tempTop = (index+1) * this.top;
+				return {"top":(index+1) * this.top + "px","left":0 + "px","width":this.requestData[index].length * this.width + (this.requestData[index].length) * this.left + 'px'}
+			}			
 		}
-	},
-	itemsStyle:function(index,indexs){
-		if(index < 1 || this.requestData[index][indexs].split("_yzy_").length <= 1) return;
-		if(this.requestData[index][indexs].split("_yzy_")[1] == "sameLeave"){
-				return {"position":"absolute","top":(indexs - 2.5 +index) * 50 + "px"}
 
-		}
 	},
+
 	arrHandleChart:function(arr,str,noFor){
 		var _this = this;
 		for(var index = 0; index < arr.length;index++){
@@ -298,15 +283,16 @@ export default{
 	},
 
 	customClickHandle:function(jsPlumb){
+		if($(jsPlumb.canvas).find("span").text() == "复诊") return;
 		//元素位置
 		var tempElementTarget = jsPlumb._jsPlumb.component;
 		this.warningPopUp = !this.warningPopUp;
 		if(this.warningPopUp){
 			this.$nextTick(function(){
 				this.awarningDarg();
-				if(tempElementTarget.id == 'con_17'){
-					$(".tableCon .tdOne").html('等待就诊');
-				}
+				this.nowFile = $(jsPlumb.canvas).find("span").text();
+				this.changeNowFile = $(jsPlumb.canvas).find("span").text();
+				$(".sumChange").comboSelect();
 			})
 		}
 	}

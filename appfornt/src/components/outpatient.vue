@@ -7,7 +7,7 @@
 			<!-- 头部门诊显示数据 -->
 			<div class="detailData" id="outpatientDetail">
 				<div v-for="detail in details">
-					<span>{{detail.name}}{{detail.count}}人</span>
+					<span>{{detail.name}} : {{detail.count}}人</span>
 				</div>
 			</div>
 
@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		<!-- 表格 -->
-		<div class="tableShow" v-show="outpatienttMapTable">
+		<div class="tableShow" v-show="outpatienttMapTable" :style="bodyWidth()">
 			<!-- 当前日期 -->
 			<div class="tableTop">{{date}}</div>
 			<!-- 门诊表格 -->
@@ -32,7 +32,7 @@
 		<!-- 地图 -->
 		<outpatienttMap v-bind:outpatienttMapShow="outpatienttMapShow"></outpatienttMap>			
 		<!-- 流程设置弹框 -->
-		<warningProcess v-bind:warning-show="waringShow" v-on:listenToChildEvent="changeWaringStatus"></warningProcess>
+		<warningProcess v-bind:warning-show="waringShow" v-bind:outpatienttable="outpatienttable"  v-on:listenToChildEvent="changeWaringStatus"></warningProcess>
 	</div>
 </template>
 

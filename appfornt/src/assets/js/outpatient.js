@@ -30,23 +30,15 @@ import outpatienttMap from "@/components/outpatienttMap"
   		},
 	 	data(){
 	 		return{
-	 			details:[
-	 				{name:"总挂号数",count:"40"},
-	 				{name:"等待就诊",count:"12"},
-	 				{name:"就诊",count:"5"},
-	 				{name:"初诊完毕",count:"3"},
-	 				{name:"候检",count:"12"},
-	 				{name:"就检",count:"5"},
-	 				{name:"检查完毕",count:"3"}
-	 			],
+	 			details:[],
 	 			details1:[
-	 				{name:"总挂号数",count:"20"},
-	 				{name:"等待就诊",count:"10"},
-	 				{name:"就诊",count:"1"},
-	 				{name:"初诊完毕",count:"2"},
-	 				{name:"候检",count:"6"},
-	 				{name:"就检",count:"5"},
-	 				{name:"检查完毕",count:"3"}
+	 				{name:"总挂号数",count:"0"},
+	 				{name:"等待就诊",count:"0"},
+	 				{name:"就诊",count:"0"},
+	 				{name:"初诊完毕",count:"0"},
+	 				{name:"候检",count:"0"},
+	 				{name:"就检",count:"0"},
+	 				{name:"检查完毕",count:"0"}
 	 			],
 	 			date:'',
 	 			waringShow:false,
@@ -65,7 +57,9 @@ import outpatienttMap from "@/components/outpatienttMap"
 
 		            ]
 		            
-        }
+        		},
+        		dataMap:{},
+        		tableShowPx:$("body").width() -60,
 
 	 		}
 	 	},
@@ -77,13 +71,14 @@ import outpatienttMap from "@/components/outpatienttMap"
 			_this.outpatientTable("outpatient");
 			// 门诊表格
 			setInterval(function(){
-				_this.outpatientTable("outpatient");
+				_this.outpatientTable(_this.outpatienttable);
 			},60000);
 			var _this = this;
 			// 获取当前时间
 	 		setInterval(function(){
 	 			_this.getDate();
 	 		},1000);
+
 		},
 	 	methods:{
 	 		getDate:function(){
@@ -108,6 +103,9 @@ import outpatienttMap from "@/components/outpatienttMap"
     			setTimeout(() => {
       				_this.getDate();
    				}, 1000)
+	 		},
+	 		bodyWidth:function(){
+	 			return {"width":this.tableShowPx + "px"}
 	 		},
 	 		changeWaringStatus:function(data){
 	 			this.waringShow = data;
@@ -135,13 +133,13 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		   //给定datatables 所有字段column
 		      dataTablesColumn:function(column){
 		        var tempTableDate = [];
-		        tempTableDate.push({"title":"状态","data":"status","sClass":"tableDataState","render":function(data, type, full, meta){return "<div class="+data+"></div>"}});
+		        tempTableDate.push({"title":"状态","data":"status","sClass":"tableDataState"});
 		        tempTableDate.push({"title":"环节信息","data":"link"})
 		        for(let keys in column){
-		        	if(keys == "status" || keys == "link"){
+		        	if(keys == "status" || keys == "link" || keys == "time" || keys == "settime"){
 		        		continue;
 		        	}
-		          tempTableDate.push({"title":keys,"data":keys});
+		          tempTableDate.push({"title":this.dataMap[keys],"data":keys});
 		        }
 
 		        return tempTableDate;
@@ -149,8 +147,15 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		//门诊表格的加载
 	 		outpatientTable:function(detail){
 	 			var tempThat = this;
-	 			this.$http.get("http://127.0.0.1:8887/alert/getInfo").then(function(response){
+	 			if(detail == "outpatient"){
+	 				var tempUrl = "http://127.0.0.1:8887/alert/getInfo";
+	 			}else if(detail == "inhostal"){
+	 				var tempUrl = "http://127.0.0.1:8887/alert/getInfo";
+	 			}
+	 			this.$http.get(tempUrl).then(function(response){
 	 				var data = response.data.data;
+	 				tempThat.details = response.data.counts;
+	 				tempThat.dataMap = response.data.map;
 		 			var tempTableDate = tempThat.dataTablesColumn(data[0]);
 		 			$(".tableShow .outpatientTable-content").html('<table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="tableOutpatientPanel"></table>')
 		 			// console.log($("#tableOutpatientPanel").width(),$(".tableShow").width())
@@ -183,6 +188,21 @@ import outpatienttMap from "@/components/outpatienttMap"
 		             	"scrollY":data.length > 15 ? $("#app .content .tableShow").height() - 150 + 'px':false,
 		             	"data":data,
 		             	"columns":tempTableDate,
+		             	"columnDefs":[{
+		             		"targets":0,
+		             		render:function(data, type, full, meta){
+		             			if(data == "blue"){
+		             				var tempColorWidth = 100;
+		             			}else{
+		             				var tempColorWidth = full.time/full.settime * 100;
+		             			}
+		             			if(tempColorWidth > 100){
+		             				var tempColorWidth = 100;
+		             			}
+		             			
+		             			return "<div class="+full.status+" style='width:"+tempColorWidth+"%'><div>";
+		             		}
+		             	}]
 
 		    		})
 
