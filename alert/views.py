@@ -148,10 +148,10 @@ def setTime(request):
 
     elif request.method == "POST":
         jsonData = request.data
-        links = jsonData["data"]
-        for k, v in links.items():
-            STATUS[k]["times"] = v["times"]
-            STATUS[k]["new"] = v["new"]
+        # links = jsonData["data"]
+        for i in jsonData["data"]:
+            STATUS[i["link"]]["times"] = i["times"]
+            STATUS[i["link"]]["new"] = i["new"]
         return JsonResponse({"status": "success"})
 
 
