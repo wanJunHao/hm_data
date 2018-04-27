@@ -264,9 +264,6 @@ def zhuyuanInfo(request):
                     i["status"] = STATUS_1[i["link"]]["color"]
                     i["time"] = 1
                 else:
-                    print("*" * 50)
-                    print(i)
-                    print("*" * 50)
                     i["time"] += 1
                     i["status"] = STATUS_1[i["link"]]["color"] if i["time"] < STATUS_1[i["link"]]["times"] else "red"
                 i["settime"] = STATUS_1[i["link"]]["times"]
