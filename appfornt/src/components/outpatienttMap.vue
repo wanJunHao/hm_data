@@ -44,7 +44,7 @@
 <style type="text/css">
 	.mapShow{background: white;background-clip: content-box;min-width: 1000px;}
 	.mapShow .mapShowHandle-content{width: 100%;height: 100%;border:1px solid #DEDEDE;}
-	.mapShow .autoMapToHandle{width: 80%;height: 80%;position:absolute;top: 40px;right: 0px;bottom: 0px;left: 0px;margin: auto}
+	.mapShow .autoMapToHandle{width: 70%;height: 70%;position:absolute;top: 40px;right: 0px;bottom: 0px;left: 0px;margin: auto}
 	.mapShow .mapShow-title{width: 100%;height:50px;border-bottom:2px solid #0B9BFB;}
 	.mapShow .mapShow-title .combo-select,.mapShow .mapShow-title .mapShow-data{width: 130px;height: 24px;float: left;font-size: 12px;line-height:24px;margin:13px 10px;cursor:pointer; }
 	.mapShow .mapShow-title .mapShow-data{border: 1px solid #DEDEDE;border-radius: 2px;}

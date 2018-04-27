@@ -61,6 +61,7 @@ export default{
 			nowElementJsplumb:null,
 			processTableDataChangeArr:{"data":[]},
 			processTableSaveFileName:[],
+			tableChangeBoolean:false,
 
 		}
 	},
@@ -82,6 +83,7 @@ export default{
 		warningShow:function(){
 			this.$nextTick(function(){
 				if(this.warningShow){
+					this.tableChangeBoolean = false;
 					this.warningProcessStatus();
 					if(this.instance == null){
 						this.jsPlumbHandle();
@@ -98,7 +100,7 @@ export default{
 			$(".tableCon").show();
 		},
 		sendMsgToParent(){
-			this.$emit("listenToChildEvent",false);
+			this.$emit("listenToChildEvent",{"warningBolean":false,"updateTable":this.tableChangeBoolean});
 		},
 		closeSetBtn:function(){
  			this.warningPopUp = false;
@@ -113,7 +115,7 @@ export default{
   				this.processTableData[tempName]["new"] = $("#warningPanelSetting .warning-body .warning-name-input-div input").val();
  				this.processTableData[tempName]["times"] =  $("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon #timeChangeSelect").val();
 				this.nowElementJsplumb.find("img").attr("src","/static/images/lianj_03.png");
-				console.log($.inArray(tempName,this.processTableSaveFileName))
+				
 				if($.inArray(tempName,this.processTableSaveFileName) >= 0){
 					this.processTableDataChangeArr["data"].splice($.inArray(tempName,this.processTableSaveFileName),1);
 					this.processTableDataChangeArr["data"].push({"link":tempName,"new":$("#warningPanelSetting .warning-body .warning-name-input-div input").val(),"times":$("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon #timeChangeSelect").val()});
@@ -130,54 +132,37 @@ export default{
  			if(this.warningPopUp)return;
  			// this.warningShow = false;
  			this.sendMsgToParent();
+ 			this.processTableDataChangeArr={"data":[]};
+			this.processTableSaveFileName=[];
  		},	
  		savePanelBtn:function(){
  			if(this.warningPopUp)return;
- 			this.sendMsgToParent();
+ 			var _this = this;
+ 			if(_this.processTableSaveFileName.length == 0){
+ 				_this.sendMsgToParent();
+ 				return;
+ 			}
  			if(this.outpatienttable == "outpatient"){
  				var tempPostUrl = "http://127.0.0.1:8887/alert/setTime";
  			}
- 			console.log(this.processTableDataChangeArr)
- 			this.$http.post(tempPostUrl,JSON.stringify(this.processTableDataChangeArr)).then(function(response){
- 				console.log(response)
+ 			
+ 			this.$http.post(tempPostUrl,this.processTableDataChangeArr).then(function(response){
+ 				if(response.data.status == "success"){
+ 					_this.tableChangeBoolean = true;
+ 					_this.sendMsgToParent();
+ 				}
  			})
+ 			
  		},
  		awarningDarg:function(){
  			$("#warningPanelSetting").draggable({
- 				containment:$("#warningProcess-contenta"),
+ 				// containment:$(".warningProcess-content"),
  				handle:$("#warningPanelSetting .common-head"),
+ 				cursor:"move",
+ 				// cursorAt:{top:0}
  			});
  		},
- 		showCompare:function(){
- 			$("#compareSelects").show();
- 			$("#compareSelects div").unbind("mouseenter");
-			$("#compareSelects div").bind("mouseenter",function(){
-				$(this).css("background","#DDDDDD");
-				$(this).siblings().css("background","");
-				$(this).click(function(){
-					$(".tableCon td:eq(1) span").html($(this).html());
-				})
-			})
-			$("#compareSelects").unbind("mouseleave");
-			$("#compareSelects").bind("mouseleave",function(){
-				$(this).hide();
-			})
- 		},
- 		showWait:function(){
- 			$("#waitSelects").show();
- 			$("#waitSelects div").unbind("mouseenter");
-			$("#waitSelects div").bind("mouseenter",function(){
-				$(this).css("background","#DDDDDD");
-				$(this).siblings().css("background","");
-				$(this).click(function(){
-					$(".tableCon td:eq(2) span").html($(this).html());
-				})
-			})
-			$("#waitSelects").unbind("mouseleave");
-			$("#waitSelects").bind("mouseleave",function(){
-				$(this).hide();
-			})
- 		},
+
  		jsPlumbHandle:function(){
  			var _this = this;
  			_this.customCount = -1;
@@ -328,7 +313,6 @@ export default{
 			this.$nextTick(function(){
 				this.awarningDarg();
 				this.nowFile = $(jsPlumb.canvas).find("span").text();
-				console.log(this.processTableData)
 				if(this.processTableData[this.nowFile]["new"] != ""){
 					this.changeNowFile = this.processTableData[this.nowFile]["new"];
 				}else{
