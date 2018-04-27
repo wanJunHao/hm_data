@@ -126,6 +126,10 @@ import outpatienttMap from "@/components/outpatienttMap"
 
 				}
 	 			this.outpatientTable(this.outpatienttable);
+	 			$(".settingBtn").css({
+	 				"background":"#0B9BFB",
+    				"color": "white"
+	 			})
 	 		},
 	 		changeMap:function(){
 	 			this.outpatienttMapShow = true;
