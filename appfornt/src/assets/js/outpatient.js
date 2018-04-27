@@ -133,6 +133,11 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 			this.tableOrMap = "map";
 	 			$(".mapBtn").addClass("activeBtn");
 	 			$(".mapBtn").siblings().removeClass('activeBtn');
+	 			$(".settingBtn").css({
+					"border": "1px solid #DDD",
+					"background-color": "#F5F5F5",
+					"color":"#ACA899"
+				})
 	 		},
 	 		warningSetting:function(){
 	 			if(this.outpatienttMapShow) return;
