@@ -34,7 +34,6 @@
 		<!-- 流程设置弹框 -->
 		<warningProcess v-bind:warning-show="waringShow" v-bind:outpatienttable="outpatienttable"  v-on:listenToChildEvent="changeWaringStatus"></warningProcess>
 
-		<div style="width:200px;height: 200px;background: red;position: absolute;z-index:999" class="haha">ceshi</div>
 	</div>
 </template>
 

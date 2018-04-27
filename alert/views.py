@@ -150,7 +150,7 @@ def setTime(request):
         jsonData = request.data
         # links = jsonData["data"]
         for i in jsonData["data"]:
-            STATUS[i["link"]]["times"] = i["times"]
+            STATUS[i["link"]]["times"] = int(i["times"])
             STATUS[i["link"]]["new"] = i["new"]
 
         return JsonResponse({"status": "success"})

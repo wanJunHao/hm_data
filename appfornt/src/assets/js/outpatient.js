@@ -78,7 +78,6 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		setInterval(function(){
 	 			_this.getDate();
 	 		},1000);
-	 		$(".haha").draggable();
 		},
 	 	methods:{
 	 		getDate:function(){
@@ -108,16 +107,24 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 			return {"width":this.tableShowPx + "px"}
 	 		},
 	 		changeWaringStatus:function(data){
-	 			this.waringShow = data;
-	 			this.markShow = data;
+	 			this.waringShow = data.warningBolean;
+	 			this.markShow = data.warningBolean;
+	 			if(data.updateTable){
+	 				this.outpatientTable(this.outpatienttable);
+	 			}
 	 		},
 	 		changeTable:function(){
+	 			if(this.outpatienttMapTable) return;
 	 			this.outpatienttMapTable = true;
 	 			this.outpatienttMapShow = false;
 	 			this.tableOrMap = "table";
 	 			$(".showBtn").addClass("activeBtn");
 	 			$(".showBtn").siblings().removeClass('activeBtn');
-	 			$(".tableShow .outpatientTable-content").html("");
+				if($('#tableOutpatientPanel').DataTable() != undefined){
+					$('#tableOutpatientPanel').DataTable().clear();
+					$('#tableOutpatientPanel').DataTable().destroy();
+
+				}
 	 			this.outpatientTable(this.outpatienttable);
 	 		},
 	 		changeMap:function(){
