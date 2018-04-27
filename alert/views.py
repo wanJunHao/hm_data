@@ -216,7 +216,7 @@ def zhuyuanInfo(request):
             data = DATA_1
             for i in data:
                 count = 0
-                if i["link"] == "取药完毕":
+                if i["link"] == "已出院":
                     continue
 
                 a = random.randint(1, 60)
