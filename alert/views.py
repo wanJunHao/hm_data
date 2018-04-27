@@ -148,7 +148,6 @@ def setTime(request):
 
     elif request.method == "POST":
         jsonData = request.data
-        # links = jsonData["data"]
         for i in jsonData["data"]:
             STATUS[i["link"]]["times"] = int(i["times"])
             STATUS[i["link"]]["new"] = i["new"]
@@ -162,16 +161,18 @@ STATUS_1 = {
     "校对医嘱": {"color": "yellow", "times": 30, "new": ""},
     "等待检验": {"color": "yellow", "times": 30, "new": ""},
     "等待检查": {"color": "yellow", "times": 30, "new": ""},
-    "正在检查": {"color": "green", "times": 30, "new": ""},
-    "正在检验": {"color": "green", "times": 30, "new": ""},
-    "等待手术方案": {"color": "yellow", "times": 30, "new": ""},
-    "等待手术": {"color": "yellow", "times": 30, "new": ""},
-    "正在手术": {"color": "green", "times": 30, "new": ""},
-    "术后到出院": {"color": "yellow", "times": 30, "new": ""},
+    "正在检查": {"color": "green", "times": 60, "new": ""},
+    "正在检验": {"color": "green", "times": 60, "new": ""},
+    "等待手术方案": {"color": "yellow", "times": 60, "new": ""},
+    "等待手术": {"color": "yellow", "times": 4320, "new": ""},
+    "正在手术": {"color": "green", "times": 100, "new": ""},
+    "术后到出院": {"color": "yellow", "times": 8640, "new": ""},
     "已出院": {"color": "blue", "times": 30, "new": ""}
 }
 
 DATA_1 = []
+nn1 = random.randint(95, 130)
+nn2 = random.randint(95, 130)
 
 
 @api_view(["GET"])
@@ -184,7 +185,7 @@ def zhuyuanInfo(request):
             conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
             c = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
             sql = '''
-            SELECT card_no, name, rela_phone, address, idenno FROM register
+            SELECT inpatient_no, name, home_tel, home, idenno FROM zhuyuan
             '''
             c.execute(sql)
             data = c.fetchall()
@@ -195,13 +196,13 @@ def zhuyuanInfo(request):
                     {"校对医嘱": random.randint(5, 40)},
                     {"等待检验": random.randint(2, 40)},
                     {"等待检查": random.randint(2, 40)},
-                    {"正在检查": random.randint(1, 40)},
-                    {"正在检验": random.randint(3, 60)},
-                    {"等待手术方案": random.randint(3, 60)},
-                    {"等待手术": random.randint(3, 10)},
-                    {"正在手术": random.randint(3, 10)},
-                    {"术后到出院": random.randint(3, 10)},
-                    {"已出院": 0},
+                    {"正在检查": random.randint(1, 80)},
+                    {"正在检验": random.randint(3, 80)},
+                    {"等待手术方案": random.randint(3, 80)},
+                    {"等待手术": random.randint(3, 5000)},
+                    {"正在手术": random.randint(3, 120)},
+                    {"术后到出院": random.randint(3, 10000)},
+                    {"已出院": 0}
                 ]
                 randData = random.choice(randList)
                 i["link"] = list(randData.keys())[0]
@@ -256,13 +257,54 @@ def zhuyuanInfo(request):
                             i["link"] = "已出院"
                         else:
                             count += 1
-                    if count == 0:
-                        i["status"] = STATUS[i["link"]]["color"]
-                        i["time"] = 1
-                    else:
-                        i["time"] += 1
-                        i["status"] = STATUS[i["link"]]["color"] if i["time"] < STATUS[i["link"]]["times"] else "red"
+                else:
+                    count += 1
+
+                if count == 0:
+                    i["status"] = STATUS_1[i["link"]]["color"]
+                    i["time"] = 1
                 else:
                     i["time"] += 1
-                    i["status"] = STATUS[i["link"]]["color"] if i["time"] < STATUS[i["link"]]["times"] else "red"
-                i["settime"] = STATUS[i["link"]]["times"]
+                    i["status"] = STATUS_1[i["link"]]["color"] if i["time"] < STATUS_1[i["link"]]["times"] else "red"
+                i["settime"] = STATUS_1[i["link"]]["times"]
+
+        DATA_1 = copy.deepcopy(data)
+        context = {
+            "data": data,
+            "map": {
+                "status": "颜色",
+                "link": "环节",
+                "name": "姓名",
+                "inpatient_no": "住院号",
+                "idenno": "身份证号",
+                "home": "家庭住址",
+                "home_tel": "联系电话"
+            },
+            "counts": [
+                {"name": "今日入院患者", "count": nn1},
+                {"name": "今日出院患者", "count": nn2}
+            ]
+        }
+        return JsonResponse(context)
+
+
+@api_view(["GET", "POST"])
+def zhuyuanTime(request):
+    '''
+    '''
+    global STATUS_1
+    if request.method == "GET":
+        jsonData = request.data
+        if jsonData:
+            link = jsonData["link"]
+            data = STATUS_1[link]
+        else:
+            data = STATUS_1
+        return JsonResponse({"data": data})
+
+    elif request.method == "POST":
+        jsonData = request.data
+        for i in jsonData["data"]:
+            STATUS_1[i["link"]]["times"] = int(i["times"])
+            STATUS_1[i["link"]]["new"] = i["new"]
+        return JsonResponse({"status": "success"})

@@ -8,4 +8,6 @@ urlpatterns = [
     # url(r'^$', views.index, name='index'),
     url(r'^getInfo$', views.getInfo, name='getInfo'),
     url(r'^setTime$', views.setTime, name='setTime'),
+    url(r'^zhuyuanInfo$', views.zhuyuanInfo, name='zhuyuanInfo'),
+    url(r'^zhuyuanTime$', views.zhuyuanTime, name='zhuyuanTime'),
 ]
