@@ -78,7 +78,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		setInterval(function(){
 	 			_this.getDate();
 	 		},1000);
-
+	 		$(".haha").draggable();
 		},
 	 	methods:{
 	 		getDate:function(){
@@ -117,6 +117,8 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 			this.tableOrMap = "table";
 	 			$(".showBtn").addClass("activeBtn");
 	 			$(".showBtn").siblings().removeClass('activeBtn');
+	 			$(".tableShow .outpatientTable-content").html("");
+	 			this.outpatientTable(this.outpatienttable);
 	 		},
 	 		changeMap:function(){
 	 			this.outpatienttMapShow = true;

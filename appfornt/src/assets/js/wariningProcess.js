@@ -57,6 +57,10 @@ export default{
 			customCount:-1,
 			nowFile:null,
 			changeNowFile:null,
+			processTableData:null,
+			nowElementJsplumb:null,
+			processTableDataChangeArr:{"data":[]},
+			processTableSaveFileName:[],
 
 		}
 	},
@@ -94,7 +98,7 @@ export default{
 			$(".tableCon").show();
 		},
 		sendMsgToParent(){
-			this.$emit("listenToChildEvent",false)
+			this.$emit("listenToChildEvent",false);
 		},
 		closeSetBtn:function(){
  			this.warningPopUp = false;
@@ -104,6 +108,23 @@ export default{
  		},
  		confirmSetBtn:function(){
  			this.warningPopUp = false;
+ 			var tempName = $("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon td").eq(0).text();
+ 			if(this.processTableData[tempName]["new"] != "" && this.processTableData[tempName]["new"] != $("#warningPanelSetting .warning-body .warning-name-input-div input").val() || this.processTableData[tempName]["times"] != $("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon #timeChangeSelect").val()){
+  				this.processTableData[tempName]["new"] = $("#warningPanelSetting .warning-body .warning-name-input-div input").val();
+ 				this.processTableData[tempName]["times"] =  $("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon #timeChangeSelect").val();
+				this.nowElementJsplumb.find("img").attr("src","/static/images/lianj_03.png");
+				console.log($.inArray(tempName,this.processTableSaveFileName))
+				if($.inArray(tempName,this.processTableSaveFileName) >= 0){
+					this.processTableDataChangeArr["data"].splice($.inArray(tempName,this.processTableSaveFileName),1);
+					this.processTableDataChangeArr["data"].push({"link":tempName,"new":$("#warningPanelSetting .warning-body .warning-name-input-div input").val(),"times":$("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon #timeChangeSelect").val()});
+					this.processTableSaveFileName.splice($.inArray(tempName,this.processTableSaveFileName),1);
+					this.processTableSaveFileName.push(tempName);
+					return;
+				}
+				this.processTableDataChangeArr["data"].push({"link":tempName,"new":$("#warningPanelSetting .warning-body .warning-name-input-div input").val(),"times":$("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon #timeChangeSelect").val()});
+				this.processTableSaveFileName.push(tempName);
+ 			}
+
  		},
  		canclePanelBtn:function(){
  			if(this.warningPopUp)return;
@@ -113,6 +134,13 @@ export default{
  		savePanelBtn:function(){
  			if(this.warningPopUp)return;
  			this.sendMsgToParent();
+ 			if(this.outpatienttable == "outpatient"){
+ 				var tempPostUrl = "http://127.0.0.1:8887/alert/setTime";
+ 			}
+ 			console.log(this.processTableDataChangeArr)
+ 			this.$http.post(tempPostUrl,JSON.stringify(this.processTableDataChangeArr)).then(function(response){
+ 				console.log(response)
+ 			})
  		},
  		awarningDarg:function(){
  			$("#warningPanelSetting").draggable({
@@ -243,9 +271,16 @@ export default{
 		}
 	},
 	warningProcessStatus:function(){
+		var _this = this;
 		if(this.warningShow){
-			this.requestData = [["分诊时间","挂号时间(开始就诊)","结束就诊时间","缴费时间"],["缴费时间","取药完毕_yzy_sameLeave","检验开始_yzy_sameLeave","检查开始_yzy_sameLeave"],["检查开始_yzy_sameLeave","检查结果"],["检验开始_yzy_sameLeave","取到报告"],["结束就诊时间","办理入院"]];
-			// this.secondArrDataHandle(this.ceshi);
+			if(this.outpatienttable == "outpatient"){
+					this.requestData = [["分诊时间","挂号时间(开始就诊)","结束就诊时间","缴费时间"],["缴费时间","取药完毕_yzy_sameLeave","检验开始_yzy_sameLeave","检查开始_yzy_sameLeave"],["检查开始_yzy_sameLeave","检查结果"],["检验开始_yzy_sameLeave","取到报告"],["结束就诊时间","办理入院"]];
+					var tempPostUrl = "http://127.0.0.1:8887/alert/setTime";
+			}
+			
+			this.$http.get(tempPostUrl).then(function(response){
+				_this.processTableData = response.data.data;
+			})
 		}
 		return true;
 	},
@@ -283,6 +318,8 @@ export default{
 	},
 
 	customClickHandle:function(jsPlumb){
+		var _this = this;
+		_this.nowElementJsplumb = $(jsPlumb.canvas);
 		if($(jsPlumb.canvas).find("span").text() == "复诊") return;
 		//元素位置
 		var tempElementTarget = jsPlumb._jsPlumb.component;
@@ -291,7 +328,15 @@ export default{
 			this.$nextTick(function(){
 				this.awarningDarg();
 				this.nowFile = $(jsPlumb.canvas).find("span").text();
-				this.changeNowFile = $(jsPlumb.canvas).find("span").text();
+				console.log(this.processTableData)
+				if(this.processTableData[this.nowFile]["new"] != ""){
+					this.changeNowFile = this.processTableData[this.nowFile]["new"];
+				}else{
+					this.changeNowFile = $(jsPlumb.canvas).find("span").text();
+				}
+				$("#timeChangeSelect option").removeProp("selected")
+				$("#timeChangeSelect option[value="+this.processTableData[this.nowFile]["times"]+"]").prop("selected","selected")
+				
 				$(".sumChange").comboSelect();
 			})
 		}

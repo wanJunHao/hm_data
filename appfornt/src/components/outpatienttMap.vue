@@ -20,6 +20,10 @@
 				<!-- 日期选择 -->
 				<div class="mapShow-data">
 					<input type="text" id="mapShowData-start" class="mapShowData-change" :value="nowDate + ' 00:00'">
+					<!-- <input type="text" id="mapShowData-end" class="mapShowData-change" :value="nowDate + ' 23:59'"> -->
+				</div>
+				<div class="mapShow-data">
+					<!-- <input type="text" id="mapShowData-start" class="mapShowData-change" :value="nowDate + ' 00:00'"> -->
 					<input type="text" id="mapShowData-end" class="mapShowData-change" :value="nowDate + ' 23:59'">
 				</div>
 			</div>
@@ -38,13 +42,15 @@
 	}
 </script>
 <style type="text/css">
-	.mapShow{background: white;background-clip: content-box;}
+	.mapShow{background: white;background-clip: content-box;min-width: 1000px;}
 	.mapShow .mapShowHandle-content{width: 100%;height: 100%;border:1px solid #DEDEDE;}
 	.mapShow .autoMapToHandle{width: 80%;height: 80%;position:absolute;top: 40px;right: 0px;bottom: 0px;left: 0px;margin: auto}
 	.mapShow .mapShow-title{width: 100%;height:50px;border-bottom:2px solid #0B9BFB;}
-	.mapShow .mapShow-title .combo-select,.mapShow .mapShow-title .mapShowData-change{width: 130px;height: 24px;float: left;font-size: 12px;line-height:24px;margin:13px 10px;cursor:pointer; }
+	.mapShow .mapShow-title .combo-select,.mapShow .mapShow-title .mapShow-data{width: 130px;height: 24px;float: left;font-size: 12px;line-height:24px;margin:13px 10px;cursor:pointer; }
+	.mapShow .mapShow-title .mapShow-data{border: 1px solid #DEDEDE;border-radius: 2px;}
 	.mapShow .mapShow-title .combo-select .combo-input{padding: 0px !important;text-indent:5px;}
-	.mapShow .mapShow-title .mapShowData-change{border: 1px solid #DEDEDE;border-radius: 2px;text-align: center;}
+	.mapShow .mapShow-title .mapShowData-change{text-indent: 3px;width: 80%;height: 100%;float: left;}
+	.mapShow-data img{float: left;margin-left: 8px;margin-top: 5px;}
 	.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 	.ui-timepicker-div dl { text-align: left; }
 	.ui-timepicker-div dl dt { float: left; clear:left; padding: 0 0 0 5px; }
