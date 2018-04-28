@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^setTime$', views.setTime, name='setTime'),
     url(r'^zhuyuanInfo$', views.zhuyuanInfo, name='zhuyuanInfo'),
     url(r'^zhuyuanTime$', views.zhuyuanTime, name='zhuyuanTime'),
+    url(r'^areaMap/(?P<area>\w+)$', views.areaMap, name='areaMap'),
+    url(r'^searchName/(?P<method>\w+)/(?P<keyword>\w+)$', views.searchName, name='searchName'),
 ]
