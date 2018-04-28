@@ -411,5 +411,5 @@ def getC():
     '''
     '''
     # conn = MySQLdb.connect(user="root", password="123.com", host="172.21.45.53", port=3306, db="hm", charset="utf8")
-    conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
+    conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.149", port=3306, db="hm", charset="utf8")
     return conn
