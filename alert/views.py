@@ -3,6 +3,7 @@
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 
+import cx_Oracle
 import MySQLdb
 import copy
 import os
@@ -42,7 +43,8 @@ def getInfo(request):
     if request.method == "GET":
         global DATA, n1, n2, n3, n4, n5, n6
         if not DATA:
-            conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
+            # conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
+            conn = MySQLdb.connect(user="root", password="123.com", host="172.21.45.53", port=3306, db="hm", charset="utf8")
             c = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
             sql = '''
             SELECT card_no, name, rela_phone, address, idenno FROM register
@@ -129,6 +131,8 @@ def getInfo(request):
                 {"name": "检查完毕人数", "count": n6}
             ]
         }
+        c.close()
+        conn.clise()
         return JsonResponse(context)
 
 
@@ -182,7 +186,8 @@ def zhuyuanInfo(request):
     if request.method == "GET":
         global DATA_1
         if not DATA_1:
-            conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
+            # conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
+            conn = MySQLdb.connect(user="root", password="123.com", host="172.21.45.53", port=3306, db="hm", charset="utf8")
             c = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
             sql = '''
             SELECT inpatient_no, name, home_tel, home, idenno FROM zhuyuan
@@ -285,6 +290,8 @@ def zhuyuanInfo(request):
                 {"name": "今日出院患者", "count": nn2}
             ]
         }
+        c.close()
+        conn.close()
         return JsonResponse(context)
 
 
@@ -308,3 +315,82 @@ def zhuyuanTime(request):
             STATUS_1[i["link"]]["times"] = int(i["times"])
             STATUS_1[i["link"]]["new"] = i["new"]
         return JsonResponse({"status": "success"})
+
+
+countryList = ["清河", "夏津", "高唐", "茌平", "东昌府区", "冠县", "馆陶", "临西", "临清"]
+townList = ["唐园", "烟店", "潘庄", "八岔路", "刘垓子", "魏湾", "康庄", "老赵庄",
+            "松林", "尚店", "戴湾", "金郝庄", "大辛庄办事处", "新华办事处", "青年办事处", "先锋办事处"]
+
+
+@api_view(["GET"])
+def areaMap(request, area):
+    '''
+    '''
+    if request.method == "GET":
+        jsonData = request.data
+
+        aa = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
+        c = aa.cursor()
+        sql = "select "
+        if area == "country":
+            for i in countryList:
+                sql += "sum(case when (住址 like '%{0}%') then 1 else 0 end) as {0}, ".format(i)
+        elif area == "town":
+            for i in townList:
+                sql += "sum(case when (住址 like '%{0}%') then 1 else 0 end) as {0}, ".format(i)
+        if not jsonData:
+            sql += "max(挂号日期) as 最大日期, min(挂号日期) as 最小日期 from view_mz"
+        else:
+            sql = sql[:-2] + " from view_mz where 1 = 1 "
+            if "ks" in jsonData.keys():
+                sql += "and 挂号科室 = '{}'' ".format(jsonData["ks"])
+            if "bz" in jsonData.keys():
+                sql += "and 诊断 = '{}'' ".format(jsonData["bz"])
+            if "start" in jsonData.keys():
+                sql += "and to_char(挂号日期) >= '{}' ".format(jsonData["start"])
+            if "end" in jsonData.keys():
+                sql += "and to_char(挂号日期) <= '{}' ".format(jsonData["end"])
+        # sql = '''
+        # select sum(case when (住址 like '%清河%') then 1 else 0 end) as 清河,
+        # sum(case when (住址 like '%夏津%') then 1 else 0 end) as 夏津,
+        # sum(case when (住址 like '%高唐%') then 1 else 0 end) as 高唐,
+        # sum(case when (住址 like '%茌平%') then 1 else 0 end) as 茌平,
+        # sum(case when (住址 like '%东昌府区%') then 1 else 0 end) as 东昌府区,
+        # sum(case when (住址 like '%冠县%') then 1 else 0 end) as 冠县,
+        # sum(case when (住址 like '%馆陶%') then 1 else 0 end) as 馆陶,
+        # sum(case when (住址 like '%临西%') then 1 else 0 end) as 临西,
+        # sum(case when (住址 like '%临清%') then 1 else 0 end) as 临清,
+        # max(挂号日期) as 最大日期, min(挂号日期) as 最小日期
+        # from view_mz
+        # '''
+        c.execute(sql)
+        data = c.fetchall()
+        colList = c.description
+
+        dic = {}
+        for i in range(len(colList)):
+            dic[colList[i][0]] = data[0][i]
+        c.close()
+        aa.close()
+        return JsonResponse({"data": dic})
+
+
+@api_view(["GET"])
+def searchName(request, method, keyword):
+    '''
+    '''
+    if request.method == "GET":
+        aa = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
+        c = aa.cursor()
+        if method == "ks":
+            sql = "select distinct(科室名称) from view_ks where 科室名称 like '%{}%'".format(keyword)
+        elif method == "bz":
+            sql = "select distinct(诊断名称) from view_zd where 诊断名称 like '%{}%'".format(keyword)
+        c.execute(sql)
+        ll = c.fetchall()
+        data = []
+        for i in ll:
+            data.append(i[0])
+        c.close()
+        aa.close()
+        return JsonResponse({"data": data})
