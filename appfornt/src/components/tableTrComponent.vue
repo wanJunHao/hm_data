@@ -47,7 +47,7 @@
 				var tar = event.target;
 				$(tar).parents("tr").hide();
 			},
-			}
+		}
 	}
 </script>
 <style>

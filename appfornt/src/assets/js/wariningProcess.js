@@ -438,7 +438,6 @@ export default{
 				}
 				$("#timeChangeSelect option").removeProp("selected")
 				$("#timeChangeSelect option[value="+this.processTableData[this.nowFile]["times"]+"]").prop("selected","selected")
-				
 				$(".sumChange").comboSelect();
 			})
 		}

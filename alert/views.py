@@ -3,6 +3,7 @@
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 
+import cx_Oracle
 import MySQLdb
 import copy
 import os
@@ -42,7 +43,8 @@ def getInfo(request):
     if request.method == "GET":
         global DATA, n1, n2, n3, n4, n5, n6
         if not DATA:
-            conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
+            # conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
+            conn = MySQLdb.connect(user="root", password="123.com", host="172.21.45.53", port=3306, db="hm", charset="utf8")
             c = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
             sql = '''
             SELECT card_no, name, rela_phone, address, idenno FROM register
@@ -129,6 +131,8 @@ def getInfo(request):
                 {"name": "检查完毕人数", "count": n6}
             ]
         }
+        c.close()
+        conn.clise()
         return JsonResponse(context)
 
 
@@ -182,7 +186,8 @@ def zhuyuanInfo(request):
     if request.method == "GET":
         global DATA_1
         if not DATA_1:
-            conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
+            # conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.109", port=3306, db="hm", charset="utf8")
+            conn = MySQLdb.connect(user="root", password="123.com", host="172.21.45.53", port=3306, db="hm", charset="utf8")
             c = conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
             sql = '''
             SELECT inpatient_no, name, home_tel, home, idenno FROM zhuyuan
@@ -264,9 +269,6 @@ def zhuyuanInfo(request):
                     i["status"] = STATUS_1[i["link"]]["color"]
                     i["time"] = 1
                 else:
-                    print("*" * 50)
-                    print(i)
-                    print("*" * 50)
                     i["time"] += 1
                     i["status"] = STATUS_1[i["link"]]["color"] if i["time"] < STATUS_1[i["link"]]["times"] else "red"
                 i["settime"] = STATUS_1[i["link"]]["times"]
@@ -288,6 +290,8 @@ def zhuyuanInfo(request):
                 {"name": "今日出院患者", "count": nn2}
             ]
         }
+        c.close()
+        conn.close()
         return JsonResponse(context)
 
 
@@ -311,3 +315,80 @@ def zhuyuanTime(request):
             STATUS_1[i["link"]]["times"] = int(i["times"])
             STATUS_1[i["link"]]["new"] = i["new"]
         return JsonResponse({"status": "success"})
+
+
+countryList = ["清河", "夏津", "高唐", "茌平", "东昌府区", "冠县", "馆陶", "临西", "临清"]
+townList = ["唐园", "烟店", "潘庄", "八岔路", "刘垓子", "魏湾", "康庄", "老赵庄",
+            "松林", "尚店", "戴湾", "金郝庄", "大辛庄办事处", "新华办事处", "青年办事处", "先锋办事处"]
+
+
+@api_view(["GET"])
+def areaMap(request, method, area):
+    '''
+    '''
+    methods = {
+        "mz": {
+            "addr": "住址", "date": "挂号日期", "ks": "挂号科室", "zd": "诊断", "table": "view_mz"
+        },
+        "zy": {
+            "addr": "家庭住址", "date": "入院日期", "ks": "入院科室", "zd": "入院诊断", "table": "view_zyzd"
+        }
+    }
+    method = methods[method]
+    if request.method == "GET":
+        jsonData = request.data
+
+        aa = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
+        c = aa.cursor()
+        sql = "select "
+        for i in eval('{}List'.format(area)):
+            sql += "sum(case when ({0} like '%{1}%') then 1 else 0 end) as {1}, ".format(method['addr'], i)
+        if area == "town":
+            sql += "sum(case when ({0} like '%临清%') then 1 else 0 end) as 临清, ".format(method['addr'])
+        if not jsonData:
+            sql += "max({0}) as 最大日期, min({0}) as 最小日期 from {1}".format(method['date'], method['table'])
+        else:
+            sql = sql[:-2] + " from {} where 1 = 1 ".format(method['table'])
+            if "ks" in jsonData.keys():
+                sql += "and {0} = '{1}' ".format(method['ks'], jsonData["ks"])
+            if "bz" in jsonData.keys():
+                sql += "and {0} = '{1}' ".format(method['bz'], jsonData["bz"])
+            if "start" in jsonData.keys():
+                sql += "and to_char({0}) >= '{1}' ".format(method['date'], jsonData["start"])
+            if "end" in jsonData.keys():
+                sql += "and to_char({0}) <= '{1}' ".format(method['date'], jsonData["end"])
+
+        c.execute(sql)
+        data = c.fetchall()
+        colList = c.description
+
+        dic = {}
+        for i in range(len(colList)):
+            dic[colList[i][0]] = data[0][i]
+        if area == "town":
+            for i in townList:
+                dic["临清"] -= dic[i]
+        c.close()
+        aa.close()
+        return JsonResponse({"data": dic})
+
+
+@api_view(["GET"])
+def searchName(request, method, keyword):
+    '''
+    '''
+    if request.method == "GET":
+        aa = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
+        c = aa.cursor()
+        if method == "ks":
+            sql = "select distinct(科室名称) from view_ks where 科室名称 like '%{}%'".format(keyword)
+        elif method == "bz":
+            sql = "select distinct(诊断名称) from view_zd where 诊断名称 like '%{}%'".format(keyword)
+        c.execute(sql)
+        ll = c.fetchall()
+        data = []
+        for i in ll:
+            data.append(i[0])
+        c.close()
+        aa.close()
+        return JsonResponse({"data": data})
