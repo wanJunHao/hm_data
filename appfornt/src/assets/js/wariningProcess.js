@@ -41,7 +41,7 @@ export default{
 	                strokeWidth: 1
 	            },
 	            isSource: false,
-	            connector: [ "Flowchart", { stub: [40, 40], gap: 3, cornerRadius: 1, alwaysRespectStubs: true } ],
+	            connector: [ "Flowchart", { stub: [1, 50], gap: 3, cornerRadius: 1, alwaysRespectStubs: true } ],
 	            connectorStyle:{strokeWidth: 1,stroke: "#5ba7ff",joinstyle: "round",outlineStroke: "white",outlineWidth: 2},
 	            // hoverPaintStyle:{strokeWidth: 3,stroke: "#216477",outlineWidth: 5,},
 	            // connectorHoverStyle:{fill: "#216477",stroke: "#216477"},
@@ -53,7 +53,7 @@ export default{
 			warningPopUp:false,
 			tempLeft:0,
 			tempTop:0,
-			processTableShow:[],
+			processTableShow:["等待就诊","正在就诊","等待缴费","等待取药","等待检查","等待检验","正在检查","等待检验报告","等待检验报告","入院流程","复诊"],
 			customCount:-1,
 			nowFile:null,
 			changeNowFile:null,
@@ -62,8 +62,6 @@ export default{
 			processTableDataChangeArr:{"data":[]},
 			processTableSaveFileName:[],
 			tableChangeBoolean:false,
-			processTitleChangeShow:"门诊流程",
-			nowProcessTableShow:null,
 
 		}
 	},
@@ -75,21 +73,22 @@ export default{
 	},
 	watch:{
 		instance:function(){
+			this.$nextTick(function(){
+				this.jsPlumbEle = jsPlumb.getSelector(".awarning-process-item");
+				this.jsPlumbEleList = jsPlumb.getSelector(".awarning-process-wrap");
+				this.awarningTableDrag(this.jsPlumbEle,this.jsPlumbEleList);
 
+			})
 		},
 		warningShow:function(){
 			this.$nextTick(function(){
 				if(this.warningShow){
-					// if(this.outpatienttable == this.nowProcessTableShow) return;
 					this.tableChangeBoolean = false;
-					this.jsPlumbHandle();
 					this.warningProcessStatus();
-					this.$nextTick(function(){
-							this.jsPlumbEle = jsPlumb.getSelector(".awarning-process-item");
-							this.jsPlumbEleList = jsPlumb.getSelector(".awarning-process-wrap");
-							this.awarningTableDrag(this.jsPlumbEle,this.jsPlumbEleList);
-						})					
-						
+					if(this.instance == null){
+						this.jsPlumbHandle();
+					}
+					
 				}
 			})
 		},
@@ -145,8 +144,6 @@ export default{
  			}
  			if(this.outpatienttable == "outpatient"){
  				var tempPostUrl = "http://127.0.0.1:8887/alert/setTime";
- 			}else{
- 				var tempPostUrl = "http://127.0.0.1:8887/alert/zhuyuanTime";
  			}
  			
  			this.$http.post(tempPostUrl,this.processTableDataChangeArr).then(function(response){
@@ -169,27 +166,19 @@ export default{
  		jsPlumbHandle:function(){
  			var _this = this;
  			_this.customCount = -1;
- 			
- 			
 			jsPlumb.ready(function(){
-			// $(".warningProcess-content .settingPanel-content .awarningconnectionImg,.jtk-connector,.jtk-endpoint").remove();
-		
 			 _this.instance = jsPlumb.getInstance({
 					DragOptions: { cursor: "pointer", zIndex: 2000 },
 					ConnectionsDetachable:false,
 				 	ReattachConnections:false,
 					ConnectionOverlays:[
 						["Custom",{
-							create:function(component){
-								_this.customCount++;
-								return $("<div><img src='/static/images/lianj_icon_nor.png' /><span>"+_this.processTableShow[_this.customCount]+"</span><p id='point"+_this.customCount+"'><p/></div>");
-							},
+							create:function(component){_this.customCount++;;return $("<div><img src='/static/images/lianj_icon_nor.png'/><span>"+_this.processTableShow[_this.customCount]+"</span></div>")},
 							loaction:0.5,
 							cssClass:"awarningconnectionImg",
 							id:"connFlag",
 							events:{
 								click:function(jsPlumb){
-									console.log("ddd")
 									_this.customClickHandle(jsPlumb);
 								}
 							}
@@ -200,9 +189,7 @@ export default{
 
 			});
 	},
-
 	_addEndpoints:function(toId, sourceAnchors, targetAnchors){
-		var _this = this;
         for (var i = 0; i < sourceAnchors.length; i++) {
             var sourceUUID = toId + sourceAnchors[i];
             this.instance.addEndpoint(toId, this.sourceEndpoint, {
@@ -218,8 +205,7 @@ export default{
 	},
 	outpatientLine:function(ele,eleList){
 		var _this = this;
-		_this.nowProcessTableShow = "outpatient";
-		_this.instance.batch(function () {
+		this.instance.batch(function () {
 			$(eleList).each(function(index,ele){
 				$(ele).find(".awarning-process-item").each(function(indexs,eles){
 					_this._addEndpoints($(eles).attr("id"), ["LeftMiddle","RightMiddle"], ["TopCenter","BottomCenter"]);
@@ -249,9 +235,8 @@ export default{
 							_this.instance.connect({uuids: ["jsplumb12BottomCenter","jsplumb31TopCenter"], editable: true});
 							_this.instance.connect({uuids: ["jsplumb21BottomCenter","jsplumb31RightMiddle"], editable: true});
 						}else if(index == 4){
-							_this.instance.connect({uuids: ["jsplumb02TopCenter","jsplumb41LeftMiddle"], editable: true,overlays:[[ "Arrow", {location:1, id:"myLabel", width:10,height:10,length:11}]]});
-							_this.instance.connect({uuids: ["jsplumb31LeftMiddle","jsplumb01BottomCenter"], editable: true,overlays:[[ "Arrow", {location:1, id:"myLabel", width:10,height:10,length:11}]]});
-
+							_this.instance.connect({uuids: ["jsplumb41LeftMiddle","jsplumb02TopCenter"], editable: true});
+							_this.instance.connect({uuids: ["jsplumb31LeftMiddle","jsplumb01BottomCenter"], editable: true});
 						}
 						
 					})
@@ -261,112 +246,25 @@ export default{
 	        setTimeout(function(){
 	        	$(".jtk-endpoint").not(".jtk-endpoint-connected").remove();
 	        	$(".awarningconnectionImg:last").find("img").hide();
-	        	$("#point6").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","40px");
-	        	$("#point7").parent(".awarningconnectionImg").css("top",$("#point7").parent(".awarningconnectionImg").position().top - 10 + "px")
-	        	$("#point7").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","52px");
-	        	$("#point8").parent(".awarningconnectionImg").css("left",$("#point8").parent(".awarningconnectionImg").position().left + 48+ "px")
-	        	$("#point8").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","53px");
-	        	$("#point5").parent(".awarningconnectionImg").css("top",$("#point5").parent(".awarningconnectionImg").position().top - 5 + "px");
-	        	$("#point9").parent(".awarningconnectionImg").css("left",$("#point9").parent(".awarningconnectionImg").position().left + 12 + "px");
-
 	        },10);
 	       })		
-	},
-	// 住院
-	inhostalLine:function(ele,eleList){
-		var _this = this;
-		_this.nowProcessTableShow = "inhostal";
-		_this.instance.batch(function () {
-			$(eleList).each(function(index,ele){
-				$(ele).find(".awarning-process-item").each(function(indexs,eles){
-					$(eles).css("marginRight","50px")
-					if(indexs == $(ele).find(".awarning-process-item").length -1){
-						$(eles).css("marginRight","0px")
-					}
-					_this._addEndpoints($(eles).attr("id"), ["LeftMiddle","RightMiddle"], ["TopCenter","BottomCenter"]);
-
-					if(indexs > 0){
-						if(_this.requestData[index][indexs].split("_yzy_").length > 1 && indexs+1 < _this.requestData[index].length){
-							if(index == 2){
-								_this.instance.connect({uuids: [$(eles).attr("id")+"BottomCenter", $(ele).find(".awarning-process-item").eq(indexs-1).attr("id")+"BottomCenter"], editable: true});
-							}else{
-								_this.instance.connect({uuids: [$(eles).attr("id")+"TopCenter", $(ele).find(".awarning-process-item").eq(indexs-1).attr("id")+"TopCenter"], editable: true});
-							}
-							return;
-						}
-
-						 var tempIndexs = $(eles).attr("dataindex");
-						
-						_this.instance.connect({uuids: ["jsplumb"+index + (tempIndexs-1) +"RightMiddle", "jsplumb"+index + tempIndexs +"LeftMiddle"], editable: true});
-					}
-				})
-
-					_this.$nextTick(function(){
-						if(index == 1){
-							_this._addEndpoints("point4", ["LeftMiddle","RightMiddle"], ["TopCenter","BottomCenter"]);
-							_this.instance.connect({uuids: ["jsplumb04RightMiddle","point4TopCenter"], editable: true,overlays:[[ "Arrow", {location:1, id:"myLabel", width:10,height:10,length:11}]]});
-							_this.instance.connect({uuids: ["jsplumb11TopCenter","point4LeftMiddle"], editable: true});
-							_this.instance.connect({uuids: ["jsplumb12TopCenter","point4RightMiddle"], editable: true});
-
-						}else if(index == 2){
-							_this.instance.connect({uuids: ["jsplumb11BottomCenter","jsplumb21TopCenter"], editable: true});
-							_this.instance.connect({uuids: ["jsplumb12BottomCenter","jsplumb22TopCenter"], editable: true});
-
-						}else if (index == 3){
-							_this.instance.connect({uuids: ["jsplumb31TopCenter","jsplumb41LeftMiddle"], editable: true,overlays:[[ "Arrow", {location:1, id:"myLabel", width:10,height:10,length:11}]]});
-						}else if(index == 4){
-							_this.instance.connect({uuids: ["jsplumb33RightMiddle","jsplumb41RightMiddle"], editable: true,overlays:[[ "Arrow", {location:1, id:"myLabel", width:10,height:10,length:11}]]});
-							_this.instance.connect({uuids: ["jsplumb41TopCenter","jsplumb04BottomCenter"], editable: true,overlays:[[ "Arrow", {location:1, id:"myLabel", width:10,height:10,length:11}]]});
-
-							_this._addEndpoints("point14", ["LeftMiddle","RightMiddle"], ["TopCenter","BottomCenter"]);
-							_this.instance.connect({uuids: ["jsplumb21BottomCenter","point14RightMiddle"]});
-
-						}
-						
-					})
-
-			});
-			
-
-
-	        setTimeout(function(){
-	        	$(".jtk-endpoint").not(".jtk-endpoint-connected").remove();
-	        	$("#point8,#point5,#point16,#point4,#point15,#point2").parent(".awarningconnectionImg").hide();
-	        	$("#point11,#point12").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","40px");
-	        	$("#point14").parent(".awarningconnectionImg").css("top",$("#point14").parent(".awarningconnectionImg").position().top + 58 + "px")
-	        	$("#point14").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","53px");
-
-	        },10);
-
-	       })	
 	},
 	//连线
 	awarningTableDrag:function(ele,eleList){
 		if(this.outpatienttable == "outpatient"){
 			this.outpatientLine(ele,eleList);
-		}else{
-			this.inhostalLine(ele,eleList);
-			
 		}
 	},
 	warningProcessStatus:function(){
 		var _this = this;
 		if(this.warningShow){
-			$(".warningProcess-content .settingPanel-content .awarningconnectionImg,.jtk-connector,.jtk-endpoint").remove();
 			if(this.outpatienttable == "outpatient"){
 					this.requestData = [["分诊时间","挂号时间(开始就诊)","结束就诊时间","缴费时间"],["缴费时间","取药完毕_yzy_sameLeave","检验开始_yzy_sameLeave","检查开始_yzy_sameLeave"],["检查开始_yzy_sameLeave","检查结果"],["检验开始_yzy_sameLeave","取到报告"],["结束就诊时间","办理入院"]];
 					var tempPostUrl = "http://127.0.0.1:8887/alert/setTime";
-					this.processTitleChangeShow = "门诊流程";
-					this.processTableShow = ["等待就诊","正在就诊","等待缴费","等待取药","等待检查","等待检验","正在检查","等待检验报告","等待检验报告","入院流程","复诊"];
-			}else if(this.outpatienttable == "inhostal"){
-					this.requestData = [["办理住院证","成功入院","接诊结束","开立医嘱时间","确认医嘱"],["确认医嘱","检验开始_yzy_sameLeave","检查开始_yzy_sameLeave"],["确认医嘱","检验结束_yzy_saneLeave","检查结束_yzy_saneLeave"],["检验结束_yzy_saneLeave","手术结果","手术开始","手术方案制定"],["检验结束_yzy_saneLeave","出院时间"]]
-					var tempPostUrl = "http://127.0.0.1:8887/alert/zhuyuanTime";
-					this.processTitleChangeShow = "住院流程";
-					this.processTableShow = ["等待入院","等待接诊","","校对医嘱","","","正在手术","等待手术","","等待检验","等待检查","正在检验","正在检查","术后到出院","等待手术方案"];
 			}
+			
 			this.$http.get(tempPostUrl).then(function(response){
 				_this.processTableData = response.data.data;
-
 			})
 		}
 		return true;
@@ -389,22 +287,6 @@ export default{
 				this.tempTop = (index+1) * this.top;
 				return {"top":(index+1) * this.top + "px","left":0 + "px","width":this.requestData[index].length * this.width + (this.requestData[index].length) * this.left + 'px'}
 			}			
-		}else{
-			if(index > 0){
-				if(index == 1){
-					return  {"top":this.tempTop+ 120+ "px","left":this.tempLeft + 50 + "px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length - 2.2) * this.left + 'px'}
-				}else if(index == 2){
-					return  {"top":this.tempTop+ 200+ "px","left":this.tempLeft + 50 + "px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length - 2.2) * this.left + 'px'}
-				}else if(index == 3){
-					return  {"top":this.tempTop+ 300+ "px","left":175 + "px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length - 2.2) * this.left + 'px'}
-				}else if(index == 4){
-					return  {"top":this.tempTop+ 200+ "px","left":525 + "px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length) * this.left + 'px'}
-				}
-			}else{
-				this.tempLeft =(this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
-				this.tempTop = (index+1) * this.top;
-				return {"top":(index+1) * this.top + "px","left":0 + "px","width":this.requestData[index].length * this.width + (this.requestData[index].length) * this.left + 'px'}				
-			}
 		}
 
 	},
