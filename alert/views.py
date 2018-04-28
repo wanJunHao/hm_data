@@ -323,46 +323,41 @@ townList = ["唐园", "烟店", "潘庄", "八岔路", "刘垓子", "魏湾", "�
 
 
 @api_view(["GET"])
-def areaMap(request, area):
+def areaMap(request, method, area):
     '''
     '''
+    methods = {
+        "mz": {
+            "addr": "住址", "date": "挂号日期", "ks": "挂号科室", "zd": "诊断", "table": "view_mz"
+        },
+        "zy": {
+            "addr": "家庭住址", "date": "入院日期", "ks": "入院科室", "zd": "入院诊断", "table": "view_zyzd"
+        }
+    }
+    method = methods[method]
     if request.method == "GET":
         jsonData = request.data
 
         aa = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
         c = aa.cursor()
         sql = "select "
-        if area == "country":
-            for i in countryList:
-                sql += "sum(case when (住址 like '%{0}%') then 1 else 0 end) as {0}, ".format(i)
-        elif area == "town":
-            for i in townList:
-                sql += "sum(case when (住址 like '%{0}%') then 1 else 0 end) as {0}, ".format(i)
+        for i in eval('{}List'.format(area)):
+            sql += "sum(case when ({0} like '%{1}%') then 1 else 0 end) as {1}, ".format(method['addr'], i)
+        if area == "town":
+            sql += "sum(case when ({0} like '%临清%') then 1 else 0 end) as 临清, ".format(method['addr'])
         if not jsonData:
-            sql += "max(挂号日期) as 最大日期, min(挂号日期) as 最小日期 from view_mz"
+            sql += "max({0}) as 最大日期, min({0}) as 最小日期 from {1}".format(method['date'], method['table'])
         else:
-            sql = sql[:-2] + " from view_mz where 1 = 1 "
+            sql = sql[:-2] + " from {} where 1 = 1 ".format(method['table'])
             if "ks" in jsonData.keys():
-                sql += "and 挂号科室 = '{}'' ".format(jsonData["ks"])
+                sql += "and {0} = '{1}' ".format(method['ks'], jsonData["ks"])
             if "bz" in jsonData.keys():
-                sql += "and 诊断 = '{}'' ".format(jsonData["bz"])
+                sql += "and {0} = '{1}' ".format(method['bz'], jsonData["bz"])
             if "start" in jsonData.keys():
-                sql += "and to_char(挂号日期) >= '{}' ".format(jsonData["start"])
+                sql += "and to_char({0}) >= '{1}' ".format(method['date'], jsonData["start"])
             if "end" in jsonData.keys():
-                sql += "and to_char(挂号日期) <= '{}' ".format(jsonData["end"])
-        # sql = '''
-        # select sum(case when (住址 like '%清河%') then 1 else 0 end) as 清河,
-        # sum(case when (住址 like '%夏津%') then 1 else 0 end) as 夏津,
-        # sum(case when (住址 like '%高唐%') then 1 else 0 end) as 高唐,
-        # sum(case when (住址 like '%茌平%') then 1 else 0 end) as 茌平,
-        # sum(case when (住址 like '%东昌府区%') then 1 else 0 end) as 东昌府区,
-        # sum(case when (住址 like '%冠县%') then 1 else 0 end) as 冠县,
-        # sum(case when (住址 like '%馆陶%') then 1 else 0 end) as 馆陶,
-        # sum(case when (住址 like '%临西%') then 1 else 0 end) as 临西,
-        # sum(case when (住址 like '%临清%') then 1 else 0 end) as 临清,
-        # max(挂号日期) as 最大日期, min(挂号日期) as 最小日期
-        # from view_mz
-        # '''
+                sql += "and to_char({0}) <= '{1}' ".format(method['date'], jsonData["end"])
+
         c.execute(sql)
         data = c.fetchall()
         colList = c.description
@@ -370,6 +365,9 @@ def areaMap(request, area):
         dic = {}
         for i in range(len(colList)):
             dic[colList[i][0]] = data[0][i]
+        if area == "town":
+            for i in townList:
+                dic["临清"] -= dic[i]
         c.close()
         aa.close()
         return JsonResponse({"data": dic})
