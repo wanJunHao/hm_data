@@ -3,7 +3,7 @@
 		<div class="warningProcess-content"  v-show="warningShow" id="warningProcess-contenta">
 		<!-- title -->
 		<div class="wariningProcess-title">
-			<p>门诊流程</p>
+			<p>{{ processTitleChangeShow }}</p>
 		</div>
 		<div class="settingPanel-content">
 			<div class="settingPanel" id="settingPanel">

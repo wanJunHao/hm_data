@@ -1,6 +1,6 @@
 .waringProcess-only-wrap .wariningProcess-title{position:absolute;z-index: 444;font-size: 14px;left: 20px;top: 20px;font-weight:600}
 .warningProcess-content{position: relative;z-index: 4}
-.warningProcess-content .settingPanel-content{width: 80%;height: 80%;position: absolute;top: 0;right: 0;bottom: 0;left: 0;margin: auto;overflow-x:auto;}
+.warningProcess-content .settingPanel-content{width: 90%;height: 80%;position: absolute;top: 0;right: 0;bottom: 0;left: 0;margin: auto;overflow-x:auto;}
 .warningProcess-content .settingPanel-content .settingPanel{height: 100%;position: relative;}
 .warningProcess-content .settingPanel .awarning-process-wrap{position: absolute;}
 .warningProcess-content .settingPanel .awarning-process-item{width:125px;height: 25px;box-sizing:border-box;border:1px solid #5ba7ff;font-size:12px;line-height: 25px;float: left;margin-right: 70px;border-radius: 3px}
@@ -8,6 +8,9 @@
 .awarningconnectionImg{width:80px;text-align: center}
 .awarningconnectionImg span{font-size: 12px;position:absolute;top:-15px;width: 100%;left: 0px;cursor: pointer;}
 .awarningconnectionImg img {width: 16px;height: 10px;cursor:pointer;}
+.awarningconnectionImg p{position:absolute;left: 0px;top: 0px;width: 0px}
+#point14{top: 6px;}
+
 /*----------*/
 .warningProcess-content{width:90%;height:80%;background:#f2f2f2;position: absolute;top:0px;right: 0px;bottom: 0px;left: 0px;margin: auto}
 #warningPanelSetting{width:350px;background:white;border-radius:5px;font-size:12px;position:absolute;box-shadow:0px 3px 5px 0px rgba(0,49,98,0.08);top: 0px;right: 0px;bottom: 0px;left: 0px;margin: auto;height: 270px;}

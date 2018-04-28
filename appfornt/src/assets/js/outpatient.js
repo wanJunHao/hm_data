@@ -159,7 +159,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 			if(detail == "outpatient"){
 	 				var tempUrl = "http://127.0.0.1:8887/alert/getInfo";
 	 			}else if(detail == "inhostal"){
-	 				var tempUrl = "http://127.0.0.1:8887/alert/getInfo";
+	 				var tempUrl = "http://127.0.0.1:8887/alert/zhuyuanInfo";
 	 			}
 	 			this.$http.get(tempUrl).then(function(response){
 	 				var data = response.data.data;

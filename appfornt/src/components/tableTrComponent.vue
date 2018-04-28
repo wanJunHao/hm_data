@@ -15,6 +15,9 @@
 				<option value="60" selected> 60min </option>
 				<option value="90"> 90min </option>
 				<option value="120"> 120min </option>
+				<option value="4320"> 3day </option>
+				<option value="7200"> 5day </option>
+				<option value="10080"> 7day </option>
 			</select>
 		</td>
 		<td>

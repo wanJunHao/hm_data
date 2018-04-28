@@ -33,7 +33,7 @@
 			mounted:function(){
 				this.nowDate = $.datepicker.formatDate("yy/mm/dd",new Date());
 				$("#app .content .mapShow .mapShowHandle-content .mapShow-title .mapShow-title-list-select").comboSelect();
-				$(".mapShowData-change").datetimepicker({
+				$(".mapShowData-change").datepicker({
 					timeFormat:"HH:mm",
 					dateFormat:"yy/mm/dd",
 					buttonImage:"/static/images/calendar.png",
