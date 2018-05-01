@@ -75,7 +75,7 @@ export default{
 	},
 	watch:{
 		instance:function(){
-
+			console.log(this.instance)
 		},
 		warningShow:function(){
 			this.$nextTick(function(){
@@ -108,6 +108,7 @@ export default{
  		},
  		cancleSetBtn:function(){
  			this.warningPopUp = false;
+ 			this.nowElementJsplumb.find("img").attr("src","/static/images/lianj_icon_nor.png");
  		},
  		confirmSetBtn:function(){
  			this.warningPopUp = false;
@@ -135,6 +136,7 @@ export default{
  			this.sendMsgToParent();
  			this.processTableDataChangeArr={"data":[]};
 			this.processTableSaveFileName=[];
+
  		},	
  		savePanelBtn:function(){
  			if(this.warningPopUp)return;
@@ -173,7 +175,11 @@ export default{
  			
 			jsPlumb.ready(function(){
 			// $(".warningProcess-content .settingPanel-content .awarningconnectionImg,.jtk-connector,.jtk-endpoint").remove();
-		
+			if(_this.instance != null){
+				_this.instance.bind("click",function(a,b){
+					_this.instance.unbindContainer()
+				})
+			}
 			 _this.instance = jsPlumb.getInstance({
 					DragOptions: { cursor: "pointer", zIndex: 2000 },
 					ConnectionsDetachable:false,
@@ -188,14 +194,15 @@ export default{
 							cssClass:"awarningconnectionImg",
 							id:"connFlag",
 							events:{
-								click:function(jsPlumb){
-									console.log("ddd")
+								click:function(jsPlumb,a){
 									_this.customClickHandle(jsPlumb);
 								}
 							}
 						}]
 					],
 					Container:"settingPanel"
+			
+			
 			});
 
 			});
@@ -357,7 +364,7 @@ export default{
 					this.requestData = [["分诊时间","挂号时间(开始就诊)","结束就诊时间","缴费时间"],["缴费时间","取药完毕_yzy_sameLeave","检验开始_yzy_sameLeave","检查开始_yzy_sameLeave"],["检查开始_yzy_sameLeave","检查结果"],["检验开始_yzy_sameLeave","取到报告"],["结束就诊时间","办理入院"]];
 					var tempPostUrl = "http://127.0.0.1:8887/alert/setTime";
 					this.processTitleChangeShow = "门诊流程";
-					this.processTableShow = ["等待就诊","正在就诊","等待缴费","等待取药","等待检查","等待检验","正在检查","等待检验报告","等待检验报告","入院流程","复诊"];
+					this.processTableShow = ["等待就诊","正在就诊","等待缴费","等待取药","等待检查","等待检验","正在检查","等待检验报告","等待检查报告","入院流程","复诊"];
 			}else if(this.outpatienttable == "inhostal"){
 					this.requestData = [["办理住院证","成功入院","接诊结束","开立医嘱时间","确认医嘱"],["确认医嘱","检验开始_yzy_sameLeave","检查开始_yzy_sameLeave"],["确认医嘱","检验结束_yzy_saneLeave","检查结束_yzy_saneLeave"],["检验结束_yzy_saneLeave","手术结果","手术开始","手术方案制定"],["检验结束_yzy_saneLeave","出院时间"]]
 					var tempPostUrl = "http://127.0.0.1:8887/alert/zhuyuanTime";
@@ -428,6 +435,7 @@ export default{
 		var tempElementTarget = jsPlumb._jsPlumb.component;
 		this.warningPopUp = !this.warningPopUp;
 		if(this.warningPopUp){
+			this.nowElementJsplumb.find("img").attr("src","/static/images/lianj_03.png");
 			this.$nextTick(function(){
 				this.awarningDarg();
 				this.nowFile = $(jsPlumb.canvas).find("span").text();

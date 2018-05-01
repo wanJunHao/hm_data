@@ -296,7 +296,7 @@ window.getAbsCoordinates=function(e){
 		_keydown: function(event){
 
 			
-
+			return;
 			switch(event.which){
 
 				case keys.UP:
@@ -329,7 +329,7 @@ window.getAbsCoordinates=function(e){
 		
 
 		_keyup: function(event){
-			
+			return;
 			switch(event.which){
 				case keys.ESC:													
 					this.$container.trigger('comboselect:close')
@@ -577,7 +577,7 @@ window.getAbsCoordinates=function(e){
 			
 			/* Toggle focus class */
 
-			this.$container.toggleClass('combo-focus', !this.opened);
+			// this.$container.toggleClass('combo-focus', !this.opened);
 
 			/* If mobile: stop */
 			
@@ -589,7 +589,7 @@ window.getAbsCoordinates=function(e){
 			
 			/* Select the input */
 			
-			this.settings.focusInput && event && event.currentTarget && event.currentTarget.nodeName == 'INPUT' && event.currentTarget.select()
+			// this.settings.focusInput && event && event.currentTarget && event.currentTarget.nodeName == 'INPUT' && event.currentTarget.select()
 		},
 
 		_blur: function(){
@@ -664,7 +664,6 @@ window.getAbsCoordinates=function(e){
 			this._fixScroll()
 
 			/* Close all others */
-
 
 			$.each($.fn[ pluginName ].instances, function(i, plugin){
 

@@ -17,7 +17,8 @@ import outpatienttMap from "@/components/outpatienttMap"
   		watch:{
   			outpatienttable:function(){
   				this.$nextTick(function(){
-  					
+  					this.markShow = true;
+  					this.spinner.spin(this.target);
   					if($('#tableOutpatientPanel').DataTable() != undefined){
   						$('#tableOutpatientPanel').DataTable().clear();
   						$('#tableOutpatientPanel').DataTable().destroy();
@@ -31,35 +32,18 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 	data(){
 	 		return{
 	 			details:[],
-	 			details1:[
-	 				{name:"总挂号数",count:"0"},
-	 				{name:"等待就诊",count:"0"},
-	 				{name:"就诊",count:"0"},
-	 				{name:"初诊完毕",count:"0"},
-	 				{name:"候检",count:"0"},
-	 				{name:"就检",count:"0"},
-	 				{name:"检查完毕",count:"0"}
-	 			],
 	 			date:'',
 	 			waringShow:false,
 	 			outpatienttMapShow:false,
 	 			outpatienttMapTable:true,
 	 			markShow:false,
 	 			tableOrMap:"table",
-	 			testData : {
-		            "inhostal":[
-		            	{"link": "1", "state": 80, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"a","ssss":""},
-		                {"link": "2", "state": 13, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"b","ssss":""},
-		                {"link": "等待检查", "state": 24, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"c","ssss":""},
-		                {"link": "等待检验", "state": 18, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"d","ssss":""},
-		                {"link": "等待取药", "state": 15, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-		                {"link": "等待就诊", "state": 77, "name": "李白", "address": "临清1区", "card_no": "3194193t1", "tel": "13738776521","color":"","ssss":""},
-
-		            ]
-		            
-        		},
         		dataMap:{},
         		tableShowPx:$("body").width() -60,
+        		spinner:null,
+        		target:null,
+        		thisMzTableRow:["所有数据","等待就诊","正在就诊","等待缴费","等待检验","等待取药","等待检查","正在检查","等待检验报告","等待检查报告"],
+        		thisZyTableRow:["所有数据","等待入院","等待接诊","校对医嘱","正在手术","等待手术","等待检验","等待检查","正在检验","正在检查","等待手术方案"],
 
 	 		}
 	 	},
@@ -67,6 +51,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 
 		},
 		mounted(){
+
 			var _this = this;
 			_this.outpatientTable("outpatient");
 			// 门诊表格
@@ -78,6 +63,9 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		setInterval(function(){
 	 			_this.getDate();
 	 		},1000);
+	 		this.spinnerStart();
+			this.markShow = true;
+  			this.spinner.spin(this.target);
 		},
 	 	methods:{
 	 		getDate:function(){
@@ -103,6 +91,33 @@ import outpatienttMap from "@/components/outpatienttMap"
       				_this.getDate();
    				}, 1000)
 	 		},
+	 		spinnerStart:function(){
+	 			var opts = {
+					  lines: 13, // The number of lines to draw
+					  length: 0, // The length of each line
+					  width: 6, // The line thickness
+					  radius: 14, // The radius of the inner circle
+					  scale: 1, // Scales overall size of the spinner
+					  corners: 1, // Corner roundness (0..1)
+					  color: '#86bbff', // CSS color or array of colors
+					  fadeColor: 'transparent', // CSS color or array of colors
+					  opacity: 0.25, // Opacity of the lines
+					  rotate: 0, // The rotation offset
+					  direction: 1, // 1: clockwise, -1: counterclockwise
+					  speed: 1, // Rounds per second
+					  trail: 60, // Afterglow percentage
+					  fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
+					  zIndex: 2e9, // The z-index (defaults to 2000000000)
+					  className: 'spinner', // The CSS class to assign to the spinner
+					  top: '50%', // Top position relative to parent
+					  left: '50%', // Left position relative to parent
+					  shadow: 'none', // Box-shadow for the lines
+					  position: 'absolute' // Element positioning
+					};
+
+					this.target = $("body").get(0);
+					this.spinner = new Spinner(opts);
+	 		},
 	 		bodyWidth:function(){
 	 			return {"width":this.tableShowPx + "px"}
 	 		},
@@ -115,6 +130,8 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		},
 	 		changeTable:function(){
 	 			if(this.outpatienttMapTable) return;
+  				this.markShow = true;
+  				this.spinner.spin(this.target);
 	 			this.outpatienttMapTable = true;
 	 			this.outpatienttMapShow = false;
 	 			this.tableOrMap = "table";
@@ -133,6 +150,8 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		},
 	 		changeMap:function(){
 	 			this.outpatienttMapShow = true;
+	 			this.markShow = true;
+  				this.spinner.spin(this.target);
 	 			this.outpatienttMapTable = false;
 	 			this.tableOrMap = "map";
 	 			$(".mapBtn").addClass("activeBtn");
@@ -164,11 +183,14 @@ import outpatienttMap from "@/components/outpatienttMap"
 		      },
 	 		//门诊表格的加载
 	 		outpatientTable:function(detail){
+	 			if(this.outpatienttMapTable == false) return;
 	 			var tempThat = this;
 	 			if(detail == "outpatient"){
 	 				var tempUrl = "http://127.0.0.1:8887/alert/getInfo";
+	 				var tempDataRow = tempThat.thisMzTableRow;
 	 			}else if(detail == "inhostal"){
 	 				var tempUrl = "http://127.0.0.1:8887/alert/zhuyuanInfo";
+	 				var tempDataRow = tempThat.thisZyTableRow;
 	 			}
 	 			this.$http.get(tempUrl).then(function(response){
 	 				var data = response.data.data;
@@ -177,7 +199,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		 			var tempTableDate = tempThat.dataTablesColumn(data[0]);
 		 			$(".tableShow .outpatientTable-content").html('<table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="tableOutpatientPanel"></table>')
 		 			// console.log($("#tableOutpatientPanel").width(),$(".tableShow").width())
-		 			$('#tableOutpatientPanel').DataTable({
+		 			var tempInstance = $('#tableOutpatientPanel').DataTable({
 					language:{
 				        "sLengthMenu": "显示 _MENU_ 项结果",
 				        "sZeroRecords": "没有匹配结果",
@@ -195,7 +217,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		    		 	"bPaginate": false, //翻页功能
 		             	"bLengthChange":true, //改变每页显示数据数量
 		             	"bFilter": true, //过滤功能
-		             	"searching":false,//搜索
+		             	"searching":true,//搜索
 		             	"bInfo":true,//页脚信息
 		             	"paging":true,
 		             	"select":true,
@@ -217,13 +239,39 @@ import outpatienttMap from "@/components/outpatienttMap"
 		             			if(tempColorWidth > 100){
 		             				var tempColorWidth = 100;
 		             			}
-		             			
+		             			if(full.settime == undefined){
+		             				full.settime = 30;
+		             			}
+		             			if(full.time == undefined){
+		             				full.time = 1;
+		             			}
 		             			return "<div class="+full.status+" style='width:"+tempColorWidth+"%' title='设定时间 ："+full.settime+"  当前时间 ："+full.time+"'><div>";
 		             		}
 		             	}]
 
 		    		})
-
+		 			setTimeout(function(){
+		 			   tempThat.markShow = false;
+		 			   tempThat.spinner.stop();
+		 			   $(".tableDataState").eq(0).html("").append($("<p>状态</p><select class='tableDataStateSelect'></select>"));
+		 			   tempDataRow.forEach(function(ele,value){
+		 			   		var tempOption = $("<option value="+ele+">"+ele+"</option>");
+		 			   		$(".tableDataStateSelect").append(tempOption);
+		 			   })
+		 			   $(".tableDataStateSelect").comboSelect();
+		 			   $(".tableDataStateSelect").unbind("chage");
+		 			   $(".tableDataStateSelect").change(function(event){
+		 			   		event.stopPropagation();
+		 			   		setTimeout(function(){
+		 			   			if($(".tableDataStateSelect").val() == "所有数据"){
+		 			   				tempInstance.search("").draw();
+		 			   			}else{
+		 			   				tempInstance.search($(".tableDataStateSelect").val()).draw();
+		 			   			}
+		 			   			
+		 			   		},20);
+		 			   })
+		 			},300);
 	 			})
 	 		},
 
@@ -233,6 +281,15 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 					$(".dataTables_scrollHead,.dataTables_scrollBody").width($(".table-striped").width());
 	 				}
 	 			})
+	 		},
+	 		mapDataSuccess:function(data){
+	 			if(data["mapSuccess"]){
+		 			   this.markShow = false;
+		 			   this.spinner.stop();	 				
+	 			}else{
+						this.markShow = true;
+			  			this.spinner.spin(this.target);	 				
+	 			}
 	 		}
 	 	}
 	 	
