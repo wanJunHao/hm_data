@@ -169,8 +169,8 @@ STATUS_1 = {
     "正在检验": {"color": "green", "times": 60, "new": ""},
     "等待手术方案": {"color": "yellow", "times": 60, "new": ""},
     "等待手术": {"color": "yellow", "times": 4320, "new": ""},
-    "正在手术": {"color": "green", "times": 100, "new": ""},
-    "术后到出院": {"color": "yellow", "times": 8640, "new": ""},
+    "正在手术": {"color": "green", "times": 120, "new": ""},
+    "术后到出院": {"color": "yellow", "times": 10080, "new": ""},
     "已出院": {"color": "blue", "times": 30, "new": ""}
 }
 
