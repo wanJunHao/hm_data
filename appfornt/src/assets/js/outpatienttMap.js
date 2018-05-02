@@ -18,7 +18,7 @@
 					tempDataOption:null,
 					tempDataOptionDrill:null,
 					tableShowPx:$("body").width() - 60,
-					nowDate:null,
+					nowDate:"2018-04-23",
 					mapData:null,
 					mapChangeColor:["#00958C","#006896","#00488F","#0084B5","#5799CE","#00B4A8","#1F97CC","#1D66AE","#12ABE2","#51C2A9"],
 					markPointData:[],
@@ -37,6 +37,7 @@
 					countryHaveData:null,
 					townHaveData:null,
 					mapHaveClick:false,
+					mapHaveClickBz:false,
 					thisMapBili:30,
 
 				}
@@ -62,7 +63,7 @@
 			},
 			mounted:function(){
 				var _this = this;
-				this.nowDate = $.datepicker.formatDate("yy/mm/dd",new Date());
+				// this.nowDate = $.datepicker.formatDate("yy/mm/dd",new Date());
 				$("#app .content .mapShow .mapShowHandle-content .mapShow-title .mapShow-title-list-select").comboSelect();
 
 				$(".mapShowData-change").datepicker({
@@ -112,8 +113,6 @@
 				this.MapSearchPostData = {};
 				this.MapSearchPostData["start"] = $("#mapShowData-start").val().replace(/\//g,"-");
 				this.MapSearchPostData["end"] = $("#mapShowData-end").val().replace(/\//g,"-");
-				console.log($(".mapShow #ksInput input").val().match(/\`/))
-				if($(".mapShow #ksInput input").val().match(/\`/)) return;
 				if($(".mapShow #ksInput input").val() == ""){
 					this.MapSearchPostData["ks"] = "";
 				}else{
@@ -129,23 +128,23 @@
 					this.MapSearchPostData["end"] = $("#mapShowData-start").val().replace(/\//g,"-");
 				}
 				_this.sendMsgToParent("fasle");
-				this.$http.post("http://127.0.0.1:8887/alert/areaMap/"+_this.typeName+"/"+_this.mapCountryType+"",{params:this.MapSearchPostData}).then(function(response){
+				this.$http.post("http://127.0.0.1:8887/alert/areaMap/"+_this.typeName+"/"+_this.mapCountryType+"",this.MapSearchPostData).then(function(response){
 					if(_this.mapCountryType == "country" && noDrill == "change"){
 						_this.townHaveData = null;
 
-						if(toDelete == "delete"){
+						if(toDelete == "ksdelete"){
 							_this.mapHaveClick = false;
 						}else{
-							_this.mapHaveClick = true;
+							_this.mapHaveClickBz = false;
 						}
 						 
 					}
 					if(_this.mapCountryType == "town" && noDrill == "change"){
 						_this.countryHaveData = null;
-						if(toDelete == "delete"){
+						if(toDelete == "ksdelete"){
 							_this.mapHaveClick = false;
 						}else{
-							_this.mapHaveClick = true;
+							_this.mapHaveClickBz = false;
 						}
 					}
 					
@@ -155,13 +154,15 @@
 			},
 			ksInputHandle:function(){
 				var _this = this;
+				var ceshiReg = /\'/g;
+				if(ceshiReg.test($(".mapShow .mapShow-title-list-select-content").eq(0).find("input").val())) return;
 				if($(".mapShow .mapShow-title-list-select-content").eq(0).find("input").val() == ""){
 					this.ksArr = [];
 					this.nowShowKsText = "全部科室";
 					$(".mapShow .mapShow-title-list-select-content").eq(0).find("ul").hide();
 					
 					if(_this.mapHaveClick){
-						this.getReponseData("change","delete");
+						this.getReponseData("change","ksdelete");
 						
 					}
 					
@@ -175,12 +176,14 @@
 			},
 			bzInputHandle:function(){
 				var _this = this;
+				var ceshiReg = /\'/g;
+				if(ceshiReg.test($(".mapShow .mapShow-title-list-select-content").eq(0).find("input").val())) return;
 				if($(".mapShow .mapShow-title-list-select-content").eq(1).find("input").val() == ""){
 					this.ksArr = [];
 					this.nowShowBzText= "全部病种";
 					$(".mapShow .mapShow-title-list-select-content").eq(1).find("ul").hide();
 					if(_this.mapHaveClick){
-						this.getReponseData("change","delete");
+						this.getReponseData("change","bzdelete");
 					}
 					
 					return;
@@ -196,11 +199,13 @@
 				$(".mapShow #ksInput").find("input").val(text);
 				this.nowShowKsText = text;
 				this.getReponseData("change");
+				this.mapHaveClick = true;
 			},
 			inputChangeBz:function(index,text){
 				$(".mapShow #bzInput").find("input").val(text);
 				this.nowShowBzText= text;
 				this.getReponseData("change");
+				this.mapHaveClickBz = true;
 			},
 			inputSearch:function(type,text,index){
 				var _this = this;
@@ -256,7 +261,7 @@
 			},
 				mapOption:function(){
 					var _that = this;
-					echarts.registerMap(name,_that.liaocheng);
+					echarts.registerMap(name,_that.liaochengMap);
 				     _that.tempDataOptionDrill = {
 				            title: [{
 				                text: "地图",
@@ -523,9 +528,12 @@
 					
 					if((_that.mapCountryType == "town" && this.townHaveData == null )|| (_that.mapCountryType == "town" && update != undefined)){
 							this.mapValueChange = [];
-							this.townHaveData = data;
+							
 							_that.mapDrillData();
 							_that.mapData.forEach(function(index,value){
+								if(index.value == null){
+									index.value = 0;
+								}
 								if(index.name == "最大日期" || index.name == "最小日期" || index.name == "临清") return;
 								if(index.name == "大辛庄办事处" || index.name == "新华办事处" || index.name == "青年办事处" || index.name == "先锋办事处"){
 									_that.mapValueChange.push(index.value);
@@ -534,14 +542,18 @@
 								_that.mapValueChange.push(index.value);
 								index.name = index.name + "镇";
 							})
+							this.townHaveData = data;
 							_that.mapDrillData();
 					} 
 
 					if((_that.mapCountryType == "country" && this.countryHaveData == null) || (_that.mapCountryType == "country" && update != undefined)){
 						this.mapValueChange = [];
 						this.thisDrillMapData = [];
-						this.countryHaveData = data;
+						
 						this.mapData.forEach(function(index,value){
+							if(index.value == null){
+									index.value = 0;
+							}
 							if(index.name == "最大日期" || index.name == "最小日期") return;
 								if(index.name == "临清"){
 									index.name = index.name + "市";
@@ -559,7 +571,8 @@
 								index.name = index.name + "县";
 								_that.thisDrillMapData.push({"name":index.name,"value":index.value,"itemStyle":{"emphasis":{"areaColor":"#FFFFFF"},"normal":{"areaColor":"#FFFFFF"}}});
 
-						})						
+						})	
+						this.countryHaveData = data;					
 					}
 
 					var mycharts = echarts.getInstanceByDom($("#app .content .mapShow .autoMapToHandle").get(0));

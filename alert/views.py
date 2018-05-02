@@ -331,57 +331,60 @@ methods = {
 }
 
 
-@api_view(["GET"])
+@api_view(["GET", "POST"])
 def areaMap(request, method, area):
     '''
     '''
 
+    method = methods[method]
+
+    # conn = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
+    # c = conn.cursor()
+    conn = getC()
+    c = conn.cursor()
+    sql = "select "
+    for i in eval('{}List'.format(area)):
+        sql += "sum(case when ({0} like '%{1}%') then 1 else 0 end) as {1},".format(method['addr'], i)
+    if area == "town":
+        sql += "sum(case when ({0} like '%临清%') then 1 else 0 end) as 临清,".format(method['addr'])
+
     if request.method == "GET":
+        sql = sql[:-1] + " from {1}".format(method['date'], method['table'])
+
+    if request.method == "POST":
         jsonData = request.data
-        method = methods[method]
+        sql = sql[:-1] + " from {} where 1 = 1 ".format(method['table'])
+        if "ks" in jsonData.keys() and jsonData["ks"]:
+            sql += "and {0} = '{1}' ".format(method['ks'], jsonData["ks"])
+        if "bz" in jsonData.keys() and jsonData["bz"]:
+            sql += "and {0} = '{1}' ".format(method['bz'], jsonData["bz"])
+        if "start" in jsonData.keys() and jsonData["start"]:
+            # sql += "and to_char({0}) >= '{1}' ".format(method['date'], jsonData["start"])
+            sql += "and DATE_FORMAT({0}, '%Y-%m-%d') >= '{1}' ".format(method['date'], jsonData["start"])
+        if "end" in jsonData.keys() and jsonData["end"]:
+            # sql += "and to_char({0}) <= '{1}' ".format(method['date'], jsonData["end"])
+            sql += "and DATE_FORMAT({0}, '%Y-%m-%d') <= '{1}' ".format(method['date'], jsonData["end"])
 
-        # conn = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
-        # c = conn.cursor()
-        conn = getC()
-        c = conn.cursor()
-        sql = "select "
-        for i in eval('{}List'.format(area)):
-            sql += "sum(case when ({0} like '%{1}%') then 1 else 0 end) as {1}, ".format(method['addr'], i)
-        if area == "town":
-            sql += "sum(case when ({0} like '%临清%') then 1 else 0 end) as 临清, ".format(method['addr'])
-        if not jsonData:
-            sql += "max({0}) as 最大日期, min({0}) as 最小日期 from {1}".format(method['date'], method['table'])
-        else:
-            sql = sql[:-2] + " from {} where 1 = 1 ".format(method['table'])
-            if "ks" in jsonData.keys():
-                sql += "and {0} = '{1}' ".format(method['ks'], jsonData["ks"])
-            if "bz" in jsonData.keys():
-                sql += "and {0} = '{1}' ".format(method['bz'], jsonData["bz"])
-            if "start" in jsonData.keys():
-                sql += "and to_char({0}) >= '{1}' ".format(method['date'], jsonData["start"])
-            if "end" in jsonData.keys():
-                sql += "and to_char({0}) <= '{1}' ".format(method['date'], jsonData["end"])
+    c.execute(sql)
+    dataList = c.fetchall()
+    colList = c.description
 
-        c.execute(sql)
-        dataList = c.fetchall()
-        colList = c.description
-
-        data = []
-        for i in range(len(colList)):
-            dic = {}
-            dic["name"] = colList[i][0]
-            dic["value"] = dataList[0][i]
-            data.append(dic)
-        if area == "town":
-            for i in data:
-                if i['name'] == '临清':
-                    lqsum = i['value']
-                    for j in data[:-3]:
-                        lqsum -= j['value']
-                    i['value'] = lqsum
-        c.close()
-        conn.close()
-        return JsonResponse({"data": data})
+    data = []
+    for i in range(len(colList)):
+        dic = {}
+        dic["name"] = colList[i][0]
+        dic["value"] = dataList[0][i]
+        data.append(dic)
+    if area == "town":
+        for i in data:
+            if i['name'] == '临清':
+                lqsum = i['value']
+                for j in data[:-3]:
+                    lqsum -= j['value']
+                i['value'] = lqsum
+    c.close()
+    conn.close()
+    return JsonResponse({"data": data})
 
 
 @api_view(["GET"])
