@@ -350,7 +350,8 @@ def areaMap(request, method, area):
         sql += "sum(case when ({0} like '%临清%') then 1 else 0 end) as 临清,".format(method['addr'])
 
     if request.method == "GET":
-        sql = sql[:-1] + " from {1}".format(method['date'], method['table'])
+        today = datetime.datetime.now().strftime('%Y-%m-%d')
+        sql = sql[:-1] + " from {0} where to_char({1}, 'yyyy-mm-dd') = '{2}'".format(method['table'], method['date'], today)
 
     if request.method == "POST":
         jsonData = request.data
