@@ -514,7 +514,6 @@
 					            },
 					            "data":[{"name":"华美医院","coord":[115.707971,36.807258]}],
 					        },
-
 				        hoverAnimation: true,
 			            }],
 
