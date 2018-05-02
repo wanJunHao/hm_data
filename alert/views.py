@@ -359,10 +359,10 @@ def areaMap(request, method, area):
         if "bz" in jsonData.keys() and jsonData["bz"]:
             sql += "and {0} = '{1}' ".format(method['bz'], jsonData["bz"])
         if "start" in jsonData.keys() and jsonData["start"]:
-            sql += "and to_char({0}) >= '{1}' ".format(method['date'], jsonData["start"])
+            sql += "and to_char({0}, 'yyyy-mm-dd') >= '{1}' ".format(method['date'], jsonData["start"])
             # sql += "and DATE_FORMAT({0}, '%Y-%m-%d') >= '{1}' ".format(method['date'], jsonData["start"])
         if "end" in jsonData.keys() and jsonData["end"]:
-            sql += "and to_char({0}) <= '{1}' ".format(method['date'], jsonData["end"])
+            sql += "and to_char({0}, 'yyyy-mm-dd') <= '{1}' ".format(method['date'], jsonData["end"])
             # sql += "and DATE_FORMAT({0}, '%Y-%m-%d') <= '{1}' ".format(method['date'], jsonData["end"])
 
     c.execute(sql)
@@ -373,7 +373,10 @@ def areaMap(request, method, area):
     for i in range(len(colList)):
         dic = {}
         dic["name"] = colList[i][0]
-        dic["value"] = dataList[0][i]
+        if dataList[0][i]:
+            dic["value"] = dataList[0][i]
+        else:
+            dic["value"] = 0
         data.append(dic)
     if area == "town":
         for i in data:
