@@ -321,12 +321,12 @@ townList = ["唐园", "烟店", "潘庄", "八岔路", "刘垓子", "魏湾", "�
             "松林", "尚店", "戴湾", "金郝庄", "大辛庄办事处", "新华办事处", "青年办事处", "先锋办事处"]
 methods = {
     "mz": {
-        # "addr": "住址", "date": "挂号日期", "ks": "挂号科室", "zd": "诊断", "table": "view_mz"
-        "addr": "addr", "date": "dates", "ks": "ks", "zd": "zd", "table": "view_mz"
+        "addr": "住址", "date": "挂号日期", "ks": "挂号科室", "zd": "诊断", "table": "view_mz"
+        # "addr": "addr", "date": "dates", "ks": "ks", "zd": "zd", "table": "view_mz"
     },
     "zy": {
-        # "addr": "家庭住址", "date": "入院日期", "ks": "入院科室", "zd": "入院诊断", "table": "view_zyzd"
-        "addr": "addr", "date": "dates", "ks": "ks", "zd": "zd", "table": "view_zyzd"
+        "addr": "家庭住址", "date": "入院日期", "ks": "入院科室", "zd": "入院诊断", "table": "view_zyzd"
+        # "addr": "addr", "date": "dates", "ks": "ks", "zd": "zd", "table": "view_zyzd"
     }
 }
 
@@ -338,10 +338,10 @@ def areaMap(request, method, area):
 
     method = methods[method]
 
-    # conn = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
-    # c = conn.cursor()
-    conn = getC()
+    conn = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
     c = conn.cursor()
+    # conn = getC()
+    # c = conn.cursor()
     sql = "select "
     for i in eval('{}List'.format(area)):
         sql += "sum(case when ({0} like '%{1}%') then 1 else 0 end) as {1},".format(method['addr'], i)
@@ -359,11 +359,11 @@ def areaMap(request, method, area):
         if "bz" in jsonData.keys() and jsonData["bz"]:
             sql += "and {0} = '{1}' ".format(method['bz'], jsonData["bz"])
         if "start" in jsonData.keys() and jsonData["start"]:
-            # sql += "and to_char({0}) >= '{1}' ".format(method['date'], jsonData["start"])
-            sql += "and DATE_FORMAT({0}, '%Y-%m-%d') >= '{1}' ".format(method['date'], jsonData["start"])
+            sql += "and to_char({0}) >= '{1}' ".format(method['date'], jsonData["start"])
+            # sql += "and DATE_FORMAT({0}, '%Y-%m-%d') >= '{1}' ".format(method['date'], jsonData["start"])
         if "end" in jsonData.keys() and jsonData["end"]:
-            # sql += "and to_char({0}) <= '{1}' ".format(method['date'], jsonData["end"])
-            sql += "and DATE_FORMAT({0}, '%Y-%m-%d') <= '{1}' ".format(method['date'], jsonData["end"])
+            sql += "and to_char({0}) <= '{1}' ".format(method['date'], jsonData["end"])
+            # sql += "and DATE_FORMAT({0}, '%Y-%m-%d') <= '{1}' ".format(method['date'], jsonData["end"])
 
     c.execute(sql)
     dataList = c.fetchall()
@@ -392,14 +392,14 @@ def searchName(request, method, keyword):
     '''
     '''
     if request.method == "GET":
-        conn = getC()
+        conn = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
         c = conn.cursor()
         if method == "ks":
-            # sql = "select distinct(科室名称) from view_ks where 科室名称 like '%{}%'".format(keyword)
-            sql = "select distinct(name) from view_ks where name like '%{}%'".format(keyword)
+            sql = "select distinct(科室名称) from view_ks where 科室名称 like '%{}%'".format(keyword)
+            # sql = "select distinct(name) from view_ks where name like '%{}%'".format(keyword)
         elif method == "bz":
-            # sql = "select distinct(诊断名称) from view_zd where 诊断名称 like '%{}%'".format(keyword)
-            sql = "select distinct(name) from view_zd where name like '%{}%'".format(keyword)
+            sql = "select distinct(诊断名称) from view_zd where 诊断名称 like '%{}%'".format(keyword)
+            # sql = "select distinct(name) from view_zd where name like '%{}%'".format(keyword)
         c.execute(sql)
         ll = c.fetchall()
         data = []
@@ -413,6 +413,6 @@ def searchName(request, method, keyword):
 def getC():
     '''
     '''
-    # conn = MySQLdb.connect(user="root", password="123.com", host="172.21.45.53", port=3306, db="hm", charset="utf8")
-    conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.50", port=3306, db="hm", charset="utf8")
+    conn = MySQLdb.connect(user="root", password="123.com", host="172.21.45.53", port=3306, db="hm", charset="utf8")
+    # conn = MySQLdb.connect(user="root", password="123.com", host="192.168.1.50", port=3306, db="hm", charset="utf8")
     return conn
