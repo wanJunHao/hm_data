@@ -358,7 +358,7 @@ def areaMap(request, method, area):
         if "ks" in jsonData.keys() and jsonData["ks"]:
             sql += "and {0} = '{1}' ".format(method['ks'], jsonData["ks"])
         if "bz" in jsonData.keys() and jsonData["bz"]:
-            sql += "and {0} = '{1}' ".format(method['bz'], jsonData["bz"])
+            sql += "and {0} = '{1}' ".format(method['zd'], jsonData["bz"])
         if "start" in jsonData.keys() and jsonData["start"]:
             sql += "and to_char({0}, 'yyyy-mm-dd') >= '{1}' ".format(method['date'], jsonData["start"])
             # sql += "and DATE_FORMAT({0}, '%Y-%m-%d') >= '{1}' ".format(method['date'], jsonData["start"])

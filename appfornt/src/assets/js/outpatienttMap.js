@@ -18,7 +18,7 @@
 					tempDataOption:null,
 					tempDataOptionDrill:null,
 					tableShowPx:$("body").width() - 60,
-					nowDate:"2018-04-23",
+					nowDate:null,
 					mapData:null,
 					mapChangeColor:["#00958C","#006896","#00488F","#0084B5","#5799CE","#00B4A8","#1F97CC","#1D66AE","#12ABE2","#51C2A9"],
 					markPointData:[],
@@ -63,7 +63,7 @@
 			},
 			mounted:function(){
 				var _this = this;
-				// this.nowDate = $.datepicker.formatDate("yy/mm/dd",new Date());
+				this.nowDate = $.datepicker.formatDate("yy/mm/dd",new Date());
 				$("#app .content .mapShow .mapShowHandle-content .mapShow-title .mapShow-title-list-select").comboSelect();
 
 				$(".mapShowData-change").datepicker({
@@ -134,7 +134,7 @@
 
 						if(toDelete == "ksdelete"){
 							_this.mapHaveClick = false;
-						}else{
+						}else if(toDelete == "bzdelete"){
 							_this.mapHaveClickBz = false;
 						}
 						 
@@ -143,7 +143,7 @@
 						_this.countryHaveData = null;
 						if(toDelete == "ksdelete"){
 							_this.mapHaveClick = false;
-						}else{
+						}else if(toDelete == "bzdelete"){
 							_this.mapHaveClickBz = false;
 						}
 					}
@@ -160,7 +160,6 @@
 					this.ksArr = [];
 					this.nowShowKsText = "全部科室";
 					$(".mapShow .mapShow-title-list-select-content").eq(0).find("ul").hide();
-					
 					if(_this.mapHaveClick){
 						this.getReponseData("change","ksdelete");
 						
@@ -177,12 +176,12 @@
 			bzInputHandle:function(){
 				var _this = this;
 				var ceshiReg = /\'/g;
-				if(ceshiReg.test($(".mapShow .mapShow-title-list-select-content").eq(0).find("input").val())) return;
+				if(ceshiReg.test($(".mapShow .mapShow-title-list-select-content").eq(1).find("input").val())) return;
 				if($(".mapShow .mapShow-title-list-select-content").eq(1).find("input").val() == ""){
 					this.ksArr = [];
 					this.nowShowBzText= "全部病种";
 					$(".mapShow .mapShow-title-list-select-content").eq(1).find("ul").hide();
-					if(_this.mapHaveClick){
+					if(_this.mapHaveClickBz){
 						this.getReponseData("change","bzdelete");
 					}
 					
@@ -287,7 +286,7 @@
 					                var leftDiv = "<div class='clear' style='color:#808080;font-size:10px;margin-top:20px;'><p style='height:10px;margin:0;float:left'><span style=width:8px;height:8px;border-radius:50%;float:left;margin-top:8px;line-height:8px;background:"+params.color + "></span>"+"<p style='margin:0;margin-left:5px;padding:0 0 10px 0;height:10px;float:left'>value : </p>"+"<span style='display:inline-block;margin-left:5px;height:10px;line-height:10px;'>"+params.value+"</span></p>";
 					                var rightDiv = "<div  style=color:#808080;font-size:10px;><p style='height:10px;margin:0;float:left;padding-left:11px'>name : </p><p style='padding:0 0 0px 0;height:10px;margin-left:5px;float:left'>"+params.name+"</p>";
 					                var tongbi = "<div style='color:#808080;font-size:10px;'><p style='height:10px;margin:0;float:left;padding-left:10px;'>科&nbsp&nbsp室 : </p><p style='padding:0 0 0px 0;height:10px;margin-left:5px;float:left;margin-bottom:10px'>"+_that.nowShowKsText+"</p></div>";
-					                var huanbi = "<div style=color:#808080;font-size:10px;><p style='height:10px;margin:0;float:left;padding-left:11px'>病&nbsp&nbsp种 : </p><p style='padding:0 0 0px 0;height:10px;margin-left:5px;float:left;margin-bottom:10px'>"+_that.nowShowBzText+"</p></div>";
+					                var huanbi = "<div style=color:#808080;font-size:10px; class='clear'><p style='height:10px;margin:0;float:left;padding-left:11px'>病&nbsp&nbsp种 : </p><p style='padding:0 0 0px 0;height:10px;margin-left:5px;float:left;margin-bottom:10px'>"+_that.nowShowBzText+"</p></div>";
 					                leftDiv+= "</div>";
 					                rightDiv+= "</div>";
 					                 return rightDiv + leftDiv + tongbi + huanbi;
@@ -358,6 +357,7 @@
 				               	"markPoint": {
 						            "symbol": "circle",
 						            "symbolSize":function(s){
+						            	if(s == 0){return 15}
 						            	return s/_that.mapValueChange.max()* _that.thisMapBili;
 						            },
 						            "animation":true,
@@ -422,7 +422,7 @@
 					                var leftDiv = "<div class='clear' style='color:#808080;font-size:10px;margin-top:20px;'><p style='height:10px;margin:0;float:left'><span style=width:8px;height:8px;border-radius:50%;float:left;margin-top:8px;line-height:8px;background:"+params.color + "></span>"+"<p style='margin:0;margin-left:5px;padding:0 0 10px 0;height:10px;float:left'>value : </p>"+"<span style='display:inline-block;margin-left:5px;height:10px;line-height:10px;'>"+params.value+"</span></p>";
 					                var rightDiv = "<div  style=color:#808080;font-size:10px;><p style='height:10px;margin:0;float:left;padding-left:10px'>name : </p><p style='padding:0 0 0px 0;height:10px;margin-left:5px;float:left'>"+params.name+"</p>";
 					                var tongbi = "<div style='color:#808080;font-size:10px;'><p style='height:10px;margin:0;float:left;padding-left:10px;'>科&nbsp&nbsp室 : </p><p style='padding:0 0 0px 0;height:10px;margin-left:5px;float:left;margin-bottom:10px'>"+_that.nowShowKsText+"</p></div>";
-					                var huanbi = "<div style=color:#808080;font-size:10px;><p style='height:10px;margin:0;float:left;padding-left:11px'>病&nbsp&nbsp种 : </p><p style='padding:0 0 0px 0;height:10px;margin-left:5px;float:left;margin-bottom:10px'>"+_that.nowShowBzText+"</p></div>";
+					                var huanbi = "<div style=color:#808080;font-size:10px; class='clear'><p style='height:10px;margin:0;float:left;padding-left:11px'>病&nbsp&nbsp种 : </p><p style='padding:0 0 0px 0;height:10px;margin-left:5px;float:left;margin-bottom:10px'>"+_that.nowShowBzText+"</p></div>";
 					                leftDiv+="</div>";
 					                rightDiv+= "</div>";
 					                 return rightDiv + leftDiv + tongbi + huanbi;
@@ -487,7 +487,7 @@
 			                animation: false,
 
 			                data:this.mapData,
-		                		"markPoint": {
+		                		"markPoint":{
 					            "symbol": "pin",
 					            "symbolSize":function(s){
 					            	return 15;
@@ -509,8 +509,6 @@
 					            },
 					            "itemStyle": {
 					                "normal": {
-					                    // "color":'rgba(12, 84, 163,0.6)',
-					                    // "borderColor":"rgb(96, 204, 243)",
 					                    "borderWidth":1,
 					                }
 					            },
@@ -556,13 +554,17 @@
 									index.value = 0;
 							}
 							if(index.name == "最大日期" || index.name == "最小日期") return;
-								if(index.name == "临清"){
+								if(index.name == "临清" || index.name == "南宫"){
 									index.name = index.name + "市";
+									if(index.name == "南宫"){
+										_that.thisDrillMapData.push({"name":index.name,"value":index.value,"itemStyle":{"emphasis":{"areaColor":"#FFFFFF"},"normal":{"areaColor":"#FFFFFF"}}});
+										return;
+									}
 									_that.thisDrillMapData.push({"name":index.name,"value":index.value,"itemStyle":{"emphasis":{"areaColor":"#DEDEDE"},"normal":{"areaColor":"#DEDEDE"}}});
 									return;
 								}
 									
-								if(index.name == "冠县" || index.name == "东昌府区"){
+								if(index.name == "冠县" || index.name == "东昌府区" || index.name == "威县" || index.name == "邱县" || index.name == "莘县"){
 									_that.mapValueChange.push(index.value);
 									_that.thisDrillMapData.push({"name":index.name,"value":index.value,"itemStyle":{"emphasis":{"areaColor":"#FFFFFF"},"normal":{"areaColor":"#FFFFFF"}}});
 									return;
