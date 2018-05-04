@@ -616,7 +616,7 @@
 					if(_that.mapCountryType == "town"){
 						this.mapData.forEach(function(ele,index){
 							if(ele.name == "临清") return;
-							tempCount+=ele.value;
+							tempCount+=Number(ele.value);
 						})
 
 					_that.thisDrillMapData.forEach(function(ele,index){
