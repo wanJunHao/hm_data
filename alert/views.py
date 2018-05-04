@@ -416,7 +416,10 @@ def searchName(request, method, keyword):
     '''
     '''
     if request.method == "GET":
-        conn = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
+        # conn = cx_Oracle.connect("lchisjk/jklchis@10.10.102.1:1521/eryuan")
+        # c = conn.cursor()
+
+        conn = getC()
         c = conn.cursor()
         if method == "ks":
             # sql = "select distinct(科室名称) from view_ks where 科室名称 like '%{}%'".format(keyword)
