@@ -39,6 +39,7 @@
 					mapHaveClick:false,
 					mapHaveClickBz:false,
 					thisMapBili:30,
+					thisLinqingIndex:null,
 
 				}
 			},
@@ -59,6 +60,8 @@
 					if(!this.outpatienttMapShow) return;
 					this.clickChangeInhostal();
 					this.getReponseData("change");
+					this.nowDate = $.datepicker.formatDate("yy/mm/dd",new Date());
+					this.initMapData();
 				}
 			},
 			mounted:function(){
@@ -87,6 +90,9 @@
 				
 			},
 			methods:{
+			initMapData:function(){
+				$(".mapShow .mapShow-title-list-select-content input").val("");
+			},
 			clickChangeInhostal:function(){
 				if(this.outpatienttable == "outpatient"){
 					this.typeName = "mz";
@@ -282,6 +288,7 @@
 					        backgroundColor:'rgba(255,255,255,0.95)',
 					        extraCssText: 'box-shadow: 0px 3px 5px 0px rgba(0, 49, 98, 0.2);border:1px solid #eeeeee;border-bottom:0',
 					        formatter:function(params){
+					        if(params.name == "临西县" || params.name == "清河县" || params.name == "夏津县" || params.name == "高唐县" || params.name == "茌平县" || params.name == "东昌府区" || params.name == "冠县" || params.name == "馆陶县") return;
 					          var needValue = params.value;
 					                var leftDiv = "<div class='clear' style='color:#808080;font-size:10px;margin-top:20px;'><p style='height:10px;margin:0;float:left'><span style=width:8px;height:8px;border-radius:50%;float:left;margin-top:8px;line-height:8px;background:"+params.color + "></span>"+"<p style='margin:0;margin-left:5px;padding:0 0 10px 0;height:10px;float:left'>value : </p>"+"<span style='display:inline-block;margin-left:5px;height:10px;line-height:10px;'>"+params.value+"</span></p>";
 					                var rightDiv = "<div  style=color:#808080;font-size:10px;><p style='height:10px;margin:0;float:left;padding-left:11px'>name : </p><p style='padding:0 0 0px 0;height:10px;margin-left:5px;float:left'>"+params.name+"</p>";
@@ -532,6 +539,7 @@
 								if(index.value == null){
 									index.value = 0;
 								}
+
 								if(index.name == "最大日期" || index.name == "最小日期" || index.name == "临清") return;
 								if(index.name == "大辛庄办事处" || index.name == "新华办事处" || index.name == "青年办事处" || index.name == "先锋办事处"){
 									_that.mapValueChange.push(index.value);
@@ -540,14 +548,16 @@
 								_that.mapValueChange.push(index.value);
 								index.name = index.name + "镇";
 							})
+							
 							this.townHaveData = data;
 							_that.mapDrillData();
+							
 					} 
 
 					if((_that.mapCountryType == "country" && this.countryHaveData == null) || (_that.mapCountryType == "country" && update != undefined)){
 						this.mapValueChange = [];
 						this.thisDrillMapData = [];
-						
+						_that.thisLinqingIndex  = null;
 						this.mapData.forEach(function(index,value){
 							if(index.value == null){
 									index.value = 0;
@@ -555,9 +565,12 @@
 							if(index.name == "最大日期" || index.name == "最小日期") return;
 								if(index.name == "临清" || index.name == "南宫"){
 									index.name = index.name + "市";
-									if(index.name == "南宫"){
+									if(index.name == "南宫市"){
 										_that.thisDrillMapData.push({"name":index.name,"value":index.value,"itemStyle":{"emphasis":{"areaColor":"#FFFFFF"},"normal":{"areaColor":"#FFFFFF"}}});
 										return;
+									}
+									if(index.name == "临清市"){
+										_that.thisLinqingIndex = value;
 									}
 									_that.thisDrillMapData.push({"name":index.name,"value":index.value,"itemStyle":{"emphasis":{"areaColor":"#DEDEDE"},"normal":{"areaColor":"#DEDEDE"}}});
 									return;
@@ -599,7 +612,23 @@
 							}
 						}
 					})
-					
+					var tempCount = 0;
+					if(_that.mapCountryType == "town"){
+						this.mapData.forEach(function(ele,index){
+							if(ele.name == "临清") return;
+							tempCount+=ele.value;
+						})
+
+					_that.thisDrillMapData.forEach(function(ele,index){
+						if(ele.name == "临清市"){
+							ele.value = tempCount;
+						}
+					})
+					}
+
+
+				
+
 					_that.mapOption();
 					if(_that.mapCountryType == "town"){							
 							_that.tempDrillType = _that.tempDataOptionDrill;

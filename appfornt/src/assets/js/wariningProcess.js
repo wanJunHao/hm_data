@@ -113,7 +113,7 @@ export default{
  		confirmSetBtn:function(){
  			this.warningPopUp = false;
  			var tempName = $("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon td").eq(0).text();
- 			if(this.processTableData[tempName]["new"] != "" && this.processTableData[tempName]["new"] != $("#warningPanelSetting .warning-body .warning-name-input-div input").val() || this.processTableData[tempName]["times"] != $("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon #timeChangeSelect").val()){
+ 			if(this.processTableData[tempName]["new"] != undefined && this.processTableData[tempName]["new"] != $("#warningPanelSetting .warning-body .warning-name-input-div input").val() || (this.processTableData[tempName]["times"] != $("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon #timeChangeSelect").val())){
   				this.processTableData[tempName]["new"] = $("#warningPanelSetting .warning-body .warning-name-input-div input").val();
  				this.processTableData[tempName]["times"] =  $("#warningPanelSetting .warning-body .warning-setting .warning-setting-area table .tableCon #timeChangeSelect").val();
 				this.nowElementJsplumb.find("img").attr("src","/static/images/lianj_03.png");
