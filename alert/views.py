@@ -352,7 +352,8 @@ def areaMap(request, method, area):
     if request.method == "GET":
         # today = datetime.datetime.now().strftime('%Y-%m-%d')
         today = '2018-04-23'
-        sql = sql[:-1] + " from {0} where to_char({1}, 'yyyy-mm-dd') = '{2}'".format(method['table'], method['date'], today)
+        # sql = sql[:-1] + " from {0} where to_char({1}, 'yyyy-mm-dd') = '{2}'".format(method['table'], method['date'], today)
+        sql = sql[:-1] + " from {0} where DATE_FORMAT({1}, '%Y-%m-%d') = '{2}'".format(method['table'], method['date'], today)
 
     if request.method == "POST":
 
