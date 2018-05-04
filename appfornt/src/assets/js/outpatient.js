@@ -149,6 +149,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 			})
 	 		},
 	 		changeMap:function(){
+	 			if(this.outpatienttMapShow) return;
 	 			this.outpatienttMapShow = true;
 	 			this.markShow = true;
   				this.spinner.spin(this.target);
@@ -230,6 +231,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		             	"columns":tempTableDate,
 		             	"columnDefs":[{
 		             		"targets":0,
+		             		"orderable":false,
 		             		render:function(data, type, full, meta){
 		             			if(data == "blue"){
 		             				var tempColorWidth = 100;
