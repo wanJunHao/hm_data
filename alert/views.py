@@ -403,7 +403,7 @@ def areaMap(request, method, area):
         for i in data:
             if i['name'] == '临清':
                 lqsum = i['value']
-                for j in data[:-3]:
+                for j in data[:-1]:
                     lqsum -= j['value']
                 i['value'] = lqsum
     c.close()
