@@ -81,8 +81,8 @@ DATABASES = {
         'NAME': 'uinfo',
         'USER': 'root',
         'PASSWORD': '123.com',
-        # 'HOST': '172.21.45.53',
-        'HOST': '192.168.1.37',
+        'HOST': '172.21.45.53',
+        # 'HOST': '192.168.1.109',
         'PORT': '3306',
     }
 }
