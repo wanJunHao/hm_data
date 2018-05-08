@@ -184,7 +184,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		      },
 	 		//门诊表格的加载
 	 		outpatientTable:function(detail){
-	 			if(this.outpatienttMapTable == false) return;
+	 			// if(this.outpatienttMapTable == false) return;
 	 			var tempThat = this;
 	 			if(detail == "outpatient"){
 	 				var tempUrl = "http://127.0.0.1:8887/alert/getInfo";
@@ -197,7 +197,9 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 				var data = response.data.data;
 	 				tempThat.details = response.data.counts;
 	 				tempThat.dataMap = response.data.map;
+	 				if(tempThat.outpatienttMapShow) return;
 		 			var tempTableDate = tempThat.dataTablesColumn(data[0]);
+
 		 			$(".tableShow .outpatientTable-content").html('<table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="tableOutpatientPanel"></table>')
 		 			// console.log($("#tableOutpatientPanel").width(),$(".tableShow").width())
 		 			var tempInstance = $('#tableOutpatientPanel').DataTable({
@@ -253,8 +255,11 @@ import outpatienttMap from "@/components/outpatienttMap"
 
 		    		})
 		 			setTimeout(function(){
-		 			   tempThat.markShow = false;
-		 			   tempThat.spinner.stop();
+		 				if(!tempThat.waringShow){
+		 			   		tempThat.markShow = false;
+		 			   		tempThat.spinner.stop();		 					
+		 				}
+
 		 			   $(".tableDataState").eq(0).html("").append($("<p>状态</p><select class='tableDataStateSelect'></select>"));
 		 			   tempDataRow.forEach(function(ele,value){
 		 			   		var tempOption = $("<option value="+ele+">"+ele+"</option>");
