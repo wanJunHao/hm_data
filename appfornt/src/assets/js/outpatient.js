@@ -16,6 +16,7 @@ import outpatienttMap from "@/components/outpatienttMap"
   		},
   		watch:{
   			outpatienttable:function(){
+  				if(this.outpatienttable != "outpatient" && this.outpatienttable != "inhostal") return;
   				this.$nextTick(function(){
   					this.markShow = true;
   					this.spinner.spin(this.target);
@@ -66,6 +67,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 	 		this.spinnerStart();
 			this.markShow = true;
   			this.spinner.spin(this.target);
+  			$(".tableShow,.mapShow").height($("body").height() - $("#topInfo").height() - $(".header").height() - 40 );
 		},
 	 	methods:{
 	 		getDate:function(){
@@ -177,6 +179,10 @@ import outpatienttMap from "@/components/outpatienttMap"
 		        	if(keys == "status" || keys == "link" || keys == "time" || keys == "settime"){
 		        		continue;
 		        	}
+		        	if(keys == "rela_phone" || keys == "home_tel"){
+		        		 tempTableDate.push({"title":this.dataMap[keys],"data":keys,"sClass":"relaPhoneHandle"});
+		        		continue;
+		        	}
 		          tempTableDate.push({"title":this.dataMap[keys],"data":keys});
 		        }
 
@@ -228,7 +234,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		             		loadingIndicator: false
 		             	},
 		             	"scrollX":tempThat.datatableScroll(),
-		             	"scrollY":data.length > 15 ? $("#app .content .tableShow").height() - 150 + 'px':false,
+		             	// "scrollY":data.length > 15 ? $("#app .content .tableShow").height() - 119 + 'px':false,
 		             	"data":data,
 		             	"columns":tempTableDate,
 		             	"columnDefs":[{
@@ -251,7 +257,24 @@ import outpatienttMap from "@/components/outpatienttMap"
 		             			}
 		             			return "<div class="+full.status+" style='width:"+tempColorWidth+"%' title='设定时间 ："+full.settime+"  当前时间 ："+full.time+"'><div>";
 		             		}
-		             	}]
+		             	},
+		             	{
+		             		"targets":4,
+		             		render:function(data, type, full, meta){
+
+		             			return "<div><p>"+data+"</p><img src='/static/images/icon_call.png'></div>"
+		             		}
+		             	}
+		             	],
+		             	 "fnDrawCallback": function(data){
+				             if(data.aiDisplay.length > 15){
+		 			   				$("#app .content .tableShow .outpatientTable-content .dataTables_scrollBody").height($("#app .content .tableShow").height() - 119);
+				             }else{
+				             		$("#app .content .tableShow .outpatientTable-content .dataTables_scrollBody").height($("#app .content .tableShow .outpatientTable-content .dataTables_scrollBody table").height() + 1);
+				             }
+				             $(".outpatientTable-content").height($("#tableOutpatientPanel_wrapper").height());
+				             $(".waringTextColor").css("top",$("#tableOutpatientPanel_wrapper").height() + 55 +  "px")
+				         }
 
 		    		})
 		 			setTimeout(function(){
@@ -264,9 +287,10 @@ import outpatienttMap from "@/components/outpatienttMap"
 		 			   tempDataRow.forEach(function(ele,value){
 		 			   		var tempOption = $("<option value="+ele+">"+ele+"</option>");
 		 			   		$(".tableDataStateSelect").append(tempOption);
-		 			   })
+		 			   });
+		 			   $(".tableDataStateSelect").append($("<option value='取药完毕'>取药完毕</option>"));
 		 			   $(".tableDataStateSelect").comboSelect();
-		 			   $(".tableDataStateSelect").unbind("chage");
+		 			   // $(".tableDataStateSelect").unbind("change");
 		 			   $(".tableDataStateSelect").change(function(event){
 		 			   		event.stopPropagation();
 		 			   		setTimeout(function(){
@@ -274,6 +298,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		 			   				tempInstance.search("").draw();
 		 			   			}else{
 		 			   				tempInstance.search($(".tableDataStateSelect").val()).draw();
+		 			   				
 		 			   			}
 		 			   			
 		 			   		},20);

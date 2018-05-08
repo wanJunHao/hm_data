@@ -24,17 +24,20 @@
 			<!-- 当前日期 -->
 			<div class="tableTop">
 				<p style="float:left">{{ date }}</p>
-				<div class="processText" style="float:right"><span class="tableTopColor" style="background: #5BA7FF"></span><span>流程完成</span></div>
-				<div class="processText" style="float:right"><span class="tableTopColor" style="background: #F53E3E"></span><span>超过预警</span></div>
-				<div class="processText" style="float:right"><span class="tableTopColor" style="background: #38C634"></span><span>正在进行</span></div>
-				<div class="processText" style="float:right"><span class="tableTopColor" style="background: #FFC156"></span><span>等待完成</span></div>	
+				<img src="/static/images/icon_jilu.png" alt="phone">
 			</div>
 			<!-- 门诊表格 -->
 			<div class="outpatientTable-content" :dataTableName='outpatienttable'>
 				
 			</div>
-
+			<div class="waringTextColor">
+					<div class="processText" style="float:right"><span class="tableTopColor" style="background: #5BA7FF"></span><span>流程完成</span></div>
+					<div class="processText" style="float:right"><span class="tableTopColor" style="background: #F53E3E"></span><span>超过预警</span></div>
+					<div class="processText" style="float:right"><span class="tableTopColor" style="background: #38C634"></span><span>正在进行</span></div>
+					<div class="processText" style="float:right"><span class="tableTopColor" style="background: #FFC156"></span><span>等待完成</span></div>
+			</div>
 		</div>
+
 		<!-- 地图 -->
 		<outpatienttMap v-bind:outpatienttMapShow="outpatienttMapShow" v-bind:outpatienttable="outpatienttable" v-on:listenToChildEventMap="mapDataSuccess"></outpatienttMap>			
 		<!-- 流程设置弹框 -->

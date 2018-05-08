@@ -1,6 +1,6 @@
 body{font-size:13px;}
 .content{margin-left:60px;height:100%;background: #F3F5F9;}
-.header{width:100%;height:50px;background-color:#fff;overflow: hidden;}
+.header{width:100%;height:50px;background-color:#fff;overflow: hidden;min-width:1300px;}
 .detailData div:nth-child(1){margin-left: 20px;}
 .detailData div{display: inline-block;line-height:55px;float:left;margin-left: 45px;}
 .detailData div span{margin-left:15px;font-size: 13px;}
@@ -9,8 +9,8 @@ body{font-size:13px;}
 .activeBtn{background: #0B9BFB;color:white;}
 .settingBtn,.computedBtn{background:#0B9BFB;margin-left:10px;color:white;}
 .tableShow{overflow-x: auto;overflow-y: hidden}
-.tableShow,.mapShow{height:85%;position: absolute;top:100px;left:60px;box-sizing: border-box;padding: 20px;}
-.tableShow .outpatientTable-content{min-width: 1000px;}
+.tableShow,.mapShow{position: absolute;top:100px;left:60px;box-sizing: border-box;padding: 20px;}
+.tableShow .outpatientTable-content{min-width: 1300px;height:100%;}
 
 #compareSelects{width: 49px;overflow-y: auto;text-align: center;position: absolute;left: 117px;top: 158px;background: white;border:1px solid #e3e3e3;}
 #compareSelects div{height:20px;line-height:20px;}
@@ -18,11 +18,14 @@ body{font-size:13px;}
 #waitSelects div{height:20px;line-height:20px;}
 #app .markShow{width: 100%;height: 100%;background:#000;opacity: 0.3;position: absolute;left: 0;top: 0;z-index: 1}
 #app .content .tableShow .outpatientTable-content .dataTables_scrollBody{overflow-x: hidden !important;overflow-y: auto;}
-#app .content .tableShow .outpatientTable-content .tableDataState{min-width: 140px}
+#app .content .tableShow .outpatientTable-content .tableDataState{min-width: 160px}
 #app .content .tableShow .outpatientTable-content .tableDataState p {float: left;height:18px;margin-top: 5px}
 #app .content .tableShow .outpatientTable-content .tableDataState .combo-select {width: 120px;height: 23px;float:right;margin-right: 5px}
 #app .content .tableShow .outpatientTable-content .tableDataState .combo-select .combo-input{padding:0px;width: 100%;height: 100%;text-align: center}
 #tableOutpatientPanel_filter{display: none}
+#app .content .tableShow .outpatientTable-content .relaPhoneHandle{min-width: 160px}
+#app .content .tableShow .outpatientTable-content .relaPhoneHandle p{float:left;margin-left:55px;}
+#app .content .tableShow .outpatientTable-content .relaPhoneHandle img{cursor: pointer;float: right;margin-right: 15px}
 /* #app .content .tableShow .outpatientTable-content .dataTables_scrollHead{left: 1px;} */
 #app .content .tableShow .outpatientTable-content .dataTables_scroll{overflow-x: auto;}
 #app .content .tableShow .outpatientTable-content #tableOutpatientPanel_length,#app .content .tableShow .outpatientTable-content .dataTables_paginate{display: none}
@@ -33,9 +36,11 @@ body{font-size:13px;}
 .showBtn,.mapBtn{border:1px solid #0B9BFB;padding:2px 3px;padding-top:3px;}
 .showBtn{border-top-right-radius: 0;border-bottom-right-radius: 0;}
 .mapBtn{border-top-left-radius: 0;border-bottom-left-radius: 0;}
-.tableTop{border-bottom: 2px solid #0B9BFB;height:50px;background: #fff;font-size: 14px;line-height: 50px;font-weight:bold;padding-left: 11px;}
-.tableTop .processText{margin-right: 20px;}
-.tableTop .tableTopColor{float:left;width:10px;height:10px;border-radius: 10px;margin-top: 20px;margin-right: 8px}
+.tableTop{border-bottom: 2px solid #0B9BFB;height:50px;background: #fff;font-size: 14px;line-height: 50px;font-weight:bold;padding-left: 11px;min-width: 1300px}
+.tableTop img{float:right;margin:18px 10px 0px 0px;cursor: pointer}
+.waringTextColor{position: absolute;right:10px;}
+.waringTextColor .processText{margin-right: 20px;}
+.waringTextColor .tableTopColor{float:left;width:10px;height:10px;border-radius: 10px;margin-right: 8px;margin-top: 3px}
 /* .outpatientTable-content{margin-top: -27px;} */
 .table.dataTable{margin-top: 0px !important;}
 

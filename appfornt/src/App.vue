@@ -12,8 +12,8 @@
     <div class="leftNav">
         <!--  <div v-for="(item,index) in items"  :class="{'show':item.active}" @click="makeActive(item,index)">{{item.name}}</div> -->
         <!-- 导航按钮 -->
-        <div v-for="(img,index) in imgs" class="imgBtn" :class="img.class">
-          <img :src="img.active ? '/static/images/'+img.transChange+'-select.png':'/static/images/'+img.transChange+'-able.png'" @click="changeActive(img,index)">
+        <div v-for="(img,index) in imgs" class="imgBtn" :class="img.class" :title="img.name">
+          <img :src="img.active ? '/static/images/'+img.transChange+'-select.png':'/static/images/'+img.transChange+'-able.png'" @click="changeActive(img,index)" :dataName="img.name">
         </div>
     </div>
 
@@ -34,9 +34,12 @@ export default {
         imgs:[
           {name:'门诊',active:true,transChange:"outpatient",class:'outBtn'},
           {name:'住院',active:false,transChange:"inhostal",class:'hosBtn'},
-          {name:'预警',active:false,transChange:"yujing",class:'yjBtn'},
+          // {name:'预警',active:false,transChange:"yujing",class:'yjBtn'},
+          {name:'统计',active:false,transChange:"nav",class:'tongjiBtn'},
+          {name:'提醒',active:false,transChange:"tix",class:'tixBtn'},
         ],
-        tableShowName:"outpatient"
+        tableShowName:"outpatient",
+        nowClickOver:"outpatient",
      }
   },
   methods:{
@@ -50,13 +53,24 @@ export default {
       //   this.tableShowName = this.active;
       // },
       changeActive:function(img,index){
-        if(this.tableShowName == img.transChange) return;
+        if(this.nowClickOver == img.transChange) return;
         this.active = img.transChange;
         for(var i=0;i<this.imgs.length;i++){
           this.imgs[i].active = false;
         }
         this.imgs[index].active = true;
-        this.tableShowName = this.active;
+        this.nowClickOver = img.transChange;
+        if(img.name == "门诊" || img.name == "住院"){
+           this.tableShowName = this.active;
+            this.$router.push({"path":'/'});
+           
+        }else if(img.name == "提醒"){
+            this.$router.push({"path":'/remind'});
+        }else if(img.name == "统计"){
+            this.$router.push({"path":'/statistical'});
+        }
+
+        
       }
   }
 }
