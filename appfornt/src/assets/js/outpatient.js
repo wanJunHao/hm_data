@@ -277,21 +277,32 @@ import outpatienttMap from "@/components/outpatienttMap"
 				         }
 
 		    		})
-		 			setTimeout(function(){
-		 				if(!tempThat.waringShow){
-		 			   		tempThat.markShow = false;
-		 			   		tempThat.spinner.stop();		 					
-		 				}
+		    		async function callBackTableHandle(tempInstance){
+		    			await new Promise((resolve,reject) => {
+				 			setTimeout(function(){
+				 				if(!tempThat.waringShow){
+				 			   		tempThat.markShow = false;
+				 			   		tempThat.spinner.stop();		 					
+				 				}
 
-		 			   $(".tableDataState").eq(0).html("").append($("<p>状态</p><select class='tableDataStateSelect'></select>"));
-		 			   tempDataRow.forEach(function(ele,value){
-		 			   		var tempOption = $("<option value="+ele+">"+ele+"</option>");
-		 			   		$(".tableDataStateSelect").append(tempOption);
-		 			   });
-		 			   $(".tableDataStateSelect").append($("<option value='取药完毕'>取药完毕</option>"));
-		 			   $(".tableDataStateSelect").comboSelect();
-		 			   // $(".tableDataStateSelect").unbind("change");
-		 			   $(".tableDataStateSelect").change(function(event){
+				 			   $(".tableDataState").eq(0).html("").append($("<p>状态</p><select class='tableDataStateSelect'></select>"));
+				 			   tempDataRow.forEach(function(ele,value){
+				 			   		var tempOption = $("<option value="+ele+">"+ele+"</option>");
+				 			   		$(".tableDataStateSelect").append(tempOption);
+				 			   });
+				 			   $(".tableDataStateSelect").append($("<option value='取药完毕'>取药完毕</option>"));
+				 			   $(".tableDataStateSelect").comboSelect();
+				 			   resolve("success");
+				 			},300);
+
+				 			return "success";    				
+		    			})
+
+
+		    		}
+
+		    		callBackTableHandle().then(function(data){
+    					$(".tableDataStateSelect").change(function(event){
 		 			   		event.stopPropagation();
 		 			   		setTimeout(function(){
 		 			   			if($(".tableDataStateSelect").val() == "所有数据"){
@@ -303,7 +314,7 @@ import outpatienttMap from "@/components/outpatienttMap"
 		 			   			
 		 			   		},20);
 		 			   })
-		 			},300);
+		    		})
 	 			})
 	 		},
 

@@ -75,7 +75,7 @@ export default{
 	},
 	watch:{
 		instance:function(){
-			console.log(this.instance)
+			// console.log(this.instance)
 		},
 		warningShow:function(){
 			this.$nextTick(function(){
@@ -108,6 +108,9 @@ export default{
  		},
  		cancleSetBtn:function(){
  			this.warningPopUp = false;
+ 			if($.inArray($(this.nowElementJsplumb).children("span").text(),this.processTableSaveFileName) != -1){
+				return;
+			}
  			this.nowElementJsplumb.find("img").attr("src","/static/images/lianj_icon_nor.png");
  		},
  		confirmSetBtn:function(){
@@ -429,12 +432,13 @@ export default{
 
 	customClickHandle:function(jsPlumb){
 		var _this = this;
-		_this.nowElementJsplumb = $(jsPlumb.canvas);
+		
 		if($(jsPlumb.canvas).find("span").text() == "复诊") return;
 		//元素位置
 		var tempElementTarget = jsPlumb._jsPlumb.component;
 		this.warningPopUp = !this.warningPopUp;
 		if(this.warningPopUp){
+			_this.nowElementJsplumb = $(jsPlumb.canvas);
 			this.nowElementJsplumb.find("img").attr("src","/static/images/lianj_03.png");
 			this.$nextTick(function(){
 				this.awarningDarg();
@@ -448,6 +452,11 @@ export default{
 				$("#timeChangeSelect option[value="+this.processTableData[this.nowFile]["times"]+"]").prop("selected","selected")
 				$(".sumChange").comboSelect();
 			})
+		}else{
+				if($.inArray($(this.nowElementJsplumb).children("span").text(),this.processTableSaveFileName) != -1){
+					return;
+				}
+				this.nowElementJsplumb.find("img").attr("src","/static/images/lianj_icon_nor.png");
 		}
 	}
 
