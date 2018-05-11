@@ -130,3 +130,28 @@ STATICFILES_DIRS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'normal': {
+            'format': '%(asctime)s %(pathname)s %(module)s %(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'basefile': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/logs/django.log',
+            'formatter': 'normal'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['basefile'],
+            'level': 'WARN',
+            'propagate': True,
+        },
+    },
+}

@@ -3,12 +3,16 @@
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 
-import cx_Oracle
+# import cx_Oracle
 import MySQLdb
-import copy
 import os
 import datetime
 import random
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger("django.alert.views")
+logger.setLevel(logging.DEBUG)
 os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'
 
 
@@ -111,7 +115,7 @@ def getInfo(request):
             n5 += random.randint(-2, 2)
             n6 += random.randint(0, 2)
 
-        DATA = copy.deepcopy(data)
+        DATA = data
         context = {
             "data": data,
             "map": {
@@ -273,7 +277,7 @@ def zhuyuanInfo(request):
                     i["status"] = STATUS_1[i["link"]]["color"] if i["time"] < STATUS_1[i["link"]]["times"] else "red"
                 i["settime"] = STATUS_1[i["link"]]["times"]
 
-        DATA_1 = copy.deepcopy(data)
+        DATA_1 = data
         context = {
             "data": data,
             "map": {
