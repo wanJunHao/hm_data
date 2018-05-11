@@ -1,10 +1,15 @@
 # Version : 1.0.1
-FROM hm_ubuntu:1.02.1
+FROM hm_ubuntu:latest
 MAINTAINER JunHao <jhw_1324@163.com>
 
-ADD . /code
-WORKDIR /code
+ENV          LANG C.UTF-8
 
-EXPOSE 8887
+COPY         . /code/
 
-ENTRYPOINT ["./django.sh"]
+RUN          mkdir /logs
+
+WORKDIR      /code
+
+EXPOSE       8887
+
+ENTRYPOINT   ["./django.sh"]
