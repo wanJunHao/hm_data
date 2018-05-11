@@ -64,6 +64,8 @@ export default{
 			tableChangeBoolean:false,
 			processTitleChangeShow:"门诊流程",
 			nowProcessTableShow:null,
+			processNowStyle:[[0,0,0,70],[120,1,-1,20],[220,290,0],[330,145,0],[-90,0,0]],
+			processNowStyleZy:[[0,0,0,0,50],[120,50,1,2,50],[200,50,1,2,50],[300,-605,1,2,50],[200,-255,1,0,50]],
 
 		}
 	},
@@ -157,6 +159,7 @@ export default{
  			this.$http.post(tempPostUrl,this.processTableDataChangeArr).then(function(response){
  				if(response.data.status == "success"){
  					_this.tableChangeBoolean = true;
+ 					_this.processTableSaveFileName=[];
  					_this.sendMsgToParent();
  				}
  			})
@@ -179,9 +182,7 @@ export default{
 			jsPlumb.ready(function(){
 			// $(".warningProcess-content .settingPanel-content .awarningconnectionImg,.jtk-connector,.jtk-endpoint").remove();
 			if(_this.instance != null){
-				_this.instance.bind("click",function(a,b){
-					_this.instance.unbindContainer()
-				})
+				_this.instance.unbindContainer()
 			}
 			 _this.instance = jsPlumb.getInstance({
 					DragOptions: { cursor: "pointer", zIndex: 2000 },
@@ -274,10 +275,10 @@ export default{
 	        	$("#point6").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","40px");
 	        	$("#point7").parent(".awarningconnectionImg").css("top",$("#point7").parent(".awarningconnectionImg").position().top - 10 + "px")
 	        	$("#point7").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","52px");
-	        	$("#point8").parent(".awarningconnectionImg").css("left",$("#point8").parent(".awarningconnectionImg").position().left + 48+ "px")
+	        	$("#point8").parent(".awarningconnectionImg").css("left",$("#point8").parent(".awarningconnectionImg").position().left + 41+ "px").css("top",$("#point8").parent(".awarningconnectionImg").position().top + 15 + "px")
 	        	$("#point8").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","53px");
-	        	$("#point5").parent(".awarningconnectionImg").css("top",$("#point5").parent(".awarningconnectionImg").position().top - 5 + "px");
-	        	$("#point9").parent(".awarningconnectionImg").css("left",$("#point9").parent(".awarningconnectionImg").position().left + 12 + "px");
+	        	$("#point5").parent(".awarningconnectionImg").css("top",$(".warningProcess-content .settingPanel .awarning-process-wrap").eq(0).position().top + 12  + "px").css("left",$(".warningProcess-content .settingPanel .awarning-process-wrap").eq(0).width()+ 10 + "px");
+	        	$("#point9").parent(".awarningconnectionImg").css("left",$(".warningProcess-content .settingPanel .awarning-process-wrap").eq(0).find(".awarning-process-item").eq(2).position().left + (125/2) + "px");
 
 	        },10);
 	       })		
@@ -342,7 +343,7 @@ export default{
 	        setTimeout(function(){
 	        	$(".jtk-endpoint").not(".jtk-endpoint-connected").remove();
 	        	$("#point8,#point5,#point16,#point4,#point15,#point2").parent(".awarningconnectionImg").hide();
-	        	$("#point11,#point12").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","40px");
+	        	$("#point11,#point12").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","35px");
 	        	$("#point14").parent(".awarningconnectionImg").css("top",$("#point14").parent(".awarningconnectionImg").position().top + 58 + "px")
 	        	$("#point14").parent(".awarningconnectionImg").find("span").css("top","2px").css("left","53px");
 
@@ -362,6 +363,7 @@ export default{
 	warningProcessStatus:function(){
 		var _this = this;
 		if(this.warningShow){
+			this.requestData = [];
 			$(".warningProcess-content .settingPanel-content .awarningconnectionImg,.jtk-connector,.jtk-endpoint").remove();
 			if(this.outpatienttable == "outpatient"){
 					this.requestData = [["分诊时间","挂号时间(开始就诊)","结束就诊时间","缴费时间"],["缴费时间","取药完毕_yzy_sameLeave","检验开始_yzy_sameLeave","检查开始_yzy_sameLeave"],["检查开始_yzy_sameLeave","检查结果"],["检验开始_yzy_sameLeave","取到报告"],["结束就诊时间","办理入院"]];
@@ -381,39 +383,29 @@ export default{
 		}
 		return true;
 	},
+
 	itemStyle:function(index){
 		if(this.outpatienttable == "outpatient"){
-			if(index > 0){
-				if(index == 2){
-					return  {"top":this.tempTop + 220 + "px","left":this.tempLeft + 290 +"px","width":this.width  + 'px'}
-				}else if (index == 3){
-					return  {"top":this.tempTop+ 300 + "px","left":this.tempLeft + 145 +"px","width":this.width  + 'px'}
-				}else if(index == 4){
-					return  {"top":this.tempTop -90 + "px","left":this.tempLeft  +"px","width":this.width  + 'px'}
-				}
-				 return  {"top":this.tempTop+ 120+ "px","left":this.tempLeft+"px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length - 3.1) * this.left + 'px'}
-		
-				// this.tempLeft += (this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
+			if(index > 1){
+				var tempStyleDict = {"top":this.tempTop + this.processNowStyle[index][0] + "px","left":this.tempLeft + this.processNowStyle[index][1] +"px","width":this.width + this.processNowStyle[index][2] + 'px'};
+				return tempStyleDict;
 			}else{
-				this.tempLeft =(this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
-				this.tempTop = (index+1) * this.top;
-				return {"top":(index+1) * this.top + "px","left":0 + "px","width":this.requestData[index].length * this.width + (this.requestData[index].length) * this.left + 'px'}
+				if(index == 0){
+					this.tempLeft =(this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
+					this.tempTop = (index+1) * this.top;
+				}
+				var tempStyleDict ={"top":this.tempTop + this.processNowStyle[index][0] + "px","left":index *  this.tempLeft + "px","width":(this.requestData[index].length - this.processNowStyle[index][1]) * this.width + (this.requestData[index].length + this.processNowStyle[index][2]) * this.processNowStyle[index][3] + 'px'}
+				return tempStyleDict;
 			}			
 		}else{
 			if(index > 0){
-				if(index == 1){
-					return  {"top":this.tempTop+ 120+ "px","left":this.tempLeft + 50 + "px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length - 2.2) * this.left + 'px'}
-				}else if(index == 2){
-					return  {"top":this.tempTop+ 200+ "px","left":this.tempLeft + 50 + "px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length - 2.2) * this.left + 'px'}
-				}else if(index == 3){
-					return  {"top":this.tempTop+ 300+ "px","left":175 + "px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length - 2.2) * this.left + 'px'}
-				}else if(index == 4){
-					return  {"top":this.tempTop+ 200+ "px","left":525 + "px","width":(this.requestData[index].length-1) * this.width + (this.requestData[index].length) * this.left + 'px'}
-				}
+				var tempStyleDict = {"top":this.tempTop+ this.processNowStyleZy[index][0]+ "px","left":this.tempLeft + this.processNowStyleZy[index][1] + "px","width":(this.requestData[index].length-this.processNowStyleZy[index][2]) * this.width + (this.requestData[index].length - this.processNowStyleZy[index][3]) * this.processNowStyleZy[index][4] + 'px'};
+				return tempStyleDict;
 			}else{
 				this.tempLeft =(this.requestData[index].length-1) * this.width + (this.requestData[index].length-1) * this.left;
 				this.tempTop = (index+1) * this.top;
-				return {"top":(index+1) * this.top + "px","left":0 + "px","width":this.requestData[index].length * this.width + (this.requestData[index].length) * this.left + 'px'}				
+				var tempStyleDict = {"top":this.tempTop + this.processNowStyleZy[index][0]+ "px","left":this.tempLeft * this.processNowStyleZy[index][1] + "px","width":(this.requestData[index].length-this.processNowStyleZy[index][2]) * this.width + (this.requestData[index].length - this.processNowStyleZy[index][3]) * this.processNowStyleZy[index][4] + 'px'};
+				return tempStyleDict;
 			}
 		}
 
@@ -433,7 +425,7 @@ export default{
 	customClickHandle:function(jsPlumb){
 		var _this = this;
 		
-		if($(jsPlumb.canvas).find("span").text() == "复诊") return;
+		if($(jsPlumb.canvas).find("span").text() == "复诊" || $(jsPlumb.canvas).find("span").text() == "入院流程") return;
 		//元素位置
 		var tempElementTarget = jsPlumb._jsPlumb.component;
 		this.warningPopUp = !this.warningPopUp;
